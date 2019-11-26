@@ -3,13 +3,14 @@ import { Document } from "mongoose";
 
 export interface IBudget extends Document {
 	name: string;
+	categories: string[];
 	transactions: [
 		{
 			desc: string;
 			user: IUser;
-			date: Date;
+			date?: Date;
 			category: string;
-			amount: boolean;
+			amount: number;
 		}
 	];
 	members: IUser[];
