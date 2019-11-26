@@ -6,7 +6,7 @@ import hpp from "hpp";
 import session from "express-session";
 import { AppError } from "./utils/appError";
 import { globalErrorHandler } from "./utils/globalErrorHandler";
-import { userRoute, authRoute } from "./controllers";
+import { userRoute, authRoute, budgetRoute } from "./controllers";
 
 export const app = express();
 
@@ -55,5 +55,5 @@ app.use(
 );
 
 // Route Handlers
-app.use("/api", authRoute, userRoute);
+app.use("/api", authRoute, userRoute, budgetRoute);
 app.use(globalErrorHandler);

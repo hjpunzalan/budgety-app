@@ -11,7 +11,10 @@ const budgetSchema = new mongoose.Schema({
 				ref: "Users",
 				autopopulate: true
 			},
-			date: Date.now,
+			date: {
+				type: Date,
+				default: Date.now
+			},
 			category: String,
 			amount: Boolean
 		}
