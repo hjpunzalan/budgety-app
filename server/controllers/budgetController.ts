@@ -2,7 +2,15 @@ import { checkBody } from "../utils/checkBody";
 import { AppError } from "./../utils/appError";
 import { Budget } from "./../models/Budget";
 import { Request, Response, NextFunction, Router } from "express";
-import { controller, post, patch, use, get, catchAsync } from "../decorators";
+import {
+	controller,
+	post,
+	patch,
+	use,
+	get,
+	catchAsync,
+	del
+} from "../decorators";
 import { requireAuth } from "../middlewares/requireAuth";
 import { bodyValidator } from "../middlewares/bodyValidator";
 
@@ -92,5 +100,18 @@ class budgetController {
 		} else return next(new AppError("User no longer logged in", 403));
 	}
 
-	// delete budget
+	@del("/del/:id")
+	@use(requireAuth)
+	@catchAsync
+	async deleteBudget(req: Request, res: Response, next: NextFunction) {
+		if (req.session) {
+			const budget = await Budget.findOneAndRemove({
+				_id: req.params.id,
+				members: req.session.userId
+			});
+			if (!budget)
+				return next(new AppError("No budget belongs to the id", 404));
+			res.status(204).json({ success: "Budget Deleted" });
+		} else return next(new AppError("User no longer logged in", 403));
+	}
 }
