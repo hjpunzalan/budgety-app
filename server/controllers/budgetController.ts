@@ -2,7 +2,7 @@ import { checkBody } from "../utils/checkBody";
 import { AppError } from "./../utils/appError";
 import { Budget } from "./../models/Budget";
 import { Request, Response, NextFunction, Router } from "express";
-import { controller, post, patch, use, catchAsync } from "../decorators";
+import { controller, post, patch, use, get, catchAsync } from "../decorators";
 import { requireAuth } from "../middlewares/requireAuth";
 import { bodyValidator } from "../middlewares/bodyValidator";
 
@@ -57,6 +57,21 @@ class budgetController {
 				return next(new AppError("Budget does not belong to user", 403));
 
 			res.status(200).json(budget);
+		} else return next(new AppError("User no longer logged in", 403));
+	}
+
+	@get("/all")
+	@use(requireAuth)
+	@catchAsync
+	async getAllBudget(req: Request, res: Response, next: NextFunction) {
+		// Get all budget for user
+		if (req.session) {
+			const budgets = await Budget.find({ members: req.session.userId });
+			if (!budgets || budgets.length === 0)
+				return next(
+					new AppError("User does not have any budgets connected", 404)
+				);
+			res.status(200).json(budgets);
 		} else return next(new AppError("User no longer logged in", 403));
 	}
 
