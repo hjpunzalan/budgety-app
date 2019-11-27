@@ -10,7 +10,7 @@ export const budgetRoute = Router();
 
 @controller("/budget", budgetRoute)
 class budgetController {
-	@post("/newbudget")
+	@post("/new")
 	@use(requireAuth, bodyValidator("name", "categories", "members"))
 	@catchAsync
 	async newBudget(req: Request, res: Response, next: NextFunction) {
@@ -34,7 +34,7 @@ class budgetController {
 	}
 
 	// For updating categories, members or name of budget
-	@patch("/updatebudget/:id")
+	@patch("/update/:id")
 	@use(requireAuth)
 	@catchAsync
 	async updateBudget(req: Request, res: Response, next: NextFunction) {
@@ -75,6 +75,10 @@ class budgetController {
 		} else return next(new AppError("User no longer logged in", 403));
 	}
 
+	@get("/:id")
+	@use(requireAuth)
+	@catchAsync
+	async getBudget(req: Request, res: Response, next: NextFunction) {}
+
 	// delete budget
-	//  get budget
 }

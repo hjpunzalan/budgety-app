@@ -57,7 +57,7 @@ class UserController {
 		res.status(200).json(users);
 	}
 
-	@patch("/updateMe")
+	@patch("/updateme")
 	@use(requireAuth)
 	@catchAsync
 	async updateMe(req: Request, res: Response, next: NextFunction) {
