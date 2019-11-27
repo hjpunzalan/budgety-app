@@ -1,18 +1,11 @@
+import { ITransaction } from "./Transaction";
 import { IUser } from "./User";
 import { Document } from "mongoose";
 
 export interface IBudget extends Document {
 	name: string;
 	categories: string[];
-	transactions: [
-		{
-			desc: string;
-			user: IUser;
-			date?: Date;
-			category: string;
-			amount: number;
-		}
-	];
+	transactions: ITransaction[];
 	members: IUser[];
 
 	checkUser: (userId: string) => boolean;
