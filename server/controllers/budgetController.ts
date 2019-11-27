@@ -1,3 +1,4 @@
+import { checkBody } from "../utils/checkBody";
 import { patch } from "./../decorators/routes";
 import { AppError } from "./../utils/appError";
 import { Budget } from "./../models/Budget";
@@ -29,6 +30,33 @@ class budgetController {
 		if (req.session) {
 			members.unshift(req.session.userId);
 			const budget = await Budget.create(req.body);
+			res.status(200).json(budget);
+		} else return next(new AppError("User no longer logged in", 403));
+	}
+
+	// For updating categories, members or name of budget
+	@patch("/updatebudget/:id")
+	@use(requireAuth)
+	@catchAsync
+	async updateBudget(req: Request, res: Response, next: NextFunction) {
+		if (req.session) {
+			const filterBody = checkBody(
+				req.body,
+				["name", "categories", "members"],
+				next
+			);
+
+			// Find and check budget exist
+			// Update budget
+			const budget = await Budget.findByIdAndUpdate(req.params.id, filterBody, {
+				new: true,
+				runValidators: true
+			});
+			if (!budget) return next(new AppError("No budget found.", 404));
+
+			if (!budget.checkUser(req.session.userId))
+				return next(new AppError("Budget does not belong to user", 403));
+
 			res.status(200).json(budget);
 		} else return next(new AppError("User no longer logged in", 403));
 	}

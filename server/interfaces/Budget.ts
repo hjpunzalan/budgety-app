@@ -14,4 +14,6 @@ export interface IBudget extends Document {
 		}
 	];
 	members: IUser[];
+
+	checkUser: (userId: string) => boolean;
 }

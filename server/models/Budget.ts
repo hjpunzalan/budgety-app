@@ -41,6 +41,12 @@ budgetSchema.pre<IBudget>("save", function(next) {
 	next();
 });
 
+// Find budget belonging to members
+budgetSchema.methods.checkUser = function(userId: string) {
+	return this.members.includes(userId);
+};
+
+// populate members
 budgetSchema.post<IBudget>("save", function(doc, next) {
 	doc
 		.populate("members")
