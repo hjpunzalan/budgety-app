@@ -46,15 +46,17 @@ class budgetController {
 			);
 
 			// Find and check budget exist
+			// Make sure its from user logged in
 			// Update budget
-			const budget = await Budget.findByIdAndUpdate(req.params.id, filterBody, {
-				new: true,
-				runValidators: true
-			});
+			const budget = await Budget.findOneAndUpdate(
+				{ _id: req.params.id, members: req.session.userId },
+				filterBody,
+				{
+					new: true,
+					runValidators: true
+				}
+			);
 			if (!budget) return next(new AppError("No budget found.", 404));
-
-			if (!budget.checkUser(req.session.userId))
-				return next(new AppError("Budget does not belong to user", 403));
 
 			res.status(200).json(budget);
 		} else return next(new AppError("User no longer logged in", 403));
@@ -78,7 +80,17 @@ class budgetController {
 	@get("/:id")
 	@use(requireAuth)
 	@catchAsync
-	async getBudget(req: Request, res: Response, next: NextFunction) {}
+	async getBudget(req: Request, res: Response, next: NextFunction) {
+		if (req.session) {
+			const budget = await Budget.findOne({
+				_id: req.params.id,
+				members: req.session.userId
+			});
+			if (!budget)
+				return next(new AppError("No budget belongs to the id", 404));
+			res.status(200).json(budget);
+		} else return next(new AppError("User no longer logged in", 403));
+	}
 
 	// delete budget
 }
