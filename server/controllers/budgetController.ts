@@ -1,3 +1,4 @@
+import { IUser } from "./../interfaces/User";
 import { checkBody } from "../utils/checkBody";
 import { AppError } from "./../utils/appError";
 import { Budget } from "./../models/Budget";
@@ -47,7 +48,12 @@ class budgetController {
 	@catchAsync
 	async updateBudget(req: Request, res: Response, next: NextFunction) {
 		if (req.session) {
-			const filterBody = checkBody(
+			interface ReqBody {
+				name: string;
+				members: IUser[];
+				categories: string;
+			}
+			const filterBody: ReqBody = checkBody(
 				req.body,
 				["name", "categories", "members"],
 				next
