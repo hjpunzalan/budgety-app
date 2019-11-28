@@ -10,8 +10,7 @@ const budgetSchema = new mongoose.Schema({
 			desc: String,
 			user: {
 				type: mongoose.SchemaTypes.ObjectId,
-				ref: "Users",
-				autopopulate: true
+				ref: "Users"
 			},
 			date: {
 				type: Date,
@@ -26,8 +25,7 @@ const budgetSchema = new mongoose.Schema({
 	members: [
 		{
 			type: mongoose.SchemaTypes.ObjectId,
-			ref: "Users",
-			autopopulate: true
+			ref: "Users"
 		}
 	]
 });
@@ -45,6 +43,9 @@ budgetSchema.pre<IBudget>("save", function(next) {
 budgetSchema.post<IBudget>("save", function(doc, next) {
 	doc
 		.populate("members")
+		.populate({
+			path: "transactions.user"
+		})
 		.execPopulate()
 		.then(function() {
 			next();
