@@ -1,9 +1,8 @@
 import { IUser } from "./User";
-import { Document } from "mongoose";
 
-export interface ITransaction extends Document {
+export interface ITransaction {
 	desc: string;
-	user: IUser;
+	user?: IUser;
 	date?: Date;
 	category: string;
 	amount: number;
