@@ -3,7 +3,7 @@ import { checkBody } from "./../utils/checkBody";
 import { AppError } from "./../utils/appError";
 import { Budget } from "./../models/Budget";
 import { Request, Response, NextFunction, Router } from "express";
-import { controller, post, del, patch, use, catchAsync } from "../decorators";
+import { controller, get, del, patch, use, catchAsync } from "../decorators";
 import { requireAuth } from "../middlewares/requireAuth";
 import { bodyValidator } from "../middlewares/bodyValidator";
 
@@ -59,6 +59,8 @@ class TransactionController {
 	@catchAsync
 	async updateTransaction(req: Request, res: Response, next: NextFunction) {
 		if (req.session) {
+			// Using a method where most logic for finding index and updating is fulfilled by database queries instead of server
+
 			// Find the Budget then transaction to be updated
 			const findBudget = await Budget.findOne(
 				{
@@ -101,6 +103,24 @@ class TransactionController {
 			if (budget) {
 				res.status(200).json(budget);
 			} else return next(new AppError("Budget or transaction not found", 404));
+		} else return next(new AppError("User no longer logged in", 403));
+	}
+
+	@get("/:budgetId")
+	@use(requireAuth)
+	@catchAsync
+	async getAllTransactions(req: Request, res: Response, next: NextFunction) {
+		if (req.session) {
+			const transactions = await Budget.findOne(
+				{
+					_id: req.params.budgetId,
+					members: req.session.userId
+				},
+				{ transactions: 1 }
+			);
+			if (!transactions)
+				return next(new AppError("Budget or transaction not found", 404));
+			else res.status(200).json(transactions);
 		} else return next(new AppError("User no longer logged in", 403));
 	}
 }
