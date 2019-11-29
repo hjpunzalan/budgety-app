@@ -1,9 +1,10 @@
+import { Request, Response, NextFunction, Router } from "express";
+
 import { ITransaction } from "./../interfaces/Transaction";
 import { checkBody } from "./../utils/checkBody";
 import { AppError } from "./../utils/appError";
 import { Budget } from "./../models/Budget";
-import { Request, Response, NextFunction, Router } from "express";
-import { controller, get, del, patch, use, catchAsync } from "../decorators";
+import { controller, get, patch, use, catchAsync } from "../decorators";
 import { requireAuth } from "../middlewares/requireAuth";
 import { bodyValidator } from "../middlewares/bodyValidator";
 
@@ -121,6 +122,31 @@ class TransactionController {
 			if (!transactions)
 				return next(new AppError("Budget or transaction not found", 404));
 			else res.status(200).json(transactions);
+		} else return next(new AppError("User no longer logged in", 403));
+	}
+
+	@patch("/delete/:budgetId/:transactionId")
+	@use(requireAuth)
+	@catchAsync
+	async deleteTransaction(req: Request, res: Response, next: NextFunction) {
+		if (req.session) {
+			const budget = await Budget.findOneAndUpdate(
+				{
+					_id: req.params.budgetId,
+					members: req.session.userId,
+					"transactions._id": req.params.transactionId
+				},
+				{
+					$pull: {
+						transactions: { _id: req.params.transactionId }
+					}
+				},
+				{
+					new: true,
+					runValidators: true
+				}
+			);
+			res.status(200).json(budget);
 		} else return next(new AppError("User no longer logged in", 403));
 	}
 }
