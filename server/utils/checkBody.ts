@@ -1,5 +1,4 @@
 import { NextFunction } from "express";
-import { IUser } from "../interfaces/User";
 import { AppError } from "./appError";
 
 // Req.body can be anything and thus type is any

@@ -54,37 +54,53 @@ class TransactionController {
 		} else return next(new AppError("User no longer logged in", 403));
 	}
 
-	@patch("/update/:transactionId")
+	@patch("/update/:budgetId/:transactionId")
 	@use(requireAuth)
 	@catchAsync
 	async updateTransaction(req: Request, res: Response, next: NextFunction) {
 		if (req.session) {
-			const filterBody: ITransaction = checkBody(
-				req.body,
-				["desc", "date", "amount", "category"],
-				next
-			);
-			// Find budget and thus transaction by user
-			// Update the transaction while keeping the old ones
-			const budget = await Budget.findOneAndReplace(
+			// Find the Budget then transaction to be updated
+			const findBudget = await Budget.findOne(
 				{
-					transactions: { $elemMatch: { _id: req.params.transactionId } },
-					members: req.session.userId
+					_id: req.params.budgetId,
+					members: req.session.userId,
+					"transactions._id": req.params.transactionId
 				},
-				{ transaction: filterBody },
+				{ transactions: { $elemMatch: { _id: req.params.transactionId } } }
+			);
+			if (!findBudget)
+				return next(new AppError("Budget or transaction not found", 404));
+
+			// Replace the transaction values with req.body
+			// Replace values in current transaction
+			let transaction = findBudget.transactions[0];
+			// forEach key values does not work because string type keys cannot be indexed to redefine object
+			// This method does not require a filter checkBody
+			if (req.body.desc) transaction.desc = req.body.desc;
+			if (req.body.date) transaction.date = req.body.date;
+			if (req.body.amount) transaction.amount = req.body.amount;
+			if (req.body.category) transaction.category = req.body.category;
+
+			// Find transaction and update it
+			// the dollar represents the first matching array key index
+			const budget = await Budget.findOneAndUpdate(
+				{
+					_id: req.params.budgetId,
+					members: req.session.userId,
+					"transactions._id": req.params.transactionId
+				},
+				{
+					$set: { "transactions.$": transaction }
+				},
 				{
 					new: true,
-					runValidators: true,
-					arrayFilters: [
-						{ transactions: { $elemMatch: { _id: req.params.transactionId } } },
-						{ $set: { "transactions.$._id": filterBody } }
-					]
+					runValidators: true
 				}
 			);
-			if (!budget)
-				return next(new AppError("No budget or transaction found.", 404));
 
-			res.status(200).json(budget);
+			if (budget) {
+				res.status(200).json(budget);
+			} else return next(new AppError("Budget or transaction not found", 404));
 		} else return next(new AppError("User no longer logged in", 403));
 	}
 }
