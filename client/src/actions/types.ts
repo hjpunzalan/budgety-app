@@ -7,6 +7,7 @@ import {
 	ChangePassAction,
 	ResetPassAction
 } from "./auth";
+import { AddBudgetAction } from "./budget";
 
 export enum ActionTypes {
 	// unique val
@@ -21,7 +22,10 @@ export enum ActionTypes {
 	changePassword = "CHANGE_PASSWORD",
 	updateUser = "UPDATE_USER",
 	forgotPassword = "FORGOT_PASSWORD",
-	resetPassword = "RESET_PASSWORD"
+	resetPassword = "RESET_PASSWORD",
+	//
+	// BUDGET
+	addBudget = "ADD_BUDGET"
 }
 
 // export type UserActions = ;
@@ -33,3 +37,4 @@ export type AuthActions =
 	| UpdateUserAction
 	| ResetPassAction;
 export type AlertActions = SetAlertAction | ResetAlertAction;
+export type BudgetActions = AddBudgetAction;
