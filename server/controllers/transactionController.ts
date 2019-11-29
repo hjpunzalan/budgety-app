@@ -112,6 +112,7 @@ class TransactionController {
 	@catchAsync
 	async getAllTransactions(req: Request, res: Response, next: NextFunction) {
 		if (req.session) {
+			// Only shows transactions of the budget
 			const transactions = await Budget.findOne(
 				{
 					_id: req.params.budgetId,
@@ -129,6 +130,7 @@ class TransactionController {
 	@use(requireAuth)
 	@catchAsync
 	async deleteTransaction(req: Request, res: Response, next: NextFunction) {
+		// Deletes a transaction and returns the updated budget
 		if (req.session) {
 			const budget = await Budget.findOneAndUpdate(
 				{
