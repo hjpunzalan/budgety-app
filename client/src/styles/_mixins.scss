@@ -1,0 +1,6 @@
+@mixin container {
+    display: grid;
+    height: 100%;
+    grid-template-rows: repeat(10, 10vh);
+    grid-template-columns: repeat(12, 1fr);
+}

@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { StoreState } from "../../reducers";
 import PrivateRoute from "./PrivateRoute";
 import Home from "../pages/Home/Home";
-import Login from "../auth/Login";
+import Login from "../auth/Login/Login";
 import Dashboard from "../pages/Dashboard";
 import Register from "../auth/Register";
 import PublicRoute from "./PublicRoute";
