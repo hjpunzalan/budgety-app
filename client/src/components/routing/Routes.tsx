@@ -15,37 +15,35 @@ import ResetPassword from "../auth/ResetPassword";
 
 interface Props extends StoreState {}
 
+// Public routes
 export const pubRoutesArr = [
-	{ name: "Home", path: "/", component: Home, nav: true }, // had to add nav:true for typescript to recognise nav property
+	{ name: "Home", path: "/", component: Home }, // had to add nav:true for typescript to recognise nav property
 	{ name: "Login", path: "/login", component: Login },
 	{ name: "Register", path: "/register", component: Register },
 	{
 		name: "Forgot Password",
 		path: "/forgotpassword",
-		component: ForgotPassword,
-		nav: false
+		component: ForgotPassword
 	},
 	{
 		name: "Reset Password",
 		path: "/forgotpassword/reset/:resetToken",
-		component: ResetPassword,
-		nav: false
+		component: ResetPassword
 	}
 ];
 
+// Private routes
 export const privRoutesArr = [
 	{ name: "Dashboard", path: "/dashboard", component: Dashboard },
 	{
 		name: "Change Password",
 		path: "/changepassword",
-		component: ChangePassword,
-		nav: false
+		component: ChangePassword
 	},
 	{
 		name: "Update user details",
 		path: "/updateme",
-		component: UpdateMe,
-		nav: false
+		component: UpdateMe
 	}
 ];
 
