@@ -1,8 +1,8 @@
+import { Request, Response, NextFunction, Router } from "express";
 import { IUser } from "./../interfaces/User";
 import { checkBody } from "../utils/checkBody";
 import { AppError } from "./../utils/appError";
 import { Budget } from "./../models/Budget";
-import { Request, Response, NextFunction, Router } from "express";
 import {
 	controller,
 	post,
@@ -30,7 +30,8 @@ class budgetController {
 		}
 		// User will be prompted for any other extra members that will have access to the budget
 
-		const { members }: ReqBody = req.body;
+		const { members, categories, name }: ReqBody = req.body;
+		// Members will be received as email
 
 		// Members will be added after they accepted invite from email
 		// Member will have to declare categories beforehand or update budget
