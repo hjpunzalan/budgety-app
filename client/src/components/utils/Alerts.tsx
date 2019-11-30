@@ -53,7 +53,8 @@ class Alerts extends Component<Props, State> {
 const mapStateToProps = (state: StoreState) => ({
 	auth: state.auth,
 	users: state.users,
-	alerts: state.alerts
+	alerts: state.alerts,
+	budget: state.budget
 });
 
 export default connect(

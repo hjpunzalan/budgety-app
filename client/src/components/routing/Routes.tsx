@@ -3,7 +3,7 @@ import { Switch } from "react-router-dom";
 import { connect } from "react-redux";
 import { StoreState } from "../../reducers";
 import PrivateRoute from "./PrivateRoute";
-import Home from "../pages/Home";
+import Home from "../pages/Home/Home";
 import Login from "../auth/Login";
 import Dashboard from "../pages/Dashboard";
 import Register from "../auth/Register";
@@ -80,7 +80,8 @@ class Routes extends Component<Props> {
 const mapStateToProps = (state: StoreState) => ({
 	auth: state.auth,
 	users: state.users,
-	alerts: state.alerts
+	alerts: state.alerts,
+	budget: state.budget
 });
 
 export default connect(mapStateToProps)(Routes);
