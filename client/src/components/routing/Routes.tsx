@@ -6,7 +6,7 @@ import PrivateRoute from "./PrivateRoute";
 import Home from "../pages/Home/Home";
 import Login from "../auth/Login/Login";
 import Dashboard from "../pages/Dashboard";
-import Register from "../auth/Register";
+import Register from "../auth/Register/Register";
 import PublicRoute from "./PublicRoute";
 import ChangePassword from "../auth/ChangePassword";
 import UpdateMe from "../pages/UpdateMe";

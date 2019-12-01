@@ -42,22 +42,28 @@
 }
 
 .cta {
-    font-size: 4rem;
-    background: rgb(169, 223, 241);
-    height: 50%;
-    border: none;
-    border-radius: 2rem;
-    outline: none;
-    cursor: pointer;
     grid-row: 4/7;
     grid-column: 8/10;
     align-self: center;
-    animation-name: btnShaddow;
-    animation-duration: 3s;
-    animation-iteration-count: infinite;
-    animation-timing-function: ease-in-out;
-    /* @keyframes duration | timing-function | delay | 
+    width: 100%;
+    height: 50%;
+
+    button {
+        font-size: 4rem;
+        background: rgb(169, 223, 241);
+        width: 100%;
+        height: 100%;
+        border: none;
+        border-radius: 2rem;
+        outline: none;
+        cursor: pointer;
+        animation-name: btnShaddow;
+        animation-duration: 3s;
+        animation-iteration-count: infinite;
+        animation-timing-function: ease-in-out;
+        /* @keyframes duration | timing-function | delay | 
 iteration-count | direction | fill-mode | play-state | name */
+    }
 }
 
 @keyframes btnShaddow {

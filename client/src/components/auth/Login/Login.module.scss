@@ -6,70 +6,32 @@
 }
 
 .spinner {
-    grid-column: 4/6;
-    grid-row: 2/5;
+    @include publicPageSpinner;
 }
 
 .homeLink {
     grid-column: 4/5;
-    grid-row: 2/3;
+    grid-row: 1/3;
+    align-self: center;
     z-index: 2;
 
     button {
-        font-size: 3rem;
-        color: black;
-        background: white;
-        padding: 2rem;
-        border: 1px solid black;
+        @include publicPageNavBtn;
     }
 
 }
 
 .login {
-    grid-column: 4/10;
-    grid-row: 2/10;
-    display: grid;
-    grid-template-columns: repeat(8, minmax(0, 1fr));
-    grid-template-rows: repeat(8, minmax(0, 1fr));
-    background: rgba(255, 255, 255, 0.7);
-    border-radius: 2rem;
+    @include publicPageContainer;
 }
 
 .title {
-    grid-column: 3/5;
-    grid-row: 2/3;
-    font-size: 5rem;
+    @include publicPageTitle;
 }
 
+
 .form {
-    grid-column: 2/8;
-    grid-row: 3/8;
-    display: grid;
-    grid-template-columns: repeat(8, minmax(0, 1fr));
-    grid-template-rows: repeat(8, minmax(0, 1fr));
-    font-size: 2rem;
-
-    input {
-        width: 70%;
-        padding: .75rem;
-    }
-
-    .email {
-        grid-column: 1/6;
-        grid-row: 1/2;
-        align-self: center;
-        display: flex;
-        justify-content: space-between;
-
-    }
-
-    .password {
-        grid-column: 1/6;
-        grid-row: 2/3;
-        align-self: center;
-        display: flex;
-        justify-content: space-between;
-    }
+    @include formPage;
 
     .loginBtn {
         grid-column: 2/4;

@@ -24,7 +24,9 @@ class Home extends Component {
 				<h3 className={classes.desc}>
 					Handle your annual budget with a click.
 				</h3>
-				<button className={classes.cta}>Sign up!</button>
+				<Link className={classes.cta} to="/register">
+					<button>Sign up!</button>
+				</Link>
 			</div>
 		);
 	}

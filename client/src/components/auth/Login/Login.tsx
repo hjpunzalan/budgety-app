@@ -61,8 +61,8 @@ class Login extends Component<Props, State> {
 						<>
 							<h1 className={classes.title}>Login</h1>
 							<form className={classes.form} onSubmit={this.handleSubmit}>
-								<label className={classes.email}>
-									<span className={classes.label}>Email</span>
+								<label>
+									<span>Email</span>
 									<input
 										type="email"
 										name="email"
@@ -72,8 +72,8 @@ class Login extends Component<Props, State> {
 									/>
 								</label>
 
-								<label className={classes.password}>
-									<span className={classes.label}>Password</span>
+								<label>
+									<span>Password</span>
 									<input
 										type="password"
 										name="password"

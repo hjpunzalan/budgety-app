@@ -6,7 +6,7 @@ import { ActionTypes } from "./types";
 import { IUser } from "../actions";
 import catchAsync from "../utils/catchAsync";
 import { setAlert, AlertType } from "./alerts";
-import { IRegisterState } from "./../components/auth/Register";
+import { IRegisterState } from "../components/auth/Register/Register";
 
 export interface LoginAction {
 	type: ActionTypes.loginUser;
