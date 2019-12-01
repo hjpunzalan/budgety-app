@@ -2,10 +2,10 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { postLogin } from "../../../actions";
 import { StoreState } from "../../../reducers";
-import { Redirect } from "react-router";
 import Spinner from "../../utils/Spinner/Spinner";
 import { Link } from "react-router-dom";
 import classes from "./Login.module.scss";
+import { TiHomeOutline } from "react-icons/ti";
 
 interface Props extends StoreState {
 	postLogin: (email: string, password: string) => Promise<void>;
@@ -45,13 +45,13 @@ class Login extends Component<Props, State> {
 	};
 
 	render() {
-		return this.props.auth.isAuthenticated ? (
-			<Redirect to="/dashboard" />
-		) : (
+		return (
 			<div className={classes.container}>
 				{!this.state.loading && (
 					<Link className={classes.homeLink} to="/">
-						<button>{`<<`}</button>
+						<button>
+							<TiHomeOutline />
+						</button>
 					</Link>
 				)}
 				<div className={classes.login}>

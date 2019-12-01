@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { registerUser, IUser } from "../../../actions";
-import { Redirect } from "react-router";
 import { StoreState } from "../../../reducers";
 import classes from "./Register.module.scss";
 import Spinner from "../../utils/Spinner/Spinner";
 import { Link } from "react-router-dom";
+import { TiHomeOutline } from "react-icons/ti";
 
 interface Props extends StoreState {
 	registerUser: (form: IRegisterState) => Promise<void>;
@@ -48,14 +48,14 @@ class Register extends Component<Props, IRegisterState> {
 
 	render() {
 		const { firstName, lastName, email, password } = this.state;
-		return this.props.auth.isAuthenticated ? (
-			<Redirect to="/dashboard" />
-		) : (
+		return (
 			<div className={classes.container}>
 				{!this.state.loading && (
 					<div className={classes.nav}>
 						<Link className={classes.homeLink} to="/">
-							<button>{`<<`}</button>
+							<button>
+								<TiHomeOutline />
+							</button>
 						</Link>
 						<Link className={classes.homeLink} to="/login">
 							<button>Login</button>
