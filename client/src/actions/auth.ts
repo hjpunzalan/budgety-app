@@ -1,5 +1,5 @@
 import { IResetPassState } from "./../components/auth/ResetPassword";
-import { IForgotPassState } from "./../components/auth/ForgotPassword";
+import { IForgotPassState } from "../components/auth/ForgotPassword/ForgotPassword";
 import { ChangePassState } from "./../components/auth/ChangePassword";
 import axios from "axios";
 import { ActionTypes } from "./types";

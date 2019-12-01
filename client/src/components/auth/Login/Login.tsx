@@ -5,7 +5,6 @@ import { StoreState } from "../../../reducers";
 import Spinner from "../../utils/Spinner/Spinner";
 import { Link } from "react-router-dom";
 import classes from "./Login.module.scss";
-import { TiHomeOutline } from "react-icons/ti";
 
 interface Props extends StoreState {
 	postLogin: (email: string, password: string) => Promise<void>;
@@ -49,9 +48,7 @@ class Login extends Component<Props, State> {
 			<div className={classes.container}>
 				{!this.state.loading && (
 					<Link className={classes.homeLink} to="/">
-						<button>
-							<TiHomeOutline />
-						</button>
+						<button>{`<<`}</button>
 					</Link>
 				)}
 				<div className={classes.login}>
