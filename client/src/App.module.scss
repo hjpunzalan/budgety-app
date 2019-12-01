@@ -11,6 +11,17 @@
         background: url('./images/background.png') repeat center;
         opacity: .04;
         filter: grayscale(100%) sepia(100%) hue-rotate(90deg);
+        animation: movingBackground 500s linear infinite;
     }
 
+}
+
+@keyframes movingBackground {
+    from {
+        background-position-x: 0;
+    }
+
+    to {
+        background-position-x: 1000%;
+    }
 }
