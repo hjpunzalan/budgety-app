@@ -5,7 +5,7 @@ import { StoreState } from "../../reducers";
 import PrivateRoute from "./PrivateRoute";
 import Home from "../pages/Home/Home";
 import Login from "../auth/Login/Login";
-import Dashboard from "../pages/Dashboard";
+import Dashboard from "../pages/Dashboard/Dashboard";
 import Register from "../auth/Register/Register";
 import PublicRoute from "./PublicRoute";
 import ChangePassword from "../auth/ChangePassword";
@@ -17,6 +17,7 @@ interface Props extends StoreState {}
 
 // Public routes
 export const pubRoutesArr = [
+	{ name: "Dashboard", path: "/dashboard", component: Dashboard },
 	{ name: "Home", path: "/", component: Home }, // had to add nav:true for typescript to recognise nav property
 	{ name: "Login", path: "/login", component: Login },
 	{ name: "Register", path: "/register", component: Register },
@@ -34,7 +35,6 @@ export const pubRoutesArr = [
 
 // Private routes
 export const privRoutesArr = [
-	{ name: "Dashboard", path: "/dashboard", component: Dashboard },
 	{
 		name: "Change Password",
 		path: "/changepassword",

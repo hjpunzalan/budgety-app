@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { StoreState } from "../../reducers";
+import { StoreState } from "../../../reducers";
 import { Link } from "react-router-dom";
 
 interface Props extends StoreState {}
