@@ -45,12 +45,12 @@ class ForgotPassword extends Component<Props, IForgotPassState> {
 			<div className={classes.container}>
 				{!this.state.loading && (
 					<div className={classes.nav}>
-						<Link className={classes.homeLink} to="/">
+						<Link to="/">
 							<button>
 								<TiHomeOutline />
 							</button>
 						</Link>
-						<Link className={classes.homeLink} to="/login">
+						<Link to="/login">
 							<button>Login</button>
 						</Link>
 					</div>

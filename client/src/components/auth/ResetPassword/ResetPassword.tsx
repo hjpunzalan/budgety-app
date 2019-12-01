@@ -69,7 +69,7 @@ class ResetPassword extends Component<Props, IResetPassState> {
 								<TiHomeOutline />
 							</button>
 						</Link>
-						<Link className={classes.homeLink} to="/login">
+						<Link to="/login">
 							<button>Login</button>
 						</Link>
 					</div>
@@ -115,6 +115,9 @@ class ResetPassword extends Component<Props, IResetPassState> {
 									className="btn btn__submit"
 									value="Set new password"
 								/>
+								<Link className={classes.btmLink} to="/forgotpassword">
+									Send another reset token?
+								</Link>
 							</form>
 						</>
 					)}

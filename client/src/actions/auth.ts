@@ -101,5 +101,5 @@ export const patchResetPassword = (form: IResetPassState, resetToken: string) =>
 			type: ActionTypes.resetPassword,
 			payload: res.data
 		});
-		// dispatch(setAlert("Password changed!", AlertType.success)); doesn't work as user is redirected
+		dispatch(setAlert("Password changed!", AlertType.success));
 	});

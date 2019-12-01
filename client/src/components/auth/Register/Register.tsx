@@ -52,12 +52,12 @@ class Register extends Component<Props, IRegisterState> {
 			<div className={classes.container}>
 				{!this.state.loading && (
 					<div className={classes.nav}>
-						<Link className={classes.homeLink} to="/">
+						<Link to="/">
 							<button>
 								<TiHomeOutline />
 							</button>
 						</Link>
-						<Link className={classes.homeLink} to="/login">
+						<Link to="/login">
 							<button>Login</button>
 						</Link>
 					</div>
