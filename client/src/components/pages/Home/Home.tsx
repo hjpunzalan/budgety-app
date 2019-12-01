@@ -6,14 +6,18 @@
  */
 
 import React, { Component } from "react";
+import { Link, Redirect } from "react-router-dom";
+import { connect } from "react-redux";
 import classes from "./Home.module.scss";
-import { Link } from "react-router-dom";
+import { StoreState } from "../../../reducers";
 
-class Home extends Component {
-	state = {};
+interface Props extends StoreState {}
 
+class Home extends Component<Props> {
 	render() {
-		return (
+		return this.props.auth.isAuthenticated ? (
+			<Redirect to="/dashboard" />
+		) : (
 			<div className={classes.container}>
 				<ul className={classes.navbar}>
 					<Link to="/login">
@@ -32,4 +36,8 @@ class Home extends Component {
 	}
 }
 
-export default Home;
+const mapStateToProps = (state: StoreState) => ({
+	auth: state.auth
+});
+
+export default connect(mapStateToProps)(Home);

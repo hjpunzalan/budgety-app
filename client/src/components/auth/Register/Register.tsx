@@ -52,14 +52,16 @@ class Register extends Component<Props, IRegisterState> {
 			<Redirect to="/dashboard" />
 		) : (
 			<div className={classes.container}>
-				<div className={classes.nav}>
-					<Link className={classes.homeLink} to="/">
-						<button>{`<<`}</button>
-					</Link>
-					<Link className={classes.homeLink} to="/login">
-						<button>Login</button>
-					</Link>
-				</div>
+				{!this.state.loading && (
+					<div className={classes.nav}>
+						<Link className={classes.homeLink} to="/">
+							<button>{`<<`}</button>
+						</Link>
+						<Link className={classes.homeLink} to="/login">
+							<button>Login</button>
+						</Link>
+					</div>
+				)}
 				<div className={classes.register}>
 					{this.state.loading ? (
 						<div className={classes.spinner}>

@@ -49,9 +49,11 @@ class Login extends Component<Props, State> {
 			<Redirect to="/dashboard" />
 		) : (
 			<div className={classes.container}>
-				<Link className={classes.homeLink} to="/">
-					<button>{`<<`}</button>
-				</Link>
+				{!this.state.loading && (
+					<Link className={classes.homeLink} to="/">
+						<button>{`<<`}</button>
+					</Link>
+				)}
 				<div className={classes.login}>
 					{this.state.loading ? (
 						<div className={classes.spinner}>
