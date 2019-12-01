@@ -11,7 +11,7 @@ import PublicRoute from "./PublicRoute";
 import ChangePassword from "../auth/ChangePassword";
 import UpdateMe from "../pages/UpdateMe";
 import ForgotPassword from "../auth/ForgotPassword/ForgotPassword";
-import ResetPassword from "../auth/ResetPassword";
+import ResetPassword from "../auth/ResetPassword/ResetPassword";
 
 interface Props extends StoreState {}
 

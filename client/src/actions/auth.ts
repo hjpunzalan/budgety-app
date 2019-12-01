@@ -1,4 +1,4 @@
-import { IResetPassState } from "./../components/auth/ResetPassword";
+import { IResetPassState } from "../components/auth/ResetPassword/ResetPassword";
 import { IForgotPassState } from "../components/auth/ForgotPassword/ForgotPassword";
 import { ChangePassState } from "./../components/auth/ChangePassword";
 import axios from "axios";

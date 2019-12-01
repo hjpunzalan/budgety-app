@@ -47,19 +47,32 @@
 
     input {
         width: 70%;
-        padding: .75rem;
+        padding: 10px;
     }
 
     // Assume maximum inputs is 10
     @for $i from 1 through 10 {
         label:nth-of-type(#{$i}) {
-            grid-column: 1/6;
+            grid-column: 1/8;
             grid-row-start: $i;
             grid-row-end: $i+2;
             align-self: center;
             display: flex;
             justify-content: space-between;
         }
+
+        span {
+            width: 30%;
+        }
+    }
+
+    input[type='submit'] {
+        font-size: 3rem;
+        cursor: pointer;
+        background: $color-primary;
+        width: 100%;
+        border: none;
+        outline: none;
     }
 }
 
@@ -69,5 +82,14 @@
     background: white;
     padding: 2rem;
     border: 1px solid black;
+    cursor: pointer;
+}
+
+@mixin clearBtn {
+    font-size: 3rem;
+    width: 100%;
+    height: 100%;
+    border: 1px solid black;
+    background: none;
     cursor: pointer;
 }
