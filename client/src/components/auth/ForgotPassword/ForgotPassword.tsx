@@ -42,7 +42,7 @@ class ForgotPassword extends Component<Props, IForgotPassState> {
 
 	render() {
 		return (
-			<div className={classes.container}>
+			<div className={classes.page}>
 				{!this.state.loading && (
 					<div className={classes.nav}>
 						<Link to="/">
@@ -55,7 +55,7 @@ class ForgotPassword extends Component<Props, IForgotPassState> {
 						</Link>
 					</div>
 				)}
-				<div className={classes.forgotPassword}>
+				<div className={classes.container}>
 					{this.state.loading ? (
 						<div className={classes.spinner}>
 							<Spinner />

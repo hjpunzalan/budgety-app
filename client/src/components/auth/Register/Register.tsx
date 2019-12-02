@@ -49,7 +49,7 @@ class Register extends Component<Props, IRegisterState> {
 	render() {
 		const { firstName, lastName, email, password } = this.state;
 		return (
-			<div className={classes.container}>
+			<div className={classes.page}>
 				{!this.state.loading && (
 					<div className={classes.nav}>
 						<Link to="/">
@@ -62,7 +62,7 @@ class Register extends Component<Props, IRegisterState> {
 						</Link>
 					</div>
 				)}
-				<div className={classes.register}>
+				<div className={classes.container}>
 					{this.state.loading ? (
 						<div className={classes.spinner}>
 							<Spinner />

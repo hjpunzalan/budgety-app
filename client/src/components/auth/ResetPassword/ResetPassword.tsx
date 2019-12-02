@@ -61,7 +61,7 @@ class ResetPassword extends Component<Props, IResetPassState> {
 
 	render() {
 		return (
-			<div className={classes.container}>
+			<div className={classes.page}>
 				{!this.state.loading && (
 					<div className={classes.nav}>
 						<Link className={classes.homeLink} to="/">
@@ -75,7 +75,7 @@ class ResetPassword extends Component<Props, IResetPassState> {
 					</div>
 				)}
 
-				<div className={classes.resetPassword}>
+				<div className={classes.container}>
 					{this.state.loading ? (
 						<div className={classes.spinner}>
 							<Spinner />

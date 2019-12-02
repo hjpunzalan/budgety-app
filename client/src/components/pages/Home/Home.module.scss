@@ -1,7 +1,7 @@
-@import '../../../styles/mixins';
+@import '../../../styles/pubMixins';
 
-.container {
-    @include container;
+.page {
+    @include page;
 }
 
 .navbar {

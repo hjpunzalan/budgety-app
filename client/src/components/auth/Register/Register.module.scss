@@ -1,8 +1,8 @@
-@import '../../../styles/mixins';
+@import '../../../styles/pubMixins';
 @import '../../../styles/variables';
 
-.container {
-    @include container;
+.page {
+    @include page;
 }
 
 .nav {
@@ -26,7 +26,7 @@
     @include publicPageTitle;
 }
 
-.register {
+.container {
     @include publicPageContainer;
 }
 

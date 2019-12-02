@@ -1,8 +1,8 @@
-@import '../../../styles/mixins';
+@import '../../../styles/pubMixins';
 @import '../../../styles/variables';
 
-.container {
-    @include container;
+.page {
+    @include page;
 }
 
 .spinner {
@@ -21,7 +21,7 @@
 
 }
 
-.login {
+.container {
     @include publicPageContainer;
 }
 

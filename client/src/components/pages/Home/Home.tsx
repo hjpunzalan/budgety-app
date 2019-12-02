@@ -12,7 +12,7 @@ import classes from "./Home.module.scss";
 class Home extends Component {
 	render() {
 		return (
-			<div className={classes.container}>
+			<div className={classes.page}>
 				<ul className={classes.navbar}>
 					<Link to="/login">
 						<li>Login</li>

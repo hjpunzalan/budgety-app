@@ -45,13 +45,13 @@ class Login extends Component<Props, State> {
 
 	render() {
 		return (
-			<div className={classes.container}>
+			<div className={classes.page}>
 				{!this.state.loading && (
 					<Link className={classes.homeLink} to="/">
 						<button>{`<<`}</button>
 					</Link>
 				)}
-				<div className={classes.login}>
+				<div className={classes.container}>
 					{this.state.loading ? (
 						<div className={classes.spinner}>
 							<Spinner />
