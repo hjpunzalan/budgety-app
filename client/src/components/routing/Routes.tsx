@@ -17,6 +17,8 @@ import ResetPassword from "../auth/ResetPassword/ResetPassword";
 interface Props extends StoreState {}
 
 // Public routes
+// !!!!!!!!!!!!!!!!!!!!!!!!
+// Need to move dashboard back to privRoutes
 export const pubRoutesArr = [
 	{ name: "Dashboard", path: "/dashboard", component: Container },
 	{ name: "Home", path: "/", component: Home }, // had to add nav:true for typescript to recognise nav property

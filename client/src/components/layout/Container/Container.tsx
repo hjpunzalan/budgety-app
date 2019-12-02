@@ -20,7 +20,7 @@ class Container extends Component<Props, State> {
 						<span>Add Transaction</span>
 					</button>
 					<div className={classes.budgets}>
-						<div className={classes.table}>
+						<div className={classes.budgetsTable}>
 							<h3>Budgets</h3>
 							<ul>
 								<li>Test Budget</li>
@@ -37,6 +37,17 @@ class Container extends Component<Props, State> {
 									Edit
 								</button>
 							</div>
+						</div>
+					</div>
+
+					<div className={classes.userActions}>
+						<div className={classes.userActionsTable}>
+							<h3>User Actions</h3>
+							<ul>
+								<li>Test Link</li>
+								<li>Test Link</li>
+								<li>Test Link</li>
+							</ul>
 						</div>
 					</div>
 				</div>
