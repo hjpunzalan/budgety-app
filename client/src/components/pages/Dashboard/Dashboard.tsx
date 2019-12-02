@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { StoreState } from "../../../reducers";
 import { Link } from "react-router-dom";
+import { StoreState } from "../../../reducers";
+import classes from "./Dashboard.module.scss";
 
 interface Props extends StoreState {}
 interface State {}
@@ -12,7 +13,7 @@ class Dashboard extends Component<Props, State> {
 	render() {
 		const { currentUser } = this.props.auth;
 		return (
-			<div>
+			<div className={classes.container}>
 				<h3>
 					Hi {currentUser && currentUser.firstName}{" "}
 					{currentUser && currentUser.lastName}!
