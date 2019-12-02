@@ -8,8 +8,8 @@ export interface IUser extends Document {
 	password?: string;
 	active: boolean;
 	role: string;
-	budget: {
-		id: string;
+	budgets: {
+		budgetId: string;
 		name: string;
 	}[];
 	lastEdited: Date | number;

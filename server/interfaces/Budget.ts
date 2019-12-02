@@ -7,7 +7,7 @@ export interface IBudget extends Document {
 	name: string;
 	categories: string[];
 	transactions: ITransaction[];
-	members: IUser[];
+	user: IUser;
 
 	checkUser: (userId: string) => boolean;
 }

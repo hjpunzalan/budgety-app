@@ -43,7 +43,7 @@ const userSchema = new mongoose.Schema({
 	},
 	budgets: [
 		{
-			id: {
+			budgetId: {
 				type: mongoose.SchemaTypes.ObjectId,
 				ref: "Budget"
 			},
@@ -64,7 +64,7 @@ const userSchema = new mongoose.Schema({
 userSchema.pre<IUser>(/^find/, function(next) {
 	// 'this' points to the current query before executing the event /^find/
 	if (this instanceof mongoose.Query)
-		this.find({ active: { $ne: false } }).select("-__v");
+		this.find({ active: { $ne: false } }).select("-__v -budgets._id");
 	next();
 });
 // update changedPasswordAt when resetting password
