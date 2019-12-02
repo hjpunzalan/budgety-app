@@ -22,12 +22,10 @@ const budgetSchema = new mongoose.Schema({
 			amount: Number
 		}
 	],
-	members: [
-		{
-			type: mongoose.SchemaTypes.ObjectId,
-			ref: "Users"
-		}
-	]
+	user: {
+		type: mongoose.SchemaTypes.ObjectId,
+		ref: "Users"
+	}
 });
 
 // Validates categories

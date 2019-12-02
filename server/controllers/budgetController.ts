@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction, Router } from "express";
+import { Users } from "./../models/Users";
 import { IUser } from "./../interfaces/User";
 import { checkBody } from "../utils/checkBody";
 import { AppError } from "./../utils/appError";
@@ -20,25 +21,30 @@ export const budgetRoute = Router();
 @controller("/budget", budgetRoute)
 class budgetController {
 	@post("/new")
-	@use(requireAuth, bodyValidator("name", "categories", "members"))
+	@use(requireAuth, bodyValidator("name", "categories"))
 	@catchAsync
 	async newBudget(req: Request, res: Response, next: NextFunction) {
 		interface ReqBody {
 			name: string;
 			categories: string[];
-			members: string[];
 		}
-		// User will be prompted for any other extra members that will have access to the budget
-
-		const { members, categories, name }: ReqBody = req.body;
-		// Members will be received as email
-
-		// Members will be added after they accepted invite from email
+		const { categories, name }: ReqBody = req.body;
 		// Member will have to declare categories beforehand or update budget
 
 		if (req.session) {
-			members.unshift(req.session.userId);
-			const budget = await Budget.create(req.body);
+			const budget = await Budget.create({ categories, name });
+			const user = await Users.findById(req.session.userId);
+
+			// Add budget in user's document
+			if (user) {
+				user.budget.push({
+					id: budget._id,
+					name: budget.name
+				});
+				await user.save();
+			} else return next(new AppError("User not found!", 404));
+
+			// Send response to client
 			res.status(200).json(budget);
 		} else return next(new AppError("User no longer logged in", 403));
 	}
