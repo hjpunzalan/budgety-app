@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import { IBudget } from "./../interfaces/Budget";
 
 const budgetSchema = new mongoose.Schema({
-	name: String,
+	name: { type: String, required: true },
 	categories: [{ type: String }],
 	transactions: [
 		{
