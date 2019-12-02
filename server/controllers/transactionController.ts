@@ -36,7 +36,7 @@ class TransactionController {
 			// Add transaction to budget
 			const budget = await Budget.findOne({
 				_id: req.params.budgetId,
-				members: req.session.userId
+				user: req.session.userId
 			});
 			if (budget) {
 				// create new transaction and add to budget
@@ -66,7 +66,7 @@ class TransactionController {
 			const findBudget = await Budget.findOne(
 				{
 					_id: req.params.budgetId,
-					members: req.session.userId,
+					user: req.session.userId,
 					"transactions._id": req.params.transactionId
 				},
 				{ transactions: { $elemMatch: { _id: req.params.transactionId } } }
@@ -89,7 +89,7 @@ class TransactionController {
 			const budget = await Budget.findOneAndUpdate(
 				{
 					_id: req.params.budgetId,
-					members: req.session.userId,
+					user: req.session.userId,
 					"transactions._id": req.params.transactionId
 				},
 				{
@@ -116,7 +116,7 @@ class TransactionController {
 			const transactions = await Budget.findOne(
 				{
 					_id: req.params.budgetId,
-					members: req.session.userId
+					user: req.session.userId
 				},
 				{ transactions: 1 }
 			);
@@ -135,7 +135,7 @@ class TransactionController {
 			const budget = await Budget.findOneAndUpdate(
 				{
 					_id: req.params.budgetId,
-					members: req.session.userId,
+					user: req.session.userId,
 					"transactions._id": req.params.transactionId
 				},
 				{
