@@ -6,13 +6,15 @@ import classes from "./Register.module.scss";
 import Spinner from "../../utils/Spinner/Spinner";
 import { Link } from "react-router-dom";
 import { TiHomeOutline } from "react-icons/ti";
+import { RouterProps } from "react-router";
 
-interface Props extends StoreState {
+interface Props extends StoreState, RouterProps {
 	registerUser: (form: IRegisterState) => Promise<void>;
 }
 
 export interface IRegisterState extends IUser {
 	loading?: boolean;
+	pathname?: string;
 }
 
 class Register extends Component<Props, IRegisterState> {
@@ -21,7 +23,8 @@ class Register extends Component<Props, IRegisterState> {
 		lastName: "",
 		email: "",
 		password: "",
-		loading: false
+		loading: false,
+		pathname: this.props.history.location.pathname
 	};
 
 	handleChange = (e: { target: HTMLInputElement }) => {
@@ -39,10 +42,12 @@ class Register extends Component<Props, IRegisterState> {
 		this.props
 			.registerUser({ firstName, lastName, email, password })
 			.then(() => {
-				this.setState({ loading: false });
-				// If register fails invalid
-				// clear password
-				if (!this.props.auth.isAuthenticated) this.setState({ password: "" });
+				if (this.props.history.location.pathname === this.state.pathname) {
+					this.setState({ loading: false });
+					// If register fails invalid
+					// clear password
+					this.setState({ password: "" });
+				}
 			});
 	};
 
