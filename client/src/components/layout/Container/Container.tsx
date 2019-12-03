@@ -2,12 +2,15 @@ import React, { Component } from "react";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { FaRegEdit } from "react-icons/fa";
 import { connect } from "react-redux";
+import { Link, Route } from "react-router-dom";
+import { RouteComponentProps, Switch } from "react-router";
 import { getLogout } from "../../../actions";
 import classes from "./Container.module.scss";
 import transactionIcon from "../../../images/transaction.png";
 import { StoreState } from "../../../reducers";
+import AddBudget from "../../pages/AddBudget/AddBudget";
 
-interface Props extends StoreState {
+interface Props extends StoreState, RouteComponentProps {
 	getLogout: () => Promise<void>;
 }
 interface State {}
@@ -22,6 +25,15 @@ class Container extends Component<Props, State> {
 					Logout
 				</button>
 				<div className={classes.container}>
+					<Switch>
+						<Route
+							exact
+							path={this.props.match.url + "/budget/new"}
+							component={AddBudget}
+						/>
+					</Switch>
+
+					{/* NAVIGATION */}
 					<button className={classes.add}>
 						<img src={transactionIcon} alt="Transaction icon" />
 						<span>Add Transaction</span>
@@ -41,14 +53,16 @@ class Container extends Component<Props, State> {
 								<li>Test Budget</li>
 							</ul>
 							<div className={classes.budgetActions}>
-								<button className={classes.budgetActionAdd}>
+								<Link
+									to={this.props.match.url + "/budget/new"}
+									className={classes.budgetActionAdd}>
 									<IoIosAddCircleOutline />
 									Add
-								</button>
-								<button className={classes.budgetActionEdit}>
+								</Link>
+								<Link to="" className={classes.budgetActionEdit}>
 									<FaRegEdit />
 									Edit
-								</button>
+								</Link>
 							</div>
 						</div>
 					</div>
@@ -57,9 +71,12 @@ class Container extends Component<Props, State> {
 						<div className={classes.userActionsTable}>
 							<h3>User Actions</h3>
 							<ul>
-								<li>Test Link</li>
-								<li>Test Link</li>
-								<li>Test Link</li>
+								<li>
+									<Link to="/updateme">Update user details</Link>
+								</li>
+								<li>
+									<Link to="/changepassword">Change password</Link>
+								</li>
 							</ul>
 						</div>
 					</div>

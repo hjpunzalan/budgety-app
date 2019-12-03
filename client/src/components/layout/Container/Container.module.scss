@@ -51,12 +51,13 @@
         justify-content: space-around;
         padding: 1rem;
         background: $color-primary;
-        color: black;
-        font-size: 1rem;
 
-        button {
+        a {
             cursor: pointer;
+            text-decoration: none;
             background: none;
+            color: black;
+            font-size: 1.2rem;
             border: none;
             outline: none;
         }
@@ -75,5 +76,10 @@
 
     ul {
         overflow: hidden;
+
+        a {
+            text-decoration: none;
+            color: black
+        }
     }
 }
