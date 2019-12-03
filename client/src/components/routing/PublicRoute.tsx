@@ -22,7 +22,7 @@ class PublicRoute extends Component<Props> {
 
 	render() {
 		return this.props.isAuthenticated ? (
-			<Redirect to="/dashboard" />
+			<Redirect to="/user" />
 		) : (
 			<Route {...this.props} />
 		);
