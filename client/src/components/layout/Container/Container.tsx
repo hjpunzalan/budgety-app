@@ -25,13 +25,16 @@ class Container extends Component<Props, State> {
 					Logout
 				</button>
 				<div className={classes.container}>
-					<Switch>
-						<Route
-							exact
-							path={this.props.match.url + "/budget/new"}
-							component={AddBudget}
-						/>
-					</Switch>
+					{/* Routes */}
+					<div className={classes.routes}>
+						<Switch>
+							<Route
+								exact
+								path={this.props.match.url + "/budget/new"}
+								component={AddBudget}
+							/>
+						</Switch>
+					</div>
 
 					{/* NAVIGATION */}
 					<button className={classes.add}>
