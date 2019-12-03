@@ -1,5 +1,5 @@
 import { AlertType, setAlert } from "./alerts";
-import { IUpdateMeState } from "./../components/pages/UpdateMe";
+import { IUpdateMeState } from "../components/pages/UpdateMe";
 import { ActionTypes } from "./types";
 import axios from "axios";
 import catchAsync from "../utils/catchAsync";

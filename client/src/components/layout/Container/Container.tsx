@@ -1,10 +1,15 @@
 import React, { Component } from "react";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { FaRegEdit } from "react-icons/fa";
+import { connect } from "react-redux";
+import { getLogout } from "../../../actions";
 import classes from "./Container.module.scss";
 import transactionIcon from "../../../images/transaction.png";
+import { StoreState } from "../../../reducers";
 
-interface Props {}
+interface Props extends StoreState {
+	getLogout: () => Promise<void>;
+}
 interface State {}
 
 class Container extends Component<Props, State> {
@@ -13,7 +18,9 @@ class Container extends Component<Props, State> {
 	render() {
 		return (
 			<div className={classes.page}>
-				<button className={classes.logout}>Logout</button>
+				<button className={classes.logout} onClick={this.props.getLogout}>
+					Logout
+				</button>
 				<div className={classes.container}>
 					<button className={classes.add}>
 						<img src={transactionIcon} alt="Transaction icon" />
@@ -62,4 +69,12 @@ class Container extends Component<Props, State> {
 	}
 }
 
-export default Container;
+const mapStateToProps = (state: StoreState) => ({
+	auth: state.auth,
+	budget: state.budget
+});
+
+export default connect(
+	mapStateToProps,
+	{ getLogout }
+)(Container);

@@ -1,4 +1,4 @@
-import { UpdateUserAction } from "./users";
+import { UpdateUserAction } from "./user";
 import { SetAlertAction, ResetAlertAction } from "./alerts";
 import {
 	LoginAction,

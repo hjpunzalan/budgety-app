@@ -1,4 +1,5 @@
-import { IUser } from "./users";
+import { IUser } from "./user";
+
 export interface ITransaction {
 	_id?: string;
 	desc: string;

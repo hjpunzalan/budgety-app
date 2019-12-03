@@ -1,6 +1,6 @@
 import axios from "axios";
 import { ITransaction } from "./transaction";
-import { IUser } from "./users";
+import { IUser } from "./user";
 import { ActionTypes } from "./types";
 import catchAsync from "../utils/catchAsync";
 

@@ -33,7 +33,6 @@ class Dashboard extends Component<Props, State> {
 
 const mapStateToProps = (state: StoreState) => ({
 	auth: state.auth,
-	users: state.users,
 	alerts: state.alerts
 });
 
