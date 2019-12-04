@@ -42,46 +42,34 @@ class Container extends Component<Props, State> {
 						<span>Add Transaction</span>
 					</button>
 					<div className={classes.budgets}>
-						<div className={classes.budgetsTable}>
-							<h3>Budgets</h3>
-							<ul>
-								<li>Test Budget</li>
-								<li>Test Budget</li>
-								<li>Test Budget</li>
-								<li>Test Budget</li>
-								<li>Test Budget</li>
-								<li>Test Budget</li>
-								<li>Test Budget</li>
-								<li>Test Budget</li>
-								<li>Test Budget</li>
-							</ul>
-							<div className={classes.budgetActions}>
-								<Link
-									to={this.props.match.url + "/budget/new"}
-									className={classes.budgetActionAdd}>
-									<IoIosAddCircleOutline />
-									Add
-								</Link>
-								<Link to="" className={classes.budgetActionEdit}>
-									<FaRegEdit />
-									Edit
-								</Link>
-							</div>
+						<h3>Budgets</h3>
+						<ul>
+							<li>Test Budget</li>
+						</ul>
+						<div className={classes.budgetActions}>
+							<Link
+								to={this.props.match.url + "/budget/new"}
+								className={classes.budgetActionAdd}>
+								<IoIosAddCircleOutline />
+								Add
+							</Link>
+							<Link to="" className={classes.budgetActionEdit}>
+								<FaRegEdit />
+								Edit
+							</Link>
 						</div>
 					</div>
 
 					<div className={classes.userActions}>
-						<div className={classes.userActionsTable}>
-							<h3>User Actions</h3>
-							<ul>
-								<li>
-									<Link to="/updateme">Update user details</Link>
-								</li>
-								<li>
-									<Link to="/changepassword">Change password</Link>
-								</li>
-							</ul>
-						</div>
+						<h3>User Actions</h3>
+						<ul>
+							<li>
+								<Link to="/updateme">Update user details</Link>
+							</li>
+							<li>
+								<Link to="/changepassword">Change password</Link>
+							</li>
+						</ul>
 					</div>
 				</div>
 			</div>

@@ -1,13 +1,16 @@
+@import '../../../styles/variables';
+
 .container {
     height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: grid;
+    grid-template-rows: max-content 1fr;
 }
 
 h1 {
     font-size: 5rem;
-    margin-bottom: 5rem;
+    margin-bottom: 10rem;
+    justify-self: center;
+    text-align: center;
 }
 
 
@@ -24,11 +27,18 @@ h1 {
     input[type="submit"],
     button {
         height: 5rem;
+        cursor: pointer;
+        outline: none;
+        border: none;
+        font-size: 2rem;
 
     }
 
     input {
-        width: 20rem;
+        width: 15rem;
+        height: 3rem;
+        padding: .5rem;
+        outline: none;
     }
 
 
@@ -36,10 +46,15 @@ h1 {
         font-size: 2rem;
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 2rem;
+        column-gap: 2rem;
+        row-gap: 1rem;
 
         span {
             justify-self: flex-end;
+        }
+
+        input {
+            grid-column: 2/-1;
         }
 
     }
@@ -51,16 +66,25 @@ h1 {
         gap: 1rem;
 
         button {
-            width: 70%;
+            width: 100%;
 
             &:first-of-type {
                 justify-self: flex-end;
+                background: $color-grey;
+            }
+
+            &:last-of-type {
+                background: $color-delete;
             }
         }
 
         label {
             grid-column: 1/-1;
         }
+    }
+
+    input[type="submit"] {
+        background: $color-primary;
     }
 
 
