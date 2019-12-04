@@ -44,15 +44,16 @@ class AddBudget extends Component<Props, State> {
 					type="text"
 					maxLength={15}
 					onChange={e => this.onChangeCategory(e, i - 1)}
+					required
 				/>
 			);
 		}
 
 		return (
 			<div className={classes.container}>
-				<h1>Add budget</h1>
-				<form onSubmit={e => e.preventDefault()}>
-					<label>
+				<h1>Create new budget</h1>
+				<form className={classes.form} onSubmit={e => e.preventDefault()}>
+					<label className={classes.name}>
 						<span>Budget name:</span>
 						<input
 							type="text"
@@ -60,12 +61,15 @@ class AddBudget extends Component<Props, State> {
 							onChange={e => this.setState({ name: e.target.value })}
 						/>
 					</label>
-					<label>
-						<span>Categories</span>
-						{categoriesArray}
-					</label>
-					<button onClick={this.addNCategories}>Add more</button>
-					<button onClick={this.delNCategories}>Delete</button>
+					<div className={classes.categories}>
+						<label>
+							<span>Categories:</span>
+							{categoriesArray}
+						</label>
+						<button onClick={this.addNCategories}>Add more</button>
+						<button onClick={this.delNCategories}>Delete category</button>
+					</div>
+					<input type="submit" value="Submit" />
 				</form>
 			</div>
 		);
