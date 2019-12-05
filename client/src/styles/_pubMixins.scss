@@ -1,3 +1,5 @@
+@import './variables';
+
 @mixin page {
     display: grid;
     height: 100%;
@@ -8,8 +10,8 @@
 
 
 @mixin publicPageDesc {
-    grid-row: 3/4;
-    grid-column: 2/7;
+    grid-row: 2/3;
+    grid-column: 1/-1;
     justify-content: center;
     font-size: 2rem;
     align-self: center;
@@ -27,13 +29,10 @@
     grid-column: 3/9;
     grid-row: 2/-1;
     display: grid;
-    grid-template-columns: repeat(8, minmax(8rem, 1fr));
+    grid-template-columns: repeat(8, minmax(max-content, 1fr));
     grid-template-rows: repeat(auto-fit, minmax(10rem, 1fr));
 }
 
-
-// To be removed!!!!!!!!!!!!!!!!!!!!!!!!!
-@mixin publicPageTitle {}
 
 @mixin formPage {
     grid-column: 1/-1;
@@ -63,16 +62,18 @@
 
     button {
         height: $btnHeight;
-        width: 50%;
+        width: 100%;
+        max-width: $btnMaxWidth;
     }
 
     // Assume maximum inputs is 10
+    // Start at 3rd row
     @for $i from 1 through 10 {
         label:nth-of-type(#{$i}) {
             grid-column: 1/-1;
             width: 100%;
-            grid-row-start: $i+1;
-            grid-row-end: $i+2;
+            grid-row-start: $i+2;
+            grid-row-end: $i+3;
             align-self: center;
             justify-self: center;
             display: grid;
@@ -90,22 +91,34 @@
         font-size: $btnFontSize;
         cursor: pointer;
         background: $color-primary;
-        width: 50%;
+        width: 100%;
+        max-width: $btnMaxWidth;
         height: $btnHeight;
         border: none;
         outline: none;
     }
 }
 
+@mixin publicPageNav {
+    grid-column: 2/10;
+    grid-row: 1/2;
+    align-self: center;
+    display: flex;
+    justify-content: space-between;
+
+    button {
+        @include publicPageNavBtn;
+    }
+}
 
 @mixin publicPageNavBtn {
     font-size: $btnFontSize;
     color: black;
     background: white;
     padding: 2rem;
-    border: 1px solid black;
-    cursor: pointer;
+    border: 1px solid
 }
+
 
 @mixin clearBtn {
     font-size: $btnFontSize;

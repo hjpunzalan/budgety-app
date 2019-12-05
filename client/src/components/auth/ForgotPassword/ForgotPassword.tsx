@@ -62,12 +62,12 @@ class ForgotPassword extends Component<Props, IForgotPassState> {
 						</div>
 					) : (
 						<>
-							<h1 className={classes.title}>Forgot password?</h1>
-							<p className={classes.desc}>
-								Please enter the email address registered to your account and we
-								will send you the link to reset your password.
-							</p>
 							<form className={classes.form} onSubmit={this.handleSubmit}>
+								<h1>Forgot password?</h1>
+								<p className={classes.desc}>
+									Please enter the email address registered to your account and
+									we will send you the link to reset your password.
+								</p>
 								<input
 									type="email"
 									placeholder="Enter Email"

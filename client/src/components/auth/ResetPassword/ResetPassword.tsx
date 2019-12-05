@@ -85,9 +85,11 @@ class ResetPassword extends Component<Props, IResetPassState> {
 						</div>
 					) : (
 						<>
-							<h1 className={classes.title}>Reset password</h1>
-							<p className={classes.desc}>Please enter a new password below.</p>
 							<form className={classes.form} onSubmit={this.handleSubmit}>
+								<h1>Reset password</h1>
+								<p className={classes.desc}>
+									Please enter a new password below.
+								</p>
 								<label>
 									<span>Password</span>
 									<input
