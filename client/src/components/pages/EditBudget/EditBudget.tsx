@@ -1,19 +1,27 @@
 import React, { Component } from "react";
-import classes from "./AddBudget.module.scss";
+import classes from "./EditBudget.module.scss";
+import { RouteComponentProps } from "react-router";
 
-interface Props {}
+interface Props extends RouteComponentProps {}
 interface State {
-	nCategories: number;
 	name: string;
 	categories: string[];
+	loading: boolean;
+	nCategories: number;
 }
 
-class AddBudget extends Component<Props, State> {
+class EditBudget extends Component<Props, State> {
 	state = {
-		nCategories: 1,
-		name: "",
-		categories: [""]
+		name: "test",
+		categories: ["test", "test2"],
+		nCategories: 2,
+		loading: true
 	};
+
+	componentDidMount() {
+		// retrieve budget from params' budget id
+		// Set state of budget and set loading to false to stop spinner
+	}
 
 	addNCategories = () => {
 		const nCategories = this.state.nCategories;
@@ -36,6 +44,7 @@ class AddBudget extends Component<Props, State> {
 
 	render() {
 		const categoriesArray = [];
+		// Categories are obtained from state, filled when budget retrieved from db
 		for (let i = 0; i < this.state.nCategories; i++) {
 			categoriesArray.push(
 				<input
@@ -49,9 +58,10 @@ class AddBudget extends Component<Props, State> {
 			);
 		}
 
+		// Add spinner while data is being retreived from database
 		return (
 			<div className={classes.container}>
-				<h1 className={classes.title}>Create new budget</h1>
+				<h1 className={classes.title}>Edit budget</h1>
 				<form className={classes.form} onSubmit={e => e.preventDefault()}>
 					<label className={classes.name}>
 						<span>Budget name:</span>
@@ -80,4 +90,4 @@ class AddBudget extends Component<Props, State> {
 	}
 }
 
-export default AddBudget;
+export default EditBudget;

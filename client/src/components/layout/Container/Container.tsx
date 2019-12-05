@@ -10,6 +10,7 @@ import classes from "./Container.module.scss";
 import transactionIcon from "../../../images/transaction.png";
 import { StoreState } from "../../../reducers";
 import AddBudget from "../../pages/AddBudget/AddBudget";
+import EditBudget from "../../pages/EditBudget/EditBudget";
 
 interface Props extends StoreState, RouteComponentProps {
 	getLogout: () => Promise<void>;
@@ -34,6 +35,11 @@ class Container extends Component<Props, State> {
 								path={this.props.match.url + "/budget/new"}
 								component={AddBudget}
 							/>
+							<Route
+								exact
+								path={this.props.match.url + "/budget/edit/:budgetId"}
+								component={EditBudget}
+							/>
 						</Switch>
 					</div>
 
@@ -54,7 +60,9 @@ class Container extends Component<Props, State> {
 								<GoDiffAdded />
 								Add
 							</Link>
-							<Link to="" className={classes.budgetActionEdit}>
+							<Link
+								to={this.props.match.url + "/budget/edit/test"}
+								className={classes.budgetActionEdit}>
 								<FaRegEdit />
 								Edit
 							</Link>

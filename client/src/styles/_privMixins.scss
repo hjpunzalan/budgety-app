@@ -20,6 +20,13 @@
 }
 
 /**********************   For each page component    **********************/
+@mixin pageContainer {
+    background: white;
+    border: 1px solid $color-grey;
+    border-top: 2px solid $color-primary;
+    padding: 5rem;
+}
+
 @mixin pageTitle {
     font-size: 5rem;
     margin-bottom: 5rem;
@@ -27,12 +34,6 @@
     text-align: center;
 }
 
-@mixin pageContainer {
-    background: white;
-    border: 1px solid $color-grey;
-    border-top: 2px solid $color-primary;
-    padding: 5rem;
-}
 
 @mixin pageForm {
     display: grid;

@@ -1,0 +1,27 @@
+@import '../../../styles/privMixins';
+@import '../../../styles/variables';
+
+.title {
+    @include pageTitle;
+}
+
+.container {
+    @include pageContainer;
+}
+
+// Fix this so theres two or multiple columns
+.form {
+    @include pageForm;
+
+    .btnGrey {
+        justify-self: flex-end;
+    }
+
+    .btnDel {
+        justify-self: flex-start;
+    }
+
+    input[type='submit'] {
+        grid-column: 1/-1;
+    }
+}
