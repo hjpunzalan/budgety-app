@@ -5,7 +5,7 @@ const initialState: IBudget[] = [];
 export const budgetReducer = (state = initialState, action: BudgetActions) => {
 	switch (action.type) {
 		case ActionTypes.addBudget:
-			return [...state, action.payload];
+			return action.payload;
 		default:
 			return state;
 	}
