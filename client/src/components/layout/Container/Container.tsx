@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { IoIosAddCircleOutline } from "react-icons/io";
+import { GoDiffAdded } from "react-icons/go";
 import { FaRegEdit } from "react-icons/fa";
 import { connect } from "react-redux";
 import { Link, Route } from "react-router-dom";
@@ -50,7 +50,7 @@ class Container extends Component<Props, State> {
 							<Link
 								to={this.props.match.url + "/budget/new"}
 								className={classes.budgetActionAdd}>
-								<IoIosAddCircleOutline />
+								<GoDiffAdded />
 								Add
 							</Link>
 							<Link to="" className={classes.budgetActionEdit}>
