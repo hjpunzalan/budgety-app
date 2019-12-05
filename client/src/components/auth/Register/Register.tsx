@@ -74,8 +74,8 @@ class Register extends Component<Props, IRegisterState> {
 						</div>
 					) : (
 						<>
-							<h1 className={classes.title}>Sign Up</h1>
 							<form className={classes.form} onSubmit={this.handleSubmit}>
+								<h1>Sign Up</h1>
 								<label>
 									<span>First Name</span>
 									<input

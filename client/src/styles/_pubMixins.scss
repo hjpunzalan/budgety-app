@@ -19,6 +19,7 @@
 @mixin publicPageSpinner {
     grid-column: 4/6;
     grid-row: 2/5;
+    align-self: center;
 
 }
 
@@ -40,11 +41,12 @@
     padding: 5rem;
     display: grid;
     grid-template-columns: minmax(max-content, 1fr) minmax(max-content, 1fr);
-    grid-template-rows: repeat(auto-fit, minmax(5rem, max-content));
+    grid-template-rows: repeat(auto-fit, minmax(5rem, max-content)) 1fr;
     gap: 3rem;
     background: rgb(255, 255, 255);
     border: 1px solid $color-grey;
     border-top: 3px solid $color-primary;
+    border-radius: .5rem;
     font-size: 2rem;
 
     h1 {
@@ -54,7 +56,7 @@
     }
 
     input {
-        width: 50%;
+        width: 90%;
         padding: 10px;
         outline: none;
     }
