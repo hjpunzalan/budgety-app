@@ -60,8 +60,8 @@ class Login extends Component<Props, State> {
 						</div>
 					) : (
 						<>
-							<h1 className={classes.title}>Login</h1>
 							<form className={classes.form} onSubmit={this.handleSubmit}>
+								<h1>Login</h1>
 								<label>
 									<span>Email</span>
 									<input
