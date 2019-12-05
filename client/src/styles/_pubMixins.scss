@@ -37,13 +37,14 @@
 @mixin formPage {
     grid-column: 1/-1;
     grid-row: 1/-1;
-    padding: 3rem;
+    padding: 5rem;
     display: grid;
     grid-template-columns: minmax(max-content, 1fr) minmax(max-content, 1fr);
     grid-template-rows: repeat(auto-fit, minmax(5rem, max-content));
     gap: 3rem;
     background: rgb(255, 255, 255);
     border: 1px solid $color-grey;
+    border-top: 3px solid $color-primary;
     font-size: 2rem;
 
     h1 {
@@ -93,6 +94,7 @@
         outline: none;
     }
 }
+
 
 @mixin publicPageNavBtn {
     font-size: $btnFontSize;

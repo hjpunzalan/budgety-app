@@ -13,11 +13,11 @@ class Home extends Component {
 	render() {
 		return (
 			<div className={classes.page}>
-				<ul className={classes.navbar}>
+				<div className={classes.nav}>
 					<Link to="/login">
-						<li>Login</li>
+						<button>Login</button>
 					</Link>
-				</ul>
+				</div>
 				<h1 className={classes.title}>Budgety</h1>
 				<h3 className={classes.desc}>
 					Handle your annual budget with a click.
