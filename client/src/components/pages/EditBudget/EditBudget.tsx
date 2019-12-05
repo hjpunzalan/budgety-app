@@ -51,7 +51,7 @@ class EditBudget extends Component<Props, State> {
 					key={i}
 					type="text"
 					maxLength={20}
-					onChange={e => this.onChangeCategory(e, i - 1)}
+					onChange={e => this.onChangeCategory(e, i)}
 					value={this.state.categories[i]}
 					required
 				/>
