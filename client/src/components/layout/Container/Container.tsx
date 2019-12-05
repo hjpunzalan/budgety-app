@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { GoDiffAdded } from "react-icons/go";
+import { GoDiffAdded, GoPerson } from "react-icons/go";
+import { FaKey } from "react-icons/fa";
 import { FaRegEdit } from "react-icons/fa";
 import { connect } from "react-redux";
 import { Link, Route } from "react-router-dom";
@@ -64,10 +65,16 @@ class Container extends Component<Props, State> {
 						<h3>User Actions</h3>
 						<ul>
 							<li>
-								<Link to="/updateme">Update user details</Link>
+								<Link to="/updateme">
+									<GoPerson />
+									Update user details
+								</Link>
 							</li>
 							<li>
-								<Link to="/changepassword">Change password</Link>
+								<Link to="/changepassword">
+									<FaKey />
+									Change password
+								</Link>
 							</li>
 						</ul>
 					</div>

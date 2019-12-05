@@ -35,14 +35,13 @@ class AddBudget extends Component<Props, State> {
 	};
 
 	render() {
-		console.log(this.state);
 		const categoriesArray = [];
 		for (let i = 1; i <= this.state.nCategories; i++) {
 			categoriesArray.push(
 				<input
 					key={i}
 					type="text"
-					maxLength={15}
+					maxLength={20}
 					onChange={e => this.onChangeCategory(e, i - 1)}
 					required
 				/>
@@ -57,18 +56,21 @@ class AddBudget extends Component<Props, State> {
 						<span>Budget name:</span>
 						<input
 							type="text"
-							maxLength={15}
+							maxLength={20}
 							onChange={e => this.setState({ name: e.target.value })}
 						/>
 					</label>
-					<div className={classes.categories}>
-						<label>
-							<span>Categories:</span>
-							{categoriesArray}
-						</label>
-						<button onClick={this.addNCategories}>Add more</button>
-						<button onClick={this.delNCategories}>Delete category</button>
-					</div>
+					<label className={classes.categories}>
+						<span>Categories:</span>
+						{categoriesArray}
+					</label>
+					<button className={classes.btnGrey} onClick={this.addNCategories}>
+						Add more
+					</button>
+					<button className={classes.btnDel} onClick={this.delNCategories}>
+						Delete category
+					</button>
+
 					<input type="submit" value="Submit" />
 				</form>
 			</div>

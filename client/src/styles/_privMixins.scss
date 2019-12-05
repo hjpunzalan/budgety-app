@@ -2,30 +2,15 @@
 
 @mixin page {
     display: grid;
-    height: 100%;
-    grid-template-rows: repeat(10, 10vh);
+    grid-template-rows: repeat(auto-fit, minmax(10vh, max-content));
     // This template makes it easier to be responsive
     grid-template-columns: minmax(6rem, 1fr) repeat(8, minmax(min-content, 15rem)) minmax(6rem, 1fr);
 
 }
 
-@mixin logoutBtn {
-    grid-row: 1/3;
-    grid-column: 9/10;
-    width: 20rem;
-    align-self: center;
-    font-size: 3rem;
-    color: black;
-    background: white;
-    padding: 2rem;
-    border: 1px solid black;
-    cursor: pointer;
-}
-
 @mixin container {
-    grid-row: 3/-1;
+    grid-row: 2/-1;
     grid-column: 2/10;
-    background: white;
     display: grid;
     grid-template-rows: $addTransactionHeight 20rem 20rem;
     grid-template-columns: max-content 1fr;
@@ -34,8 +19,122 @@
 
 }
 
-@mixin actionNav {
+/**********************   For each page component    **********************/
+@mixin pageTitle {
+    font-size: 5rem;
+    margin-bottom: 5rem;
+    justify-self: center;
+    text-align: center;
+}
 
+@mixin pageContainer {
+    background: white;
+    border: 1px solid $color-grey;
+    border-top: 2px solid $color-primary;
+    padding: 5rem;
+}
+
+@mixin pageForm {
+    display: grid;
+    height: 100%;
+    grid-template-columns: minmax(max-content, 1fr) minmax(max-content, 1fr);
+    grid-template-rows: repeat(auto-fit, minmax(5rem, max-content)) 1fr;
+    gap: 3rem;
+    justify-items: center;
+
+    //  All buttons
+    input[type="submit"],
+    button {
+        cursor: pointer;
+        outline: none;
+        border: none;
+        font-size: 2rem;
+        height: $btnHeight;
+        width: 100%;
+        max-width: $btnMaxWidth;
+        max-width: $btnMaxWidth;
+
+    }
+
+    // All input types of the form
+    input {
+        width: 90%;
+        padding: 10px;
+        outline: none;
+    }
+
+
+    // Assume maximum inputs is 10 // Start at 3rd row
+    // Only the form
+    @for $i from 1 through 10 {
+        label:nth-of-type(#{$i}) {
+            grid-column: 1/-1;
+            width: 100%;
+            grid-row-start: $i;
+            grid-row-end: $i+1;
+            align-self: center;
+            justify-self: center;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            column-gap: 3rem;
+            font-size: 2rem;
+
+            span {
+                justify-self: flex-end;
+                align-self: center;
+            }
+
+            font-size: 2rem;
+
+            input {
+                grid-column: 2/3;
+
+                // Add margin to additional inputs such as more categories
+                &:not(:first-of-type) {
+                    margin-top: 1rem;
+                }
+            }
+
+
+        }
+
+        // Form Buttons
+        .btnGrey {
+            background: $color-grey;
+        }
+
+        .btnDel {
+            background: $color-delete;
+        }
+
+        input[type="submit"] {
+            background: $color-primary;
+        }
+    }
+}
+
+
+
+
+
+
+
+/*********************** For container component only ************************/
+@mixin logoutBtn {
+    grid-row: 1/2;
+    grid-column: 9/10;
+    align-self: center;
+    font-size: $btnFontSize;
+    color: black;
+    background: white;
+    padding: 2rem;
+    border: 1px solid;
+    cursor: pointer;
+}
+
+
+@mixin actionNav {
+    background: white;
     border: 0.5px solid $color-grey;
     overflow-x: hidden;
     display: flex;

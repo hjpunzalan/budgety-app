@@ -1,86 +1,27 @@
+@import '../../../styles/privMixins';
 @import '../../../styles/variables';
 
 .title {
-    font-size: 5rem;
-    margin-bottom: 10rem;
-    justify-self: center;
-    text-align: center;
+    @include pageTitle;
 }
 
+.container {
+    @include pageContainer;
+}
 
+// Fix this so theres two or multiple columns
 .form {
-    display: grid;
-    min-width: 75%;
-    height: 100%;
-    grid-template-columns: minmax(max-content, 1fr);
-    grid-template-rows: repeat(3, minmax(min-content, max-content));
-    column-gap: 2rem;
-    row-gap: 7rem;
-    justify-items: center;
+    @include pageForm;
 
-    input[type="submit"],
-    button {
-        height: 5rem;
-        cursor: pointer;
-        outline: none;
-        border: none;
-        font-size: 2rem;
-
+    .btnGrey {
+        justify-self: flex-end;
     }
 
-    input {
-        width: 15rem;
-        height: 3rem;
-        padding: .5rem;
-        outline: none;
+    .btnDel {
+        justify-self: flex-start;
     }
 
-
-    label {
-        font-size: 2rem;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        column-gap: 2rem;
-        row-gap: 1rem;
-
-        span {
-            justify-self: flex-end;
-        }
-
-        input {
-            grid-column: 2/-1;
-        }
-
+    input[type='submit'] {
+        grid-column: 1/-1;
     }
-
-    .categories {
-        display: grid;
-        grid-template-rows: min-content 1fr;
-        grid-template-columns: 1fr 1fr;
-        gap: 1rem;
-
-        button {
-            width: 100%;
-
-            &:first-of-type {
-                justify-self: flex-end;
-                background: $color-grey;
-            }
-
-            &:last-of-type {
-                background: $color-delete;
-            }
-        }
-
-        label {
-            grid-column: 1/-1;
-        }
-    }
-
-    input[type="submit"] {
-        background: $color-primary;
-    }
-
-
-
 }
