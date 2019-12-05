@@ -51,7 +51,7 @@ class AddBudget extends Component<Props, State> {
 
 		return (
 			<div className={classes.container}>
-				<h1>Create new budget</h1>
+				<h1 className={classes.title}>Create new budget</h1>
 				<form className={classes.form} onSubmit={e => e.preventDefault()}>
 					<label className={classes.name}>
 						<span>Budget name:</span>
