@@ -47,12 +47,15 @@ class budgetController {
 				});
 				await user.save();
 			} else return next(new AppError("User not found!", 404));
-			// Send response to client
+			// Send only the new budget to the client
+			// Client will update the store state
+			// Starts with empty transaction
+
 			res.status(200).json(budget);
 		} else return next(new AppError("User no longer logged in", 403));
 	}
 
-	// For updating categories, user or name of budget
+	// For updating categories or name of budget
 	@patch("/update/:id")
 	@use(requireAuth)
 	@catchAsync
@@ -81,7 +84,13 @@ class budgetController {
 			);
 			if (!budget) return next(new AppError("No budget found.", 404));
 
-			res.status(200).json(budget);
+			// Return updated budget list to the client
+			// Client updates entire store state
+			// Reduces the work client needs to do
+			const budgetsList = await Budget.find({
+				user: req.session.userId
+			}).select("-transactions -user -__v");
+			res.status(200).json(budgetsList);
 		} else return next(new AppError("User no longer logged in", 403));
 	}
 
@@ -91,27 +100,14 @@ class budgetController {
 	async getAllBudget(req: Request, res: Response, next: NextFunction) {
 		// Get all budget for user
 		if (req.session) {
-			const budgets = await Budget.find({ user: req.session.userId });
-			if (!budgets || budgets.length === 0)
+			const budgetsList = await Budget.find({
+				user: req.session.userId
+			}).select("-transactions -user -__v");
+			if (!budgetsList || budgetsList.length === 0)
 				return next(
 					new AppError("User does not have any budgets connected", 404)
 				);
-			res.status(200).json(budgets);
-		} else return next(new AppError("User no longer logged in", 403));
-	}
-
-	@get("/:id")
-	@use(requireAuth)
-	@catchAsync
-	async getBudget(req: Request, res: Response, next: NextFunction) {
-		if (req.session) {
-			const budget = await Budget.findOne({
-				_id: req.params.id,
-				user: req.session.userId
-			});
-			if (!budget)
-				return next(new AppError("No budget belongs to the id", 404));
-			res.status(200).json(budget);
+			res.status(200).json(budgetsList);
 		} else return next(new AppError("User no longer logged in", 403));
 	}
 
