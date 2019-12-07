@@ -84,7 +84,7 @@ class TransactionController {
 			if (req.body.amount) transaction.amount = req.body.amount;
 			if (req.body.category) transaction.category = req.body.category;
 
-			// Find transaction and update it
+			// Find the one transaction and update it
 			// the dollar represents the first matching array key index
 			const budget = await Budget.findOneAndUpdate(
 				{
@@ -102,27 +102,36 @@ class TransactionController {
 			);
 
 			if (budget) {
-				res.status(200).json(budget);
+				// Send updated transaction to be updated from client's array
+				res.status(200).json(transaction);
 			} else return next(new AppError("Budget or transaction not found", 404));
 		} else return next(new AppError("User no longer logged in", 403));
 	}
 
-	@get("/:budgetId")
+	@get("/:budgetId/page/:pageNumber/:numberOfTransactions")
 	@use(requireAuth)
 	@catchAsync
 	async getAllTransactions(req: Request, res: Response, next: NextFunction) {
 		if (req.session) {
+			debugger;
 			// Only shows transactions of the budget
-			const transactions = await Budget.findOne(
+			const budget = await Budget.findOne(
 				{
 					_id: req.params.budgetId,
 					user: req.session.userId
 				},
 				{ transactions: 1 }
 			);
-			if (!transactions)
+			if (!budget)
 				return next(new AppError("Budget or transaction not found", 404));
-			else res.status(200).json(transactions);
+			else {
+				const page = parseInt(req.params.pageNumber);
+				const numberOfTransactions = parseInt(req.params.numberOfTransactions);
+				const start = (page - 1) * numberOfTransactions;
+				const end = numberOfTransactions * page;
+				const splitTransactions = budget.transactions.slice(start, end);
+				res.status(200).json(splitTransactions);
+			}
 		} else return next(new AppError("User no longer logged in", 403));
 	}
 
