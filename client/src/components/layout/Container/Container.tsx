@@ -11,6 +11,7 @@ import transactionIcon from "../../../images/transaction.png";
 import { StoreState } from "../../../reducers";
 import AddBudget from "../../pages/AddBudget/AddBudget";
 import EditBudget from "../../pages/EditBudget/EditBudget";
+import AddTransaction from "../../pages/AddTransaction/AddTransaction";
 
 interface Props extends StoreState, RouteComponentProps {
 	getLogout: () => Promise<void>;
@@ -18,6 +19,7 @@ interface Props extends StoreState, RouteComponentProps {
 interface State {}
 
 class Container extends Component<Props, State> {
+	// Add selected state so the selected budget becomes highlighted
 	state = {};
 
 	render() {
@@ -40,11 +42,22 @@ class Container extends Component<Props, State> {
 								path={this.props.match.url + "/budget/edit/:budgetId"}
 								component={EditBudget}
 							/>
+							<Route
+								exact
+								path={this.props.match.url + "/transactions/new"}
+								component={AddTransaction}
+							/>
 						</Switch>
 					</div>
 
-					{/* NAVIGATION */}
-					<button className={classes.add}>
+					{/* NAVIGATION - cant be placed as of yet to its own component because of the styling */}
+					<button
+						className={classes.add}
+						onClick={() =>
+							this.props.history.push(
+								this.props.match.url + "/transactions/new"
+							)
+						}>
 						<img src={transactionIcon} alt="Transaction icon" />
 						<span>Add Transaction</span>
 					</button>
