@@ -6,6 +6,8 @@ export interface IBudget extends Document {
 	id?: string;
 	name: string;
 	categories: string[];
+	startingBalance: number;
+	balance: number;
 	transactions: ITransaction[];
 	user: IUser;
 
