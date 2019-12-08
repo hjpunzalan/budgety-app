@@ -14,10 +14,6 @@ export const transactionRoute = Router();
 
 @controller("/transactions", transactionRoute)
 class TransactionController {
-	//  edit transaction
-	//  delete transaction
-	//  get transaction
-
 	@patch("/new/:budgetId")
 	@use(requireAuth, bodyValidator("desc", "category", "amount"))
 	@catchAsync
@@ -44,6 +40,11 @@ class TransactionController {
 					...filterBody,
 					user: req.session.userId
 				};
+				// Update balance of budget and in transaction
+				budget.balance += transaction.amount;
+				transaction.balance = budget.balance;
+
+				// Add transaction to the budget
 				budget.transactions.push(transaction);
 
 				// save updated budget
@@ -69,7 +70,11 @@ class TransactionController {
 					user: req.session.userId,
 					"transactions._id": req.params.transactionId
 				},
-				{ transactions: { $elemMatch: { _id: req.params.transactionId } } }
+				{
+					balance: 1,
+					categories: 1,
+					transactions: { $elemMatch: { _id: req.params.transactionId } }
+				}
 			);
 			if (!findBudget)
 				return next(new AppError("Budget or transaction not found", 404));
@@ -77,6 +82,7 @@ class TransactionController {
 			// Replace the transaction values with req.body
 			// Replace values in current transaction
 			let transaction = findBudget.transactions[0];
+
 			// forEach key values does not work because string type keys cannot be indexed to redefine object
 			// This method does not require a filter checkBody
 			if (req.body.desc) transaction.desc = req.body.desc;
@@ -84,8 +90,14 @@ class TransactionController {
 			if (req.body.amount) transaction.amount = req.body.amount;
 			if (req.body.category) transaction.category = req.body.category;
 
-			// Find the one transaction and update it
-			// the dollar represents the first matching array key index
+			// Check if category is valid
+			const i = findBudget.categories.findIndex(
+				el => el === transaction.category
+			);
+			if (i < 0) return next(new AppError("Invalid category", 400));
+
+			// Find the one transaction using indexing and update it
+			// The dollar represents the first matching array key index
 			const budget = await Budget.findOneAndUpdate(
 				{
 					_id: req.params.budgetId,
@@ -93,7 +105,9 @@ class TransactionController {
 					"transactions._id": req.params.transactionId
 				},
 				{
-					$set: { "transactions.$": transaction }
+					$set: {
+						"transactions.$": transaction
+					}
 				},
 				{
 					new: true,
@@ -102,8 +116,18 @@ class TransactionController {
 			);
 
 			if (budget) {
-				// Send updated transaction to be updated from client's array
-				res.status(200).json(transaction);
+				// May need to update all the balance of each transaction
+				// Count each balance again
+				budget.balance = budget.startingBalance;
+				budget.transactions.forEach(t => {
+					t.balance = budget.balance + t.amount;
+					budget.balance += t.amount;
+				});
+
+				const updatedBudget = await budget.save();
+
+				// Send updated transactions
+				res.status(200).json(updatedBudget.transactions);
 			} else return next(new AppError("Budget or transaction not found", 404));
 		} else return next(new AppError("User no longer logged in", 403));
 	}
@@ -113,7 +137,6 @@ class TransactionController {
 	@catchAsync
 	async getAllTransactions(req: Request, res: Response, next: NextFunction) {
 		if (req.session) {
-			debugger;
 			// Only shows transactions of the budget
 			const budget = await Budget.findOne(
 				{
@@ -140,6 +163,10 @@ class TransactionController {
 	@catchAsync
 	async deleteTransaction(req: Request, res: Response, next: NextFunction) {
 		// Deletes a transaction and returns the updated budget
+		// Pull the transaction matching the query from the budget
+
+		// Need to update all balances of budget after the transaction deleted
+		// Need to update budget's balance
 		if (req.session) {
 			const budget = await Budget.findOneAndUpdate(
 				{
@@ -157,7 +184,19 @@ class TransactionController {
 					runValidators: true
 				}
 			);
-			res.status(200).json(budget);
+			// Update every transaction's balance
+			if (budget) {
+				budget.balance = budget.startingBalance;
+				budget.transactions.forEach(t => {
+					t.balance = budget.balance + t.amount;
+					budget.balance += t.amount;
+				});
+
+				const updatedBudget = await budget.save();
+				// Send updated transactions
+
+				res.status(200).json(updatedBudget.transactions);
+			} else return next(new AppError("Budget or transaction not found", 404));
 		} else return next(new AppError("User no longer logged in", 403));
 	}
 }
