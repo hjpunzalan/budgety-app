@@ -44,7 +44,6 @@ class AddTransaction extends Component<Props, State> {
 	};
 
 	render() {
-		console.log(this.state.amount);
 		return (
 			<div className={classes.container}>
 				<h1 className={classes.title}>Add new transaction</h1>
