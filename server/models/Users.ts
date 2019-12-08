@@ -41,15 +41,6 @@ const userSchema = new mongoose.Schema({
 		enum: ["admin", "user"],
 		default: "user"
 	},
-	budgets: [
-		{
-			budgetId: {
-				type: mongoose.SchemaTypes.ObjectId,
-				ref: "Budget"
-			},
-			name: String
-		}
-	],
 	lastEdited: Date,
 	passwordChangedAt: {
 		type: Date,

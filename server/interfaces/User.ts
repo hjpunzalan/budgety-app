@@ -8,10 +8,6 @@ export interface IUser extends Document {
 	password?: string;
 	active: boolean;
 	role: string;
-	budgets: {
-		budgetId: string;
-		name: string;
-	}[];
 	lastEdited: Date | number;
 	passwordChangedAt?: Date | number;
 	passwordResetToken?: String;
