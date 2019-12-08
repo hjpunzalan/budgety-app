@@ -1,14 +1,13 @@
 import axios from "axios";
 import { ITransaction } from "./transaction";
-import { IUser } from "./user";
 import { ActionTypes } from "./types";
 import catchAsync from "../utils/catchAsync";
 
 export interface IBudget {
+	_id?: string;
 	name: string;
 	categories: string[];
-	transactions: ITransaction[];
-	members: IUser[];
+	transactions?: ITransaction[];
 }
 
 export interface AddBudgetAction {
