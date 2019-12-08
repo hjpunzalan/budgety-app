@@ -15,10 +15,14 @@
 
     .btnGrey {
         justify-self: flex-end;
+        font-size: 1.5rem;
+        width: 50%;
     }
 
     .btnDel {
         justify-self: flex-start;
+        font-size: 1.5rem;
+        width: 50%;
     }
 
     input[type='submit'] {

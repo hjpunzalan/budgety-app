@@ -13,7 +13,7 @@
     grid-column: 2/10;
     display: grid;
     grid-template-rows: $addTransactionHeight 20rem 20rem;
-    grid-template-columns: max-content 1fr;
+    grid-template-columns: max-content minmax(max-content, 1fr);
     padding: 5rem;
     gap: 5rem;
 
