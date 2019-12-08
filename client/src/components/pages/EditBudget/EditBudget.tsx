@@ -1,12 +1,19 @@
 import React, { Component } from "react";
-import classes from "./EditBudget.module.scss";
 import { RouteComponentProps } from "react-router";
+import { FaTrashAlt } from "react-icons/fa";
+import classes from "./EditBudget.module.scss";
+// import { setAlert, AlertType } from "../../../actions";
+
+// Get budget based on selected option and then onChange retrieve data from budget state store
+// Set state of budget and set loading to false to stop spinner
+// Select will be the name of the budget from budgetStore array
 
 interface Props extends RouteComponentProps {}
 interface State {
 	name: string;
 	categories: string[];
 	loading: boolean;
+	selected: string;
 	nCategories: number;
 }
 
@@ -15,22 +22,24 @@ class EditBudget extends Component<Props, State> {
 		name: "test",
 		categories: ["test", "test2"],
 		nCategories: 2,
+		selected: "test",
 		loading: true
 	};
 
-	componentDidMount() {
-		// retrieve budget from params' budget id
-		// Set state of budget and set loading to false to stop spinner
-	}
+	componentDidMount() {}
 
-	addNCategories = () => {
+	addCategories = () => {
 		const nCategories = this.state.nCategories;
 		this.setState({ nCategories: nCategories + 1 });
 	};
 
-	delNCategories = () => {
+	delCategories = () => {
 		const nCategories = this.state.nCategories;
-		if (nCategories > 1) this.setState({ nCategories: nCategories - 1 });
+		const categories = this.state.categories;
+		// Delete the last element of array and make it empty
+		categories.pop();
+		if (nCategories > 1)
+			this.setState({ nCategories: nCategories - 1, categories });
 	};
 
 	onChangeCategory = (
@@ -40,6 +49,17 @@ class EditBudget extends Component<Props, State> {
 		const categories = this.state.categories;
 		categories[index] = e.target.value;
 		this.setState({ categories });
+	};
+
+	onChangeSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+		this.setState({ selected: e.target.value });
+	};
+
+	handleDelete = () => {
+		if (window.confirm("Are you sure you want to delete Budget?")) {
+			// add delete Budget action here
+			// this.props.setAlert("Budget Deleted", AlertType.success);
+		}
 	};
 
 	render() {
@@ -59,10 +79,20 @@ class EditBudget extends Component<Props, State> {
 		}
 
 		// Add spinner while data is being retreived from database
+		//  Add option values of select from store budget state
 		return (
 			<div className={classes.container}>
 				<h1 className={classes.title}>Edit budget</h1>
 				<form className={classes.form} onSubmit={e => e.preventDefault()}>
+					<label>
+						<span>Select Budget: </span>
+						<select autoFocus name="Budgets">
+							<option value="test" defaultChecked>
+								Test
+							</option>
+							<option value="test2">Test2</option>
+						</select>
+					</label>
 					<label className={classes.name}>
 						<span>Budget name:</span>
 						<input
@@ -76,14 +106,19 @@ class EditBudget extends Component<Props, State> {
 						<span>Categories:</span>
 						{categoriesArray}
 					</label>
-					<button className={classes.btnGrey} onClick={this.addNCategories}>
+					<button className={classes.btnGrey} onClick={this.addCategories}>
 						Add more
 					</button>
-					<button className={classes.btnDel} onClick={this.delNCategories}>
+					<button className={classes.btnDel} onClick={this.delCategories}>
 						Delete category
 					</button>
 
 					<input type="submit" value="Submit" />
+					<span
+						className={classes.deleteBudget}
+						onClick={() => console.log("delete Budget")}>
+						<FaTrashAlt /> Delete Budget?
+					</span>
 				</form>
 			</div>
 		);
