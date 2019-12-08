@@ -1,0 +1,44 @@
+@import '../../../styles/privMixins';
+@import '../../../styles/variables';
+
+.title {
+    @include pageTitle;
+}
+
+.container {
+    @include pageContainer;
+}
+
+// Fix this so theres two or multiple columns
+.form {
+    @include pageForm;
+
+    .type {
+        grid-column: 1/-1;
+
+        label {
+            cursor: pointer;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+
+            span {
+                grid-column: 2/-1;
+                justify-self: flex-start;
+            }
+
+            input {
+                grid-column: 1/2;
+                width: auto;
+                justify-self: flex-end;
+            }
+        }
+
+    }
+
+    input[type='submit'] {
+        margin: 5rem 0;
+        grid-column: 1/-1;
+    }
+
+
+}
