@@ -7,6 +7,7 @@ import { Budget } from "./../models/Budget";
 import { controller, get, patch, use, catchAsync } from "../decorators";
 import { requireAuth } from "../middlewares/requireAuth";
 import { bodyValidator } from "../middlewares/bodyValidator";
+import { Types } from "mongoose";
 
 /// MUCH BETTER TO CREATE A NEW MODEL FOR TRANSACTIONS
 
@@ -36,6 +37,7 @@ class TransactionController {
 			});
 			if (budget) {
 				// create new transaction and add to budget
+
 				const transaction: ITransaction = {
 					...filterBody,
 					user: req.session.userId
@@ -138,23 +140,34 @@ class TransactionController {
 	async getAllTransactions(req: Request, res: Response, next: NextFunction) {
 		if (req.session) {
 			// Only shows transactions of the budget
-			const budget = await Budget.findOne(
+			const transactions = await Budget.aggregate([
+				{ $match: { _id: Types.ObjectId(req.params.budgetId) } },
+				{ $unwind: "$transactions" },
 				{
-					_id: req.params.budgetId,
-					user: req.session.userId
+					$project: {
+						transactions: 1,
+						month: {
+							$month: "$transactions.date"
+						},
+						year: {
+							$year: "$transactions.date"
+						}
+					}
 				},
-				{ transactions: 1 }
-			);
-			if (!budget)
-				return next(new AppError("Budget or transaction not found", 404));
-			else {
-				const page = parseInt(req.params.pageNumber);
-				const numberOfTransactions = parseInt(req.params.numberOfTransactions);
-				const start = (page - 1) * numberOfTransactions;
-				const end = numberOfTransactions * page;
-				const splitTransactions = budget.transactions.slice(start, end);
-				res.status(200).json(splitTransactions);
-			}
+				{
+					$group: {
+						_id: {
+							month: "$month",
+							year: "$year"
+						},
+						transactions: { $push: "$transactions" }
+					}
+				}
+			]);
+
+			// Still need to incorporate pagination
+
+			res.status(200).json(transactions);
 		} else return next(new AppError("User no longer logged in", 403));
 	}
 
