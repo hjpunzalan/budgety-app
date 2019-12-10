@@ -134,15 +134,31 @@ class TransactionController {
 		} else return next(new AppError("User no longer logged in", 403));
 	}
 
-	@get("/:budgetId/page/:pageNumber/:numberOfTransactions")
+	@get("/:budgetId")
 	@use(requireAuth)
 	@catchAsync
 	async getAllTransactions(req: Request, res: Response, next: NextFunction) {
 		if (req.session) {
+			if (!req.query.page || !req.query.limit) {
+				res.status(200).json(await Budget.findById(req.params.budgetId));
+			}
+			interface Query {
+				page: string;
+				limit: string;
+			}
+
+			let { page, limit }: Query = req.query;
+
+			// Define pagination
+			const limitPerPage = parseInt(limit, 10);
+			const skip = (parseInt(page, 10) - 1) * limitPerPage;
+
 			// Only shows transactions of the budget
 			const transactions = await Budget.aggregate([
 				{ $match: { _id: Types.ObjectId(req.params.budgetId) } },
 				{ $unwind: "$transactions" },
+				{ $skip: skip },
+				{ $limit: limitPerPage },
 				{
 					$project: {
 						transactions: 1,
@@ -162,10 +178,12 @@ class TransactionController {
 						},
 						transactions: { $push: "$transactions" }
 					}
+				},
+
+				{
+					$sort: { "_id.year": -1, "_id.month": -1 }
 				}
 			]);
-
-			// Still need to incorporate pagination
 
 			res.status(200).json(transactions);
 		} else return next(new AppError("User no longer logged in", 403));
