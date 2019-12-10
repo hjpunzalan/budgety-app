@@ -6,12 +6,14 @@ interface State {
 	nCategories: number;
 	name: string;
 	categories: string[];
+	startingBalance: number;
 }
 
 class AddBudget extends Component<Props, State> {
 	state = {
 		nCategories: 1,
 		name: "",
+		startingBalance: 0,
 		categories: [""]
 	};
 
@@ -60,6 +62,20 @@ class AddBudget extends Component<Props, State> {
 							maxLength={20}
 							onChange={e => this.setState({ name: e.target.value })}
 							value={this.state.name}
+						/>
+					</label>
+					<label>
+						<span>Starting balance:</span>
+						<input
+							type="number"
+							onChange={e =>
+								this.setState({ startingBalance: parseFloat(e.target.value) })
+							}
+							value={
+								this.state.startingBalance === 0
+									? undefined
+									: this.state.startingBalance
+							}
 						/>
 					</label>
 					<label className={classes.categories}>

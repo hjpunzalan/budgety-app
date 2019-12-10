@@ -15,6 +15,7 @@ interface State {
 	loading: boolean;
 	selected: string;
 	nCategories: number;
+	startingBalance: number;
 }
 
 class EditBudget extends Component<Props, State> {
@@ -22,6 +23,7 @@ class EditBudget extends Component<Props, State> {
 		name: "test",
 		categories: ["test", "test2"],
 		nCategories: 2,
+		startingBalance: 1000,
 		selected: "test",
 		loading: true
 	};
@@ -100,6 +102,20 @@ class EditBudget extends Component<Props, State> {
 							maxLength={20}
 							onChange={e => this.setState({ name: e.target.value })}
 							value={this.state.name}
+						/>
+					</label>
+					<label>
+						<span>Starting balance:</span>
+						<input
+							type="number"
+							onChange={e =>
+								this.setState({ startingBalance: parseFloat(e.target.value) })
+							}
+							value={
+								this.state.startingBalance === 0
+									? undefined
+									: this.state.startingBalance
+							}
 						/>
 					</label>
 					<label className={classes.categories}>
