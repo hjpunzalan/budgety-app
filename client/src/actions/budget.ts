@@ -1,3 +1,4 @@
+import { setAlert, AlertType } from "./alerts";
 import axios from "axios";
 import { ITransaction } from "./transaction";
 import { ActionTypes } from "./types";
@@ -32,6 +33,8 @@ export const addBudget = (form: AddBudgetState) =>
 			type: ActionTypes.addBudget,
 			payload: res.data
 		});
+
+		dispatch(setAlert(`${form.name} budget added to list!`, AlertType.success));
 	});
 
 export const getAllBudget = () =>

@@ -83,6 +83,23 @@ class AddTransaction extends Component<Props, State> {
 							<option value="test2">Test2</option>
 						</select>
 					</label>
+					<label className={classes.amount}>
+						<span>Amount $:</span>
+						{/**Need to include a select for expense or income */}
+						<input
+							className={classes.inputNumber}
+							type="number"
+							maxLength={20}
+							onChange={e => {
+								let amount = parseFloat(e.target.value);
+								if (amount > 0 && this.state.min < 0) amount *= -1;
+								this.setState({ amount });
+							}}
+							value={this.state.amount === 0 ? undefined : this.state.amount}
+							min={this.state.min}
+							max={this.state.max}
+						/>
+					</label>
 					<div className={classes.type}>
 						<label>
 							<input
@@ -105,23 +122,6 @@ class AddTransaction extends Component<Props, State> {
 							<span>Expense - </span>
 						</label>
 					</div>
-					<label className={classes.amount}>
-						<span>Amount $:</span>
-						{/**Need to include a select for expense or income */}
-						<input
-							className={classes.inputNumber}
-							type="number"
-							maxLength={20}
-							onChange={e => {
-								let amount = parseFloat(e.target.value);
-								if (amount > 0 && this.state.min < 0) amount *= -1;
-								this.setState({ amount });
-							}}
-							value={this.state.amount === 0 ? undefined : this.state.amount}
-							min={this.state.min}
-							max={this.state.max}
-						/>
-					</label>
 
 					<input type="submit" value="Submit" />
 				</form>

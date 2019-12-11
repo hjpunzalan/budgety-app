@@ -1,15 +1,19 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import classes from "./AddBudget.module.scss";
+import { addBudget } from "../../../actions";
 
-interface Props {}
-interface State {
-	nCategories: number;
+interface Props {
+	addBudget: (form: AddBudgetState) => Promise<void>;
+}
+export interface AddBudgetState {
+	nCategories?: number;
 	name: string;
 	categories: string[];
 	startingBalance: number;
 }
 
-class AddBudget extends Component<Props, State> {
+class AddBudget extends Component<Props, AddBudgetState> {
 	state = {
 		nCategories: 1,
 		name: "",
@@ -17,14 +21,37 @@ class AddBudget extends Component<Props, State> {
 		categories: [""]
 	};
 
+	handleSubmit = (e: React.FormEvent) => {
+		e.preventDefault();
+		const { name, startingBalance, categories } = this.state;
+		this.props.addBudget({ name, startingBalance, categories }).then(() => {
+			// Reset form
+			this.setState({
+				nCategories: 1,
+				name: "",
+				startingBalance: 0,
+				categories: [""]
+			});
+		});
+	};
+
 	addNCategories = () => {
-		const nCategories = this.state.nCategories;
-		this.setState({ nCategories: nCategories + 1 });
+		const categories = this.state.categories;
+		const nCategories = this.state.nCategories + 1;
+		for (let i = this.state.nCategories; i < nCategories; i++) {
+			categories.push("");
+		}
+		this.setState({ nCategories, categories });
 	};
 
 	delNCategories = () => {
-		const nCategories = this.state.nCategories;
-		if (nCategories > 1) this.setState({ nCategories: nCategories - 1 });
+		const nCategories = this.state.nCategories - 1;
+		const categories = this.state.categories;
+		// Delete the last element of array and make it empty
+		if (this.state.nCategories > 1) {
+			categories.pop();
+			this.setState({ nCategories, categories });
+		}
 	};
 
 	onChangeCategory = (
@@ -54,7 +81,7 @@ class AddBudget extends Component<Props, State> {
 		return (
 			<div className={classes.container}>
 				<h1 className={classes.title}>Create new budget</h1>
-				<form className={classes.form} onSubmit={e => e.preventDefault()}>
+				<form className={classes.form} onSubmit={this.handleSubmit}>
 					<label className={classes.name}>
 						<span>Budget name:</span>
 						<input
@@ -62,6 +89,7 @@ class AddBudget extends Component<Props, State> {
 							maxLength={20}
 							onChange={e => this.setState({ name: e.target.value })}
 							value={this.state.name}
+							required
 						/>
 					</label>
 					<label>
@@ -69,13 +97,17 @@ class AddBudget extends Component<Props, State> {
 						<input
 							type="number"
 							onChange={e =>
-								this.setState({ startingBalance: parseFloat(e.target.value) })
+								this.setState({
+									startingBalance:
+										e.target.value.length > 0 ? parseFloat(e.target.value) : 0
+								})
 							}
 							value={
 								this.state.startingBalance === 0
-									? undefined
+									? ""
 									: this.state.startingBalance
 							}
+							required
 						/>
 					</label>
 					<label className={classes.categories}>
@@ -96,4 +128,7 @@ class AddBudget extends Component<Props, State> {
 	}
 }
 
-export default AddBudget;
+export default connect(
+	null,
+	{ addBudget }
+)(AddBudget);

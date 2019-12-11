@@ -39,9 +39,10 @@ class EditBudget extends Component<Props, State> {
 		const nCategories = this.state.nCategories;
 		const categories = this.state.categories;
 		// Delete the last element of array and make it empty
-		categories.pop();
-		if (nCategories > 1)
+		if (nCategories > 1) {
 			this.setState({ nCategories: nCategories - 1, categories });
+			categories.pop();
+		}
 	};
 
 	onChangeCategory = (
