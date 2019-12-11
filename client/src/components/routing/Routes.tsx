@@ -20,8 +20,7 @@ interface Props extends StoreState {}
 // !!!!!!!!!!!!!!!!!!!!!!!!
 // Need to move dashboard back to privRoutes
 export const pubRoutesArr = [
-	{ name: "Dashboard", path: "/user", component: Container, exact: false },
-	{ name: "Home", path: "/", component: Home }, // had to add nav:true for typescript to recognise nav property
+	{ name: "Home", path: "/", component: Home, exact: true }, // had to add nav:true for typescript to recognise nav property
 	{ name: "Login", path: "/login", component: Login },
 	{ name: "Register", path: "/register", component: Register },
 	{
@@ -38,6 +37,7 @@ export const pubRoutesArr = [
 
 // Private routes
 export const privRoutesArr = [
+	{ name: "Dashboard", path: "/user", component: Container, exact: false },
 	{
 		exact: true,
 		name: "Change Password",

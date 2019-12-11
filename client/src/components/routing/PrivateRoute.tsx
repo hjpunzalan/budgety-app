@@ -21,6 +21,7 @@ class PrivateRoute extends Route<Props> {
 				})
 				.catch(err => {
 					console.error(err);
+					// If server fails, log user out
 					this.props.sessionExpired();
 				});
 	}
@@ -34,6 +35,7 @@ class PrivateRoute extends Route<Props> {
 				})
 				.catch(err => {
 					console.error(err);
+					// If server fails, log user out
 					this.props.sessionExpired();
 				});
 	}
