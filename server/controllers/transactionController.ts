@@ -139,9 +139,6 @@ class TransactionController {
 	@catchAsync
 	async getAllTransactions(req: Request, res: Response, next: NextFunction) {
 		if (req.session) {
-			if (!req.query.page || !req.query.limit) {
-				res.status(200).json(await Budget.findById(req.params.budgetId));
-			}
 			interface Query {
 				page: string;
 				limit: string;
@@ -153,12 +150,16 @@ class TransactionController {
 			const limitPerPage = parseInt(limit, 10);
 			const skip = (parseInt(page, 10) - 1) * limitPerPage;
 
+			const skipQuery = { $skip: skip };
+			const limitQuery = { $limit: limitPerPage };
+
 			// Only shows transactions of the budget
+			// If there's no query return dummy projections
 			const transactions = await Budget.aggregate([
 				{ $match: { _id: Types.ObjectId(req.params.budgetId) } },
 				{ $unwind: "$transactions" },
-				{ $skip: skip },
-				{ $limit: limitPerPage },
+				page ? skipQuery : { $project: { transactions: 1 } },
+				limit ? limitQuery : { $project: { transactions: 1 } },
 				{
 					$project: {
 						transactions: 1,
