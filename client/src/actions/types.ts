@@ -5,7 +5,8 @@ import {
 	LogoutAction,
 	RegUserAction,
 	ChangePassAction,
-	ResetPassAction
+	ResetPassAction,
+	CheckUserAction
 } from "./auth";
 import { AddBudgetAction, getAllBudgetAction } from "./budget";
 
@@ -23,6 +24,8 @@ export enum ActionTypes {
 	updateUser = "UPDATE_USER",
 	forgotPassword = "FORGOT_PASSWORD",
 	resetPassword = "RESET_PASSWORD",
+	// FOR DEV  MODE
+	checkUser = "CHECK_AUTH",
 	//
 	// BUDGET
 	addBudget = "ADD_BUDGET",
@@ -36,6 +39,7 @@ export type AuthActions =
 	| RegUserAction
 	| ChangePassAction
 	| UpdateUserAction
-	| ResetPassAction;
+	| ResetPassAction
+	| CheckUserAction;
 export type AlertActions = SetAlertAction | ResetAlertAction;
 export type BudgetActions = AddBudgetAction | getAllBudgetAction;

@@ -1,10 +1,19 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { checkUser } from "./actions";
 import classes from "./App.module.scss";
 import Routes from "./components/routing/Routes";
 import Alerts from "./components/utils/Alerts";
 
-class App extends Component {
+interface Props {
+	checkUser: () => Promise<void>;
+}
+
+class App extends Component<Props> {
 	state = {};
+	componentDidMount() {
+		this.props.checkUser();
+	}
 
 	render() {
 		return (
@@ -16,4 +25,7 @@ class App extends Component {
 	}
 }
 
-export default App;
+export default connect(
+	null,
+	{ checkUser }
+)(App);
