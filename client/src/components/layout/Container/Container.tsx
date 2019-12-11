@@ -5,8 +5,8 @@ import { FaRegEdit } from "react-icons/fa";
 import { connect } from "react-redux";
 import { Link, Route } from "react-router-dom";
 import { RouteComponentProps, Switch } from "react-router";
-import { getLogout } from "../../../actions";
 import classes from "./Container.module.scss";
+import { getLogout, getAllBudget } from "../../../actions";
 import transactionIcon from "../../../images/transaction.png";
 import { StoreState } from "../../../reducers";
 import AddBudget from "../../pages/AddBudget/AddBudget";
@@ -15,12 +15,18 @@ import AddTransaction from "../../pages/AddTransaction/AddTransaction";
 
 interface Props extends StoreState, RouteComponentProps {
 	getLogout: () => Promise<void>;
+	getAllBudget: () => Promise<void>;
 }
 interface State {}
 
 class Container extends Component<Props, State> {
 	// Add selected state so the selected budget becomes highlighted
 	state = {};
+
+	componentDidMount() {
+		console.log("it works");
+		this.props.getAllBudget();
+	}
 
 	render() {
 		return (
@@ -64,7 +70,9 @@ class Container extends Component<Props, State> {
 					<div className={classes.budgets}>
 						<h3>Budgets</h3>
 						<ul>
-							<li>Test Budget</li>
+							{this.props.budget.map(b => {
+								return <li key={b._id}>{b.name}</li>;
+							})}
 						</ul>
 						<div className={classes.budgetActions}>
 							<Link
@@ -112,5 +120,5 @@ const mapStateToProps = (state: StoreState) => ({
 
 export default connect(
 	mapStateToProps,
-	{ getLogout }
+	{ getLogout, getAllBudget }
 )(Container);
