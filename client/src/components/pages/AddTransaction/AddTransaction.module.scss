@@ -1,5 +1,5 @@
-@import '../../../styles/privMixins';
-@import '../../../styles/variables';
+@import "../../../styles/privMixins";
+@import "../../../styles/variables";
 
 .title {
     @include pageTitle;
@@ -32,13 +32,43 @@
                 justify-self: flex-end;
             }
         }
-
     }
 
-    input[type='submit'] {
+    input[type="submit"] {
         margin: 5rem 0;
         grid-column: 1/-1;
     }
 
 
+    .date {
+        font-size: 1.5rem !important; // for the date input
+
+
+        &Label {
+            font-size: 2rem !important; // for the date label
+        }
+
+
+
+        button {
+            width: auto;
+            height: auto;
+            font-size: 1.5rem !important; // for each of the date picker buttons
+        }
+
+
+        input {
+            padding: 0;
+            margin: 0 !important; // remove margin
+            font-size: 1.5rem !important; // date input also
+        }
+
+        .react-date-picker__inputGroup__input {
+            height: auto;
+        }
+
+        abbr[title] {
+            text-decoration: none !important;
+        }
+    }
 }

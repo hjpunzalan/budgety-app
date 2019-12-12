@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import DatePicker from "react-date-picker";
 import classes from "./AddTransaction.module.scss";
 
 // Get budget based on selected option and then onChange retrieve data from budget state store
@@ -14,6 +15,7 @@ interface State {
 	amount?: number;
 	min: number;
 	max: number;
+	date: Date | Date[];
 }
 class AddTransaction extends Component<Props, State> {
 	state = {
@@ -22,7 +24,8 @@ class AddTransaction extends Component<Props, State> {
 		category: "",
 		amount: 0,
 		min: 0,
-		max: Infinity
+		max: Infinity,
+		date: new Date()
 	};
 
 	handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -82,6 +85,14 @@ class AddTransaction extends Component<Props, State> {
 							</option>
 							<option value="test2">Test2</option>
 						</select>
+					</label>
+					<label className={classes.date}>
+						<span className={classes.dateLabel}>Date: </span>
+						<DatePicker
+							onChange={date => this.setState({ date })}
+							value={this.state.date}
+							format="dd/MM/y"
+						/>
 					</label>
 					<label className={classes.amount}>
 						<span>Amount $:</span>
