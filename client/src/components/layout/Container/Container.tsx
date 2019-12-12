@@ -24,7 +24,6 @@ class Container extends Component<Props, State> {
 	state = {};
 
 	componentDidMount() {
-		console.log("it works");
 		this.props.getAllBudget();
 	}
 
