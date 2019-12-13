@@ -13,6 +13,7 @@
 .form {
     @include pageForm;
 
+
     .type {
         grid-column: 1/-1;
 
@@ -43,6 +44,9 @@
     .date {
         font-size: 1.5rem !important; // for the date input
 
+        div:first-child {
+            padding: .5rem;
+        }
 
         &Label {
             font-size: 2rem !important; // for the date label
@@ -58,17 +62,17 @@
 
 
         input {
-            padding: 0;
+            padding: 0 .2rem;
             margin: 0 !important; // remove margin
             font-size: 1.5rem !important; // date input also
-        }
-
-        .react-date-picker__inputGroup__input {
-            height: auto;
         }
 
         abbr[title] {
             text-decoration: none !important;
         }
+    }
+
+    .inputNumberExp {
+        color: red;
     }
 }

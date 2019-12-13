@@ -98,7 +98,11 @@ class AddTransaction extends Component<Props, State> {
 						<span>Amount $:</span>
 						{/**Need to include a select for expense or income */}
 						<input
-							className={classes.inputNumber}
+							className={
+								this.state.max === 0
+									? classes.inputNumberExp
+									: classes.inputNumberInc
+							}
 							type="number"
 							maxLength={20}
 							onChange={e => {

@@ -85,6 +85,12 @@
                 align-self: center;
             }
 
+            select {
+                padding: .5rem;
+                cursor: pointer;
+                outline: none;
+            }
+
             font-size: 2rem;
 
             input {
