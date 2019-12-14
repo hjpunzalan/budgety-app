@@ -1,3 +1,4 @@
+import { getTransactions } from "./../utils/getTransactions";
 import { Request, Response, NextFunction, Router } from "express";
 
 import { ITransaction } from "./../interfaces/Transaction";
@@ -53,7 +54,8 @@ class TransactionController {
 				await budget.save();
 
 				// Send updated transactions
-				res.status(201).json(budget.transactions);
+				const transactions = await getTransactions(req);
+				res.status(201).json(transactions);
 			} else return next(new AppError("Budget not found", 404));
 		} else return next(new AppError("User no longer logged in", 403));
 	}
@@ -92,7 +94,7 @@ class TransactionController {
 			if (req.body.amount) transaction.amount = req.body.amount;
 			if (req.body.category) transaction.category = req.body.category;
 
-			// Check if category is valid
+			// Check if category is valid (when using update)
 			const i = findBudget.categories.findIndex(
 				el => el === transaction.category
 			);
@@ -126,10 +128,11 @@ class TransactionController {
 					budget.balance += t.amount;
 				});
 
-				const updatedBudget = await budget.save();
+				await budget.save();
 
 				// Send updated transactions
-				res.status(200).json(updatedBudget.transactions);
+				const transactions = await getTransactions(req);
+				res.status(200).json(transactions);
 			} else return next(new AppError("Budget or transaction not found", 404));
 		} else return next(new AppError("User no longer logged in", 403));
 	}
@@ -138,56 +141,8 @@ class TransactionController {
 	@use(requireAuth)
 	@catchAsync
 	async getAllTransactions(req: Request, res: Response, next: NextFunction) {
-		if (req.session) {
-			interface Query {
-				page: string;
-				limit: string;
-			}
-
-			let { page, limit }: Query = req.query;
-
-			// Define pagination
-			const limitPerPage = parseInt(limit, 10);
-			const skip = (parseInt(page, 10) - 1) * limitPerPage;
-
-			const skipQuery = { $skip: skip };
-			const limitQuery = { $limit: limitPerPage };
-
-			// Only shows transactions of the budget
-			// If there's no query return dummy projections
-			const transactions = await Budget.aggregate([
-				{ $match: { _id: Types.ObjectId(req.params.budgetId) } },
-				{ $unwind: "$transactions" },
-				page ? skipQuery : { $project: { transactions: 1 } },
-				limit ? limitQuery : { $project: { transactions: 1 } },
-				{
-					$project: {
-						transactions: 1,
-						month: {
-							$month: "$transactions.date"
-						},
-						year: {
-							$year: "$transactions.date"
-						}
-					}
-				},
-				{
-					$group: {
-						_id: {
-							month: "$month",
-							year: "$year"
-						},
-						transactions: { $push: "$transactions" }
-					}
-				},
-
-				{
-					$sort: { "_id.year": -1, "_id.month": -1 }
-				}
-			]);
-
-			res.status(200).json(transactions);
-		} else return next(new AppError("User no longer logged in", 403));
+		const transactions = await getTransactions(req);
+		res.status(200).json(transactions);
 	}
 
 	@patch("/delete/:budgetId/:transactionId")
@@ -224,10 +179,10 @@ class TransactionController {
 					budget.balance += t.amount;
 				});
 
-				const updatedBudget = await budget.save();
+				await budget.save();
 				// Send updated transactions
-
-				res.status(200).json(updatedBudget.transactions);
+				const transactions = await getTransactions(req);
+				res.status(200).json(transactions);
 			} else return next(new AppError("Budget or transaction not found", 404));
 		} else return next(new AppError("User no longer logged in", 403));
 	}
