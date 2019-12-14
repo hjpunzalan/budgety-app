@@ -1,12 +1,12 @@
 import { budgetReducer } from "./budget";
 import { combineReducers } from "redux";
 import { authReducer, AuthState } from "./auth";
-import { alertReducer, AlertState } from "./alerts";
-import { IBudget } from "../actions";
+import { alertReducer } from "./alerts";
+import { IBudget, Alert } from "../actions";
 
 export interface StoreState {
 	auth: AuthState;
-	alerts: AlertState;
+	alerts: Alert;
 	budget: IBudget[];
 }
 
