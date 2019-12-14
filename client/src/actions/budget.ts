@@ -4,6 +4,7 @@ import { ITransaction } from "./transaction";
 import { ActionTypes } from "./types";
 import catchAsync from "../utils/catchAsync";
 import { AddBudgetState } from "../components/pages/AddBudget/AddBudget";
+import { EditBudgetForm } from "../components/pages/EditBudget/EditBudget";
 
 export interface IBudget {
 	_id?: string;
@@ -28,6 +29,16 @@ export interface GetAllBudgetAction {
 	payload: IBudget[];
 }
 
+export interface EditBudgetAction {
+	type: ActionTypes.editBudget;
+	payload: IBudget[];
+}
+
+export interface DeleteBudgetAction {
+	type: ActionTypes.deleteBudget;
+	payload: IBudget;
+}
+
 export const addBudget = (form: AddBudgetState) =>
 	catchAsync(async dispatch => {
 		// Add new budget
@@ -49,4 +60,34 @@ export const getAllBudget = () =>
 			type: ActionTypes.getAllBudget,
 			payload: res.data
 		});
+	});
+
+export const editBudget = (budgetId: string, form: EditBudgetForm) =>
+	catchAsync(async dispatch => {
+		const res = await axios.patch<IBudget[]>(
+			`/api/budget/update/${budgetId}`,
+			form
+		);
+
+		dispatch<EditBudgetAction>({
+			type: ActionTypes.editBudget,
+			payload: res.data
+		});
+
+		dispatch(
+			setAlert(`Budget ${form.name} successfully updated!`, AlertType.success)
+		);
+	});
+
+export const deleteBudget = (budget: IBudget) =>
+	catchAsync(async dispatch => {
+		await axios.delete(`/api/budget/del/${budget._id}`);
+
+		dispatch<DeleteBudgetAction>({
+			type: ActionTypes.deleteBudget,
+			payload: budget
+		});
+		dispatch(
+			setAlert(`Budget ${budget.name} successfully deleted!`, AlertType.success)
+		);
 	});

@@ -35,7 +35,8 @@ class AddBudget extends Component<Props, AddBudgetState> {
 		});
 	};
 
-	addNCategories = () => {
+	addCategories = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+		e.preventDefault();
 		const categories = this.state.categories;
 		const nCategories = this.state.nCategories + 1;
 		for (let i = this.state.nCategories; i < nCategories; i++) {
@@ -44,7 +45,8 @@ class AddBudget extends Component<Props, AddBudgetState> {
 		this.setState({ nCategories, categories });
 	};
 
-	delNCategories = () => {
+	delCategories = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+		e.preventDefault();
 		const nCategories = this.state.nCategories - 1;
 		const categories = this.state.categories;
 		// Delete the last element of array and make it empty
@@ -114,10 +116,10 @@ class AddBudget extends Component<Props, AddBudgetState> {
 						<span>Categories:</span>
 						{categoriesArray}
 					</label>
-					<button className={classes.btnGrey} onClick={this.addNCategories}>
+					<button className={classes.btnGrey} onClick={this.addCategories}>
 						Add more
 					</button>
-					<button className={classes.btnDel} onClick={this.delNCategories}>
+					<button className={classes.btnDel} onClick={this.delCategories}>
 						Delete category
 					</button>
 

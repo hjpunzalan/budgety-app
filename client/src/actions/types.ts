@@ -11,7 +11,9 @@ import {
 import {
 	AddBudgetAction,
 	GetAllBudgetAction,
-	ClearBudgetAction
+	ClearBudgetAction,
+	EditBudgetAction,
+	DeleteBudgetAction
 } from "./budget";
 
 export enum ActionTypes {
@@ -34,7 +36,9 @@ export enum ActionTypes {
 	// BUDGET
 	addBudget = "ADD_BUDGET",
 	getAllBudget = "GET_ALL_BUDGET",
-	clearBudget = "CLEAR_BUDGET"
+	clearBudget = "CLEAR_BUDGET",
+	editBudget = "EDIT_BUDGET",
+	deleteBudget = "DELETE_BUDGET"
 }
 
 // export type UserActions = ;
@@ -50,4 +54,6 @@ export type AlertActions = SetAlertAction | ResetAlertAction;
 export type BudgetActions =
 	| AddBudgetAction
 	| GetAllBudgetAction
-	| ClearBudgetAction;
+	| ClearBudgetAction
+	| EditBudgetAction
+	| DeleteBudgetAction;
