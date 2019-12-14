@@ -8,7 +8,11 @@ import {
 	ResetPassAction,
 	CheckUserAction
 } from "./auth";
-import { AddBudgetAction, getAllBudgetAction } from "./budget";
+import {
+	AddBudgetAction,
+	GetAllBudgetAction,
+	ClearBudgetAction
+} from "./budget";
 
 export enum ActionTypes {
 	// unique val
@@ -29,7 +33,8 @@ export enum ActionTypes {
 	//
 	// BUDGET
 	addBudget = "ADD_BUDGET",
-	getAllBudget = "GET_ALL_BUDGET"
+	getAllBudget = "GET_ALL_BUDGET",
+	clearBudget = "CLEAR_BUDGET"
 }
 
 // export type UserActions = ;
@@ -42,4 +47,7 @@ export type AuthActions =
 	| ResetPassAction
 	| CheckUserAction;
 export type AlertActions = SetAlertAction | ResetAlertAction;
-export type BudgetActions = AddBudgetAction | getAllBudgetAction;
+export type BudgetActions =
+	| AddBudgetAction
+	| GetAllBudgetAction
+	| ClearBudgetAction;

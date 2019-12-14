@@ -8,6 +8,8 @@ export const budgetReducer = (state = initialState, action: BudgetActions) => {
 			return [...state, action.payload];
 		case ActionTypes.getAllBudget:
 			return action.payload;
+		case ActionTypes.clearBudget:
+			return [];
 		default:
 			return state;
 	}

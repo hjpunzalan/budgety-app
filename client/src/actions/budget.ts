@@ -14,12 +14,16 @@ export interface IBudget {
 	transactions?: ITransaction[];
 }
 
+export interface ClearBudgetAction {
+	type: ActionTypes.clearBudget;
+}
+
 export interface AddBudgetAction {
 	type: ActionTypes.addBudget;
 	payload: IBudget;
 }
 
-export interface getAllBudgetAction {
+export interface GetAllBudgetAction {
 	type: ActionTypes.getAllBudget;
 	payload: IBudget[];
 }
@@ -41,7 +45,7 @@ export const getAllBudget = () =>
 	catchAsync(async dispatch => {
 		const res = await axios.get<IBudget[]>("/api/budget/all");
 
-		dispatch<getAllBudgetAction>({
+		dispatch<GetAllBudgetAction>({
 			type: ActionTypes.getAllBudget,
 			payload: res.data
 		});
