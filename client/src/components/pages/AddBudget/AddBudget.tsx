@@ -95,7 +95,7 @@ class AddBudget extends Component<Props, AddBudgetState> {
 						/>
 					</label>
 					<label>
-						<span>Starting balance:</span>
+						<span>Starting balance $:</span>
 						<input
 							type="number"
 							onChange={e =>

@@ -38,7 +38,7 @@ class EditBudget extends Component<Props, State> {
 	state = {
 		selected: 0,
 		name: this.props.budget[0].name,
-		categories: this.props.budget[0].categories,
+		categories: [...this.props.budget[0].categories],
 		nCategories: this.props.budget[0].categories.length,
 		startingBalance: this.props.budget[0].startingBalance,
 		loading: false
@@ -70,9 +70,8 @@ class EditBudget extends Component<Props, State> {
 		e.preventDefault();
 		const categories = this.state.categories;
 		const nCategories = this.state.nCategories + 1;
-		for (let i = this.state.nCategories; i < nCategories; i++) {
-			categories.push("");
-		}
+		categories.push("");
+
 		this.setState({ nCategories, categories });
 	};
 
@@ -101,14 +100,18 @@ class EditBudget extends Component<Props, State> {
 		this.setState({
 			selected: i,
 			name: this.props.budget[i].name,
-			categories: this.props.budget[i].categories,
+			categories: [...this.props.budget[i].categories],
 			nCategories: this.props.budget[i].categories.length,
 			startingBalance: this.props.budget[i].startingBalance
 		});
 	};
 
 	handleDelete = () => {
-		if (window.confirm("Are you sure you want to delete Budget?")) {
+		if (
+			window.confirm(
+				`Are you sure you want to delete budget ${this.state.name}?`
+			)
+		) {
 			// Set loading to true
 			this.setState({ loading: true });
 			const previousBudget = this.state.selected - 1;
@@ -119,7 +122,7 @@ class EditBudget extends Component<Props, State> {
 				this.setState({
 					selected: previousBudget,
 					name: this.props.budget[previousBudget].name,
-					categories: this.props.budget[previousBudget].categories,
+					categories: [...this.props.budget[previousBudget].categories],
 					nCategories: this.props.budget[previousBudget].categories.length,
 					startingBalance: this.props.budget[previousBudget].startingBalance,
 					loading: false
@@ -128,22 +131,18 @@ class EditBudget extends Component<Props, State> {
 		}
 	};
 
-	render() {
-		const categoriesArray = [];
-		// Categories are obtained from state, filled when budget retrieved from db
-		for (let i = 0; i < this.state.nCategories; i++) {
-			categoriesArray.push(
-				<input
-					key={i}
-					type="text"
-					maxLength={20}
-					onChange={e => this.onChangeCategory(e, i)}
-					value={this.state.categories[i]}
-					required
-				/>
-			);
-		}
+	handleCancel = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+		e.preventDefault();
+		const i = this.state.selected;
+		this.setState({
+			name: this.props.budget[i].name,
+			categories: [...this.props.budget[i].categories],
+			nCategories: this.props.budget[i].categories.length,
+			startingBalance: this.props.budget[i].startingBalance
+		});
+	};
 
+	render() {
 		// Add spinner while data is being retreived from database
 		return (
 			<div className={classes.container}>
@@ -179,7 +178,7 @@ class EditBudget extends Component<Props, State> {
 								/>
 							</label>
 							<label>
-								<span>Starting balance:</span>
+								<span>Starting balance $:</span>
 								<input
 									type="number"
 									onChange={e =>
@@ -197,7 +196,18 @@ class EditBudget extends Component<Props, State> {
 							</label>
 							<label className={classes.categories}>
 								<span>Categories:</span>
-								{categoriesArray}
+								{this.state.categories.map((c, i) => {
+									return (
+										<input
+											key={i}
+											type="text"
+											maxLength={20}
+											onChange={e => this.onChangeCategory(e, i)}
+											value={this.state.categories[i]}
+											required
+										/>
+									);
+								})}
 							</label>
 							<button className={classes.btnGrey} onClick={this.addCategories}>
 								Add more
@@ -206,6 +216,10 @@ class EditBudget extends Component<Props, State> {
 								Delete category
 							</button>
 
+							{/** Bottom buttons */}
+							<button className={classes.btnCancel} onClick={this.handleCancel}>
+								Cancel
+							</button>
 							<input type="submit" value="Submit" />
 							<span
 								className={classes.deleteBudget}

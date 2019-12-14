@@ -13,21 +13,37 @@
 .form {
     @include pageForm;
 
+    button {
+        border-radius: 2rem;
+    }
+
     .btnGrey {
         justify-self: flex-end;
-        font-size: 1.5rem;
-        width: 50%;
+        font-size: 1.2rem;
+        width: 30%;
+        padding: .5rem;
     }
 
     .btnDel {
         justify-self: flex-start;
-        font-size: 1.5rem;
-        width: 50%;
+        font-size: 1.2rem;
+        width: 30%;
+        padding: .5rem;
+    }
+
+    .btnCancel {
+        border-radius: 0;
+        grid-column: 1/2;
+        margin-top: 7rem;
+        margin-bottom: 3rem;
+        justify-self: flex-end;
     }
 
     input[type='submit'] {
-        margin: 5rem 0;
-        grid-column: 1/-1;
+        margin-top: 7rem;
+        margin-bottom: 3rem;
+        grid-column: 2/-1;
+        justify-self: flex-start;
     }
 
     .deleteBudget {
