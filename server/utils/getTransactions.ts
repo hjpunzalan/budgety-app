@@ -14,13 +14,6 @@ export const getTransactions = (req: Request) => {
 	const limitPerPage = parseInt(limit, 10);
 	const skip = (parseInt(page, 10) - 1) * limitPerPage;
 
-	const skipQuery = {
-		$skip: skip
-	};
-	const limitQuery = {
-		$limit: limitPerPage
-	};
-
 	// Only shows transactions of the budget
 	// If there's no query return dummy projections
 	return Budget.aggregate([
@@ -32,20 +25,10 @@ export const getTransactions = (req: Request) => {
 		{
 			$unwind: "$transactions"
 		},
-		page
-			? skipQuery
-			: {
-					$project: {
-						transactions: 1
-					}
-			  },
-		limit
-			? limitQuery
-			: {
-					$project: {
-						transactions: 1
-					}
-			  },
+		{
+			$skip: page ? skip : 0
+		},
+		{ $limit: limit ? limitPerPage : Number.MAX_SAFE_INTEGER },
 		{
 			$project: {
 				transactions: 1,
