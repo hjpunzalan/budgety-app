@@ -12,32 +12,29 @@ interface Props extends RouteComponentProps, StoreState {
 	location: Location;
 }
 interface State {
-	alertIds: string[];
+	alertId: string;
 	location: Location;
 }
 
 class Alerts extends Component<Props, State> {
 	state = {
-		alertIds: [],
+		alertId: "",
 		location: this.props.location
 	};
 
 	componentDidUpdate(prevProps: Props) {
 		// Remove alert everytime route changes
 		if (this.props.location !== prevProps.location) {
-			for (const id of this.state.alertIds) StatusAlertService.removeAlert(id);
+			StatusAlertService.removeAlert(this.state.alertId);
 		}
 
 		// Add new alert whenever alert is added to the store's state
 		if (this.props.alerts !== prevProps.alerts) {
-			const currentIds = this.state.alertIds;
-			this.props.alerts.forEach(alert => {
-				let alertId: string = "";
-				const { msg, alertType } = alert;
-				// Add custom options such as background color for each alert type
-				alertId = StatusAlertService.showAlert(msg, alertType);
-				this.setState({ alertIds: [...currentIds, alertId] });
-			});
+			const { msg, alertType } = this.props.alerts;
+			// Add custom options such as background color for each alert type
+			const alertId = StatusAlertService.showAlert(msg, alertType);
+			// Set new alert Id for removal
+			this.setState({ alertId });
 		}
 	}
 

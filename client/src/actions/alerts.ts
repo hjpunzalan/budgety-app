@@ -15,7 +15,6 @@ export type Alert = {
 
 export interface ResetAlertAction {
 	type: ActionTypes.resetAlert;
-	payload: [];
 }
 
 export interface SetAlertAction {
@@ -24,8 +23,9 @@ export interface SetAlertAction {
 }
 
 export const setAlert = (msg: string, alertType: AlertType) => (
-	dispatch: Dispatch<SetAlertAction>
+	dispatch: Dispatch
 ) => {
+	dispatch<ResetAlertAction>({ type: ActionTypes.resetAlert });
 	dispatch<SetAlertAction>({
 		type: ActionTypes.alert,
 		payload: { msg, alertType }
@@ -33,7 +33,7 @@ export const setAlert = (msg: string, alertType: AlertType) => (
 };
 
 export const resetAlert = () => (dispatch: Dispatch) => {
-	dispatch({
+	dispatch<ResetAlertAction>({
 		type: ActionTypes.resetAlert
 	});
 };
