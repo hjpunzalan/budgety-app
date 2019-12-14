@@ -64,6 +64,13 @@
         outline: none;
     }
 
+    select {
+        padding: 10px;
+        cursor: pointer;
+        outline: none;
+        width: calc(90% + 20px); // input padding adds width to its element
+    }
+
 
     // Assume maximum inputs is 10 // Start at 3rd row
     // Only the form
@@ -83,12 +90,6 @@
             span {
                 justify-self: flex-end;
                 align-self: center;
-            }
-
-            select {
-                padding: .5rem;
-                cursor: pointer;
-                outline: none;
             }
 
             font-size: 2rem;
