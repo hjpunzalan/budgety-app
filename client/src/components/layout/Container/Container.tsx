@@ -12,6 +12,7 @@ import { StoreState } from "../../../reducers";
 import AddBudget from "../../pages/AddBudget/AddBudget";
 import EditBudget from "../../pages/EditBudget/EditBudget";
 import AddTransaction from "../../pages/AddTransaction/AddTransaction";
+import UpdateMe from "../../pages/UpdateMe/UpdateMe";
 
 interface Props extends StoreState, RouteComponentProps {
 	getLogout: () => Promise<void>;
@@ -37,6 +38,11 @@ class Container extends Component<Props, State> {
 					{/* Routes */}
 					<div className={classes.routes}>
 						<Switch>
+							<Route
+								exact
+								path={this.props.match.url + "/update"}
+								component={UpdateMe}
+							/>
 							<Route
 								exact
 								path={this.props.match.url + "/budget/new"}
@@ -93,7 +99,7 @@ class Container extends Component<Props, State> {
 						<h3>User Actions</h3>
 						<ul>
 							<li>
-								<Link to="/updateme">
+								<Link to="/user/update">
 									<GoPerson />
 									Update user details
 								</Link>

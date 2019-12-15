@@ -1,5 +1,5 @@
+import { UpdateMeForm } from "./../components/pages/UpdateMe/UpdateMe";
 import { AlertType, setAlert } from "./alerts";
-import { IUpdateMeState } from "../components/pages/UpdateMe";
 import { ActionTypes } from "./types";
 import axios from "axios";
 import catchAsync from "../utils/catchAsync";
@@ -7,11 +7,11 @@ import catchAsync from "../utils/catchAsync";
 // Compatible with updateMe state also
 export interface IUser {
 	active?: boolean;
-	id?: string;
+	_id?: string;
 	role?: string;
-	firstName?: string;
-	lastName?: string;
-	email?: string;
+	firstName: string;
+	lastName: string;
+	email: string;
 	password?: string;
 	passwordChangedAt?: Date;
 }
@@ -21,7 +21,7 @@ export interface UpdateUserAction {
 	payload: IUser;
 }
 
-export const updateUser = (form: IUpdateMeState) =>
+export const updateUser = (form: UpdateMeForm) =>
 	catchAsync(async dispatch => {
 		const res = await axios.patch<IUser>("/api/users/updateMe", form);
 
