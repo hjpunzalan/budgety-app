@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { GoDiffAdded, GoPerson } from "react-icons/go";
 import { FaKey } from "react-icons/fa";
 import { FaRegEdit } from "react-icons/fa";
-import { connect } from "react-redux";
 import { Link, Route } from "react-router-dom";
 import { RouteComponentProps, Switch } from "react-router";
+import { connect } from "react-redux";
 import classes from "./Container.module.scss";
 import { getLogout, getAllBudget } from "../../../actions";
 import transactionIcon from "../../../images/transaction.png";
@@ -14,6 +14,7 @@ import EditBudget from "../../pages/EditBudget/EditBudget";
 import AddTransaction from "../../pages/AddTransaction/AddTransaction";
 import UpdateMe from "../../pages/UpdateMe/UpdateMe";
 import ChangePassword from "../../auth/ChangePassword/ChangePassword";
+import Dashboard from "../../pages/Dashboard/Dashboard";
 
 interface Props extends StoreState, RouteComponentProps {
 	getLogout: () => Promise<void>;
@@ -23,7 +24,8 @@ interface State {}
 
 class Container extends Component<Props, State> {
 	// Add selected state so the selected budget becomes highlighted
-	state = {};
+	// Change budget id for edit based on selected budget
+	// Maybe
 
 	componentDidMount() {
 		this.props.getAllBudget();
@@ -39,6 +41,7 @@ class Container extends Component<Props, State> {
 					{/* Routes */}
 					<div className={classes.routes}>
 						<Switch>
+							<Route exact path={this.props.match.url} component={Dashboard} />
 							<Route
 								exact
 								path={this.props.match.url + "/update"}
@@ -56,13 +59,18 @@ class Container extends Component<Props, State> {
 							/>
 							<Route
 								exact
-								path={this.props.match.url + "/budget/edit/:budgetId"}
+								path={this.props.match.url + "/budget/edit"}
 								component={EditBudget}
 							/>
 							<Route
 								exact
 								path={this.props.match.url + "/transactions/new"}
 								component={AddTransaction}
+							/>
+							<Route
+								exact
+								path={this.props.match.url + "/budget/:budgetId"}
+								component={Dashboard}
 							/>
 						</Switch>
 					</div>
@@ -82,7 +90,13 @@ class Container extends Component<Props, State> {
 						<h3>Budgets</h3>
 						<ul>
 							{this.props.budget.map(b => {
-								return <li key={b._id}>{b.name}</li>;
+								return (
+									<li key={b._id}>
+										<Link to={this.props.match.url + `/budget/${b._id}`}>
+											{b.name}
+										</Link>
+									</li>
+								);
 							})}
 						</ul>
 						<div className={classes.budgetActions}>
@@ -93,7 +107,7 @@ class Container extends Component<Props, State> {
 								Add
 							</Link>
 							<Link
-								to={this.props.match.url + "/budget/edit/test"}
+								to={this.props.match.url + "/budget/edit"}
 								className={classes.budgetActionEdit}>
 								<FaRegEdit />
 								Edit
