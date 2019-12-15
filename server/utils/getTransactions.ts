@@ -66,6 +66,9 @@ export const getTransactions = (req: Request) => {
 				expense: {
 					$sum: "$expense"
 				},
+				balance: {
+					$sum: "$transactions.amount"
+				},
 				transactions: {
 					$push: "$transactions"
 				}
