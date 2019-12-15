@@ -30,13 +30,13 @@ export interface EditBudgetForm {
 }
 interface State extends EditBudgetForm {
 	loading: boolean;
-	selected: number;
+	budgetIndex: number;
 	nCategories: number;
 }
 
 class EditBudget extends Component<Props, State> {
 	state = {
-		selected: 0,
+		budgetIndex: 0,
 		name: this.props.budget[0].name,
 		categories: [...this.props.budget[0].categories],
 		nCategories: this.props.budget[0].categories.length,
@@ -46,8 +46,8 @@ class EditBudget extends Component<Props, State> {
 
 	handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		this.setState({ loading: true });
-		const { selected, name, categories, startingBalance } = this.state;
-		const budgetId = this.props.budget[selected]._id;
+		const { budgetIndex, name, categories, startingBalance } = this.state;
+		const budgetId = this.props.budget[budgetIndex]._id;
 		e.preventDefault();
 		if (budgetId) {
 			this.props
@@ -73,17 +73,26 @@ class EditBudget extends Component<Props, State> {
 		categories.push("");
 
 		this.setState({ nCategories, categories });
+		this.props.setAlert(
+			"Be careful when adding categories as these cannot be deleted after updating the budget.",
+			AlertType.info
+		);
 	};
 
 	delCategories = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		e.preventDefault();
+		const i = this.state.budgetIndex;
 		const nCategories = this.state.nCategories - 1;
 		const categories = this.state.categories;
 		// Delete the last element of array and make it empty
-		if (this.state.nCategories > 1) {
+		if (this.state.nCategories > this.props.budget[i].categories.length) {
 			categories.pop();
 			this.setState({ nCategories, categories });
-		}
+		} else
+			this.props.setAlert(
+				"Cannot reduce number of categories that was previously set! This could affect any previous transactions made.",
+				AlertType.warning
+			);
 	};
 
 	onChangeCategory = (
@@ -98,7 +107,7 @@ class EditBudget extends Component<Props, State> {
 	onChangeSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
 		const i = parseInt(e.target.value, 10);
 		this.setState({
-			selected: i,
+			budgetIndex: i,
 			name: this.props.budget[i].name,
 			categories: [...this.props.budget[i].categories],
 			nCategories: this.props.budget[i].categories.length,
@@ -114,13 +123,13 @@ class EditBudget extends Component<Props, State> {
 		) {
 			// Set loading to true
 			this.setState({ loading: true });
-			const previousBudget = this.state.selected - 1;
+			const previousBudget = this.state.budgetIndex - 1;
 
-			const budget = this.props.budget[this.state.selected];
+			const budget = this.props.budget[this.state.budgetIndex];
 			this.props.deleteBudget(budget).then(() => {
 				//Reset form after deleting budget
 				this.setState({
-					selected: previousBudget,
+					budgetIndex: previousBudget,
 					name: this.props.budget[previousBudget].name,
 					categories: [...this.props.budget[previousBudget].categories],
 					nCategories: this.props.budget[previousBudget].categories.length,
@@ -133,7 +142,7 @@ class EditBudget extends Component<Props, State> {
 
 	handleCancel = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		e.preventDefault();
-		const i = this.state.selected;
+		const i = this.state.budgetIndex;
 		this.setState({
 			name: this.props.budget[i].name,
 			categories: [...this.props.budget[i].categories],
@@ -155,7 +164,7 @@ class EditBudget extends Component<Props, State> {
 							<label>
 								<span>Select Budget: </span>
 								<select
-									value={this.state.selected}
+									value={this.state.budgetIndex}
 									onChange={this.onChangeSelect}
 									autoFocus
 									name="Budgets"

@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import classes from "./AddBudget.module.scss";
-import { addBudget } from "../../../actions";
+import { addBudget, setAlert, AlertType } from "../../../actions";
 
 interface Props {
 	addBudget: (form: AddBudgetState) => Promise<void>;
+	setAlert: (msg: string, alertType: AlertType) => void;
 }
 export interface AddBudgetState {
 	nCategories?: number;
@@ -43,6 +44,10 @@ class AddBudget extends Component<Props, AddBudgetState> {
 			categories.push("");
 		}
 		this.setState({ nCategories, categories });
+		this.props.setAlert(
+			"Be careful when adding categories as these cannot be deleted after creating the budget.",
+			AlertType.info
+		);
 	};
 
 	delCategories = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -132,5 +137,5 @@ class AddBudget extends Component<Props, AddBudgetState> {
 
 export default connect(
 	null,
-	{ addBudget }
+	{ addBudget, setAlert }
 )(AddBudget);
