@@ -1,1 +1,15 @@
-@import '../../../styles/variables';
+@import "../../../styles/privMixins";
+@import "../../../styles/variables";
+
+.container {
+	@include pageContainer;
+}
+
+.table {
+	width: 100%;
+}
+
+.groupHeading {
+	background: rgb(212, 212, 212);
+	width: 100%;
+}
