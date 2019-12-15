@@ -82,7 +82,8 @@ class Routes extends Component<Props> {
 const mapStateToProps = (state: StoreState) => ({
 	auth: state.auth,
 	alerts: state.alerts,
-	budget: state.budget
+	budget: state.budget,
+	transactions: state.transactions
 });
 
 export default connect(mapStateToProps)(Routes);
