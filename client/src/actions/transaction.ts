@@ -4,6 +4,7 @@ import { ActionTypes } from "./types";
 import { IUser } from "./user";
 import catchAsync from "../utils/catchAsync";
 import { AddTransactionForm } from "../components/pages/AddTransaction/AddTransaction";
+import { ITransactionResult } from "../reducers/transactions";
 
 export interface ITransaction {
 	_id?: string;
@@ -18,12 +19,28 @@ export interface ITransaction {
 // Will need to refresh the transaction list
 export interface AddTransactionAction {
 	type: ActionTypes.addTransaction;
-	payload: ITransaction[];
+	payload: ITransactionResult[];
 }
+
+export interface GetTransactionsAction {
+	type: ActionTypes.getTransactions;
+	payload: ITransactionResult[];
+}
+
+export const getTransactions = (budgetId: string) =>
+	catchAsync(async dispatch => {
+		const res = await axios.get<ITransactionResult[]>(
+			`/api/transactions/${budgetId}`
+		);
+		dispatch<GetTransactionsAction>({
+			type: ActionTypes.getTransactions,
+			payload: res.data
+		});
+	});
 
 export const addTransaction = (budgetId: string, form: AddTransactionForm) =>
 	catchAsync(async dispatch => {
-		const res = await axios.patch<ITransaction[]>(
+		const res = await axios.patch<ITransactionResult[]>(
 			`/api/transactions/new/${budgetId}`,
 			form
 		);
