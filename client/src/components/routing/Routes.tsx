@@ -9,7 +9,6 @@ import Login from "../auth/Login/Login";
 import Container from "../layout/Container/Container";
 import Register from "../auth/Register/Register";
 import PublicRoute from "./PublicRoute";
-import ChangePassword from "../auth/ChangePassword";
 import ForgotPassword from "../auth/ForgotPassword/ForgotPassword";
 import ResetPassword from "../auth/ResetPassword/ResetPassword";
 
@@ -36,13 +35,7 @@ export const pubRoutesArr = [
 
 // Private routes
 export const privRoutesArr = [
-	{ name: "Dashboard", path: "/user", component: Container, exact: false },
-	{
-		exact: true,
-		name: "Change Password",
-		path: "/changepassword",
-		component: ChangePassword
-	}
+	{ name: "Dashboard", path: "/user", component: Container, exact: false }
 ];
 
 class Routes extends Component<Props> {

@@ -13,6 +13,7 @@ import AddBudget from "../../pages/AddBudget/AddBudget";
 import EditBudget from "../../pages/EditBudget/EditBudget";
 import AddTransaction from "../../pages/AddTransaction/AddTransaction";
 import UpdateMe from "../../pages/UpdateMe/UpdateMe";
+import ChangePassword from "../../auth/ChangePassword/ChangePassword";
 
 interface Props extends StoreState, RouteComponentProps {
 	getLogout: () => Promise<void>;
@@ -42,6 +43,11 @@ class Container extends Component<Props, State> {
 								exact
 								path={this.props.match.url + "/update"}
 								component={UpdateMe}
+							/>
+							<Route
+								exact
+								path={this.props.match.url + "/changepassword"}
+								component={ChangePassword}
 							/>
 							<Route
 								exact
@@ -105,7 +111,7 @@ class Container extends Component<Props, State> {
 								</Link>
 							</li>
 							<li>
-								<Link to="/changepassword">
+								<Link to="/user/changepassword">
 									<FaKey />
 									Change password
 								</Link>

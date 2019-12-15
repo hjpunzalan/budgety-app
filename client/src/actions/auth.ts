@@ -1,7 +1,7 @@
+import axios from "axios";
 import { IResetPassState } from "../components/auth/ResetPassword/ResetPassword";
 import { IForgotPassState } from "../components/auth/ForgotPassword/ForgotPassword";
-import { ChangePassState } from "./../components/auth/ChangePassword";
-import axios from "axios";
+import { ChangePassForm } from "../components/auth/ChangePassword/ChangePassword";
 import { ActionTypes } from "./types";
 import { IUser } from "../actions";
 import catchAsync from "../utils/catchAsync";
@@ -89,7 +89,7 @@ export const registerUser = (form: IRegisterState) =>
 		);
 	});
 
-export const changePassword = (form: ChangePassState) =>
+export const changePassword = (form: ChangePassForm) =>
 	catchAsync(async dispatch => {
 		const res = await axios.post<IUser>("/api/auth/changepassword", form);
 		dispatch<ChangePassAction>({
