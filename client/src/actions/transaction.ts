@@ -10,7 +10,7 @@ export interface ITransaction {
 	desc: string;
 	user?: IUser;
 	date?: Date;
-	category: string;
+	categoryIndex: number;
 	amount: number;
 }
 

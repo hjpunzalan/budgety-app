@@ -6,10 +6,10 @@ import classes from "./AddTransaction.module.scss";
 import { StoreState } from "../../../reducers";
 import Spinner from "../../utils/Spinner/Spinner";
 
-// Get budget based on selected option and then onChange retrieve data from budget state store
+// Get budget based on budgetIndex option and then onChange retrieve data from budget state store
 // Set state of budget and set loading to false to stop spinner
 // Select will be the name of the budget from budgetStore array
-// Selected value by default will be the first in the array eg. this.props.budgets[0].name
+// budgetIndex value by default will be the first in the array eg. this.props.budgets[0].name
 
 interface Props extends StoreState {
 	addTransaction: (budgetId: string, form: AddTransactionForm) => Promise<void>;
@@ -17,13 +17,13 @@ interface Props extends StoreState {
 
 export interface AddTransactionForm {
 	desc: string;
-	category: string;
+	categoryIndex: number;
 	amount: number;
 	date: Date | Date[];
 }
 
 interface State extends AddTransactionForm {
-	selected: number;
+	budgetIndex: number;
 	min: number;
 	max: number;
 	loading: boolean;
@@ -31,9 +31,9 @@ interface State extends AddTransactionForm {
 class AddTransaction extends Component<Props, State> {
 	// Initial state
 	state = {
-		selected: 0,
+		budgetIndex: 0,
 		desc: "",
-		category: this.props.budget[0].categories[0],
+		categoryIndex: 0,
 		amount: 0,
 		min: 0,
 		max: Infinity,
@@ -44,17 +44,17 @@ class AddTransaction extends Component<Props, State> {
 	handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		this.setState({ loading: true });
-		const { selected, desc, category, amount, date } = this.state;
-		const budget = this.props.budget[selected];
+		const { budgetIndex, desc, categoryIndex, amount, date } = this.state;
+		const budget = this.props.budget[budgetIndex];
 		if (budget._id)
 			this.props
-				.addTransaction(budget._id, { desc, category, amount, date })
+				.addTransaction(budget._id, { desc, categoryIndex, amount, date })
 				.then(() => {
 					// Reset form and stop loading
 					this.setState({
 						loading: false,
 						desc: "",
-						category: this.props.budget[selected].categories[0],
+						categoryIndex: 0,
 						amount: 0,
 						min: 0,
 						max: Infinity,
@@ -70,26 +70,23 @@ class AddTransaction extends Component<Props, State> {
 		if (e.target.value === "expense" && amount > 0) {
 			amount *= -1;
 			this.setState({ max: 0, min: -Infinity, amount });
-		} else {
-			if (amount < 0) amount *= -1;
+		} else if (amount < 0 && e.target.value === "income") {
+			amount *= -1;
 			this.setState({ max: Infinity, min: 0 });
+		} else {
+			// Initially negative value but changed type to expense
+			this.setState({ max: 0, min: -Infinity, amount });
 		}
 
 		this.setState({ amount });
 	};
 
 	handleBudgetChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-		const selected = parseInt(e.target.value, 10);
+		const budgetIndex = parseInt(e.target.value, 10);
 		this.setState({
-			selected,
-			category: this.props.budget[selected].categories[0]
+			budgetIndex,
+			categoryIndex: 0
 		});
-	};
-
-	handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-		const selected = this.state.selected;
-		const i = parseInt(e.target.value, 10);
-		this.setState({ category: this.props.budget[selected].categories[i] });
 	};
 
 	render() {
@@ -126,14 +123,19 @@ class AddTransaction extends Component<Props, State> {
 									value={this.state.desc}
 								/>
 							</label>
-							<label className={classes.category}>
+							<label className={classes.categoryIndex}>
 								<span>Category:</span>
 								<select
 									autoFocus
-									name="Budgets"
+									name="categoryIndex"
 									// Add value here later
-									onChange={this.handleCategoryChange}>
-									{this.props.budget[this.state.selected].categories.map(
+									onChange={e =>
+										this.setState({
+											categoryIndex: parseInt(e.target.value, 10)
+										})
+									}
+									value={this.state.categoryIndex}>
+									{this.props.budget[this.state.budgetIndex].categories.map(
 										(c, i) => {
 											return (
 												<option key={i} value={i}>
@@ -158,7 +160,7 @@ class AddTransaction extends Component<Props, State> {
 
 								<input
 									className={
-										this.state.max === 0
+										this.state.amount < 0
 											? classes.inputNumberExp
 											: classes.inputNumberInc
 									}
@@ -180,7 +182,7 @@ class AddTransaction extends Component<Props, State> {
 										type="radio"
 										name="amountType"
 										value="income"
-										defaultChecked={this.state.amount >= 0 ? true : false}
+										checked={this.state.amount >= 0 ? true : false}
 										onChange={e => this.handleChangeType(e)}
 									/>
 									<span>Income +</span>
@@ -191,7 +193,7 @@ class AddTransaction extends Component<Props, State> {
 										name="amountType"
 										value="expense"
 										onChange={e => this.handleChangeType(e)}
-										defaultChecked={this.state.amount >= 0 ? false : true}
+										checked={this.state.amount < 0 ? true : false}
 									/>
 									<span>Expense - </span>
 								</label>
