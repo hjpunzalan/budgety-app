@@ -8,16 +8,14 @@ import { Budget } from "./../models/Budget";
 import { controller, get, patch, use, catchAsync } from "../decorators";
 import { requireAuth } from "../middlewares/requireAuth";
 import { bodyValidator } from "../middlewares/bodyValidator";
-import { Types } from "mongoose";
-
-/// MUCH BETTER TO CREATE A NEW MODEL FOR TRANSACTIONS
 
 export const transactionRoute = Router();
 
 @controller("/transactions", transactionRoute)
 class TransactionController {
 	@patch("/new/:budgetId")
-	@use(requireAuth, bodyValidator("desc", "category", "amount"))
+	// removed categoryIndex because value of 0 is invalid which is also an index defaults to 0 when not provided
+	@use(requireAuth, bodyValidator("desc", "amount"))
 	@catchAsync
 	async newTransaction(req: Request, res: Response, next: NextFunction) {
 		// transactions made default belonging to the user logged in
@@ -26,7 +24,7 @@ class TransactionController {
 		// Filter request body to make sure only allow parameters are passed
 		const filterBody: ITransaction = checkBody(
 			req.body,
-			["desc", "amount", "category", "date"],
+			["desc", "amount", "categoryIndex", "date"],
 			next
 		);
 
@@ -92,13 +90,13 @@ class TransactionController {
 			if (req.body.desc) transaction.desc = req.body.desc;
 			if (req.body.date) transaction.date = req.body.date;
 			if (req.body.amount) transaction.amount = req.body.amount;
-			if (req.body.category) transaction.category = req.body.category;
+			if (req.body.categoryIndex)
+				transaction.categoryIndex = req.body.categoryIndex;
 
 			// Check if category is valid (when using update)
-			const i = findBudget.categories.findIndex(
-				el => el === transaction.category
-			);
-			if (i < 0) return next(new AppError("Invalid category", 400));
+			const validCategory =
+				findBudget.categories.length > transaction.categoryIndex;
+			if (!validCategory) return next(new AppError("Invalid category", 400));
 
 			// Find the one transaction using indexing and update it
 			// The dollar represents the first matching array key index

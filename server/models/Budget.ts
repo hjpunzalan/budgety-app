@@ -14,8 +14,9 @@ const budgetSchema = new mongoose.Schema({
 				type: Date,
 				default: Date.now
 			},
-			category: {
-				type: String
+			categoryIndex: {
+				type: Number,
+				default: 0
 			},
 			amount: Number,
 			balance: Number
@@ -31,7 +32,7 @@ const budgetSchema = new mongoose.Schema({
 // Does not work with find update!!!
 budgetSchema.pre<IBudget>("save", function(next) {
 	this.transactions.forEach(t => {
-		const validate = this.categories.includes(t.category);
+		const validate = this.categories.length > t.categoryIndex;
 		if (!validate) return next(new AppError("Invalid category", 400));
 	});
 	if (this.isNew) this.balance = this.startingBalance;

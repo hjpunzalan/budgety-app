@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction, Router } from "express";
-import { Users } from "./../models/Users";
 import { Budget } from "./../models/Budget";
 import { checkBody } from "../utils/checkBody";
 import { AppError } from "./../utils/appError";
@@ -65,15 +64,17 @@ class budgetController {
 			// Find and check budget exist
 			// Make sure its from user logged in
 			// Update budget
-			const budget = await Budget.findOneAndUpdate(
-				{ _id: req.params.id, user: req.session.userId },
-				filterBody,
-				{
-					new: true,
-					runValidators: true
-				}
-			);
+			const budget = await Budget.findOne({
+				_id: req.params.id,
+				user: req.session.userId
+			});
 			if (!budget) return next(new AppError("No budget found.", 404));
+
+			// Update each transactions category if it was changed!
+			// Or prevent user from deleting categories!
+			if (req.body.categories.length < budget.categories.length) {
+				return next(new AppError("Budget categories cannot be deleted!", 400));
+			}
 
 			// Update budget's balance if startingBalance was changed
 			// Update each transaction's balance also
@@ -83,8 +84,13 @@ class budgetController {
 					t.balance = budget.balance + t.amount;
 					budget.balance += t.amount;
 				});
-				await budget.save();
 			}
+
+			// Update budget other fields
+			const updatedBudget = { ...budget, filterBody };
+
+			// Save updated budget
+			await updatedBudget.save();
 
 			// Return updated budget list to the client
 			// Client updates entire store state
