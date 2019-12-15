@@ -26,7 +26,7 @@ class TransactionController {
 		// Filter request body to make sure only allow parameters are passed
 		const filterBody: ITransaction = checkBody(
 			req.body,
-			["desc", "amount", "category"],
+			["desc", "amount", "category", "date"],
 			next
 		);
 
