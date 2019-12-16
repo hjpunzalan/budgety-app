@@ -21,6 +21,8 @@ export const transactionReducer = (
 		case ActionTypes.getTransactions:
 		case ActionTypes.addTransaction:
 			return action.payload;
+		case ActionTypes.clearTransactions:
+			return initialState;
 		default:
 			return state;
 	}

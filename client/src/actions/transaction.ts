@@ -5,6 +5,7 @@ import { IUser } from "./user";
 import catchAsync from "../utils/catchAsync";
 import { AddTransactionForm } from "../components/pages/AddTransaction/AddTransaction";
 import { ITransactionResult } from "../reducers/transactions";
+import { Dispatch } from "redux";
 
 export interface ITransaction {
 	_id?: string;
@@ -13,6 +14,7 @@ export interface ITransaction {
 	date?: Date;
 	categoryIndex: number;
 	amount: number;
+	balance: number;
 }
 
 // Transaction may be of any date!
@@ -26,6 +28,16 @@ export interface GetTransactionsAction {
 	type: ActionTypes.getTransactions;
 	payload: ITransactionResult[];
 }
+
+export interface ClearTransactionsAction {
+	type: ActionTypes.clearTransactions;
+}
+
+export const clearTransactions = () => (dispatch: Dispatch) => {
+	dispatch<ClearTransactionsAction>({
+		type: ActionTypes.clearTransactions
+	});
+};
 
 export const getTransactions = (budgetId: string) =>
 	catchAsync(async dispatch => {

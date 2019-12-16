@@ -8,6 +8,7 @@ import catchAsync from "../utils/catchAsync";
 import { setAlert, AlertType } from "./alerts";
 import { IRegisterState } from "../components/auth/Register/Register";
 import { ClearBudgetAction } from "./budget";
+import { ClearTransactionsAction } from "./transaction";
 
 export interface LoginAction {
 	type: ActionTypes.loginUser;
@@ -72,6 +73,7 @@ export const getLogout = () =>
 		await axios.get("/api/auth/logout");
 		dispatch<LogoutAction>({ type: ActionTypes.logoutUser });
 		dispatch<ClearBudgetAction>({ type: ActionTypes.clearBudget });
+		dispatch<ClearTransactionsAction>({ type: ActionTypes.clearTransactions });
 	});
 
 export const registerUser = (form: IRegisterState) =>

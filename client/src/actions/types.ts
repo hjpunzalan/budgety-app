@@ -1,4 +1,8 @@
-import { AddTransactionAction, GetTransactionsAction } from "./transaction";
+import {
+	AddTransactionAction,
+	GetTransactionsAction,
+	ClearTransactionsAction
+} from "./transaction";
 import { UpdateUserAction } from "./user";
 import { SetAlertAction, ResetAlertAction } from "./alerts";
 import {
@@ -43,7 +47,8 @@ export enum ActionTypes {
 	//
 	//  TRANSACTIONS
 	addTransaction = "ADD_TRANSACTION",
-	getTransactions = "GET_TRANSACTIONS"
+	getTransactions = "GET_TRANSACTIONS",
+	clearTransactions = "CLEAR_TRANSACTIONS"
 }
 
 // export type UserActions = ;
@@ -63,4 +68,7 @@ export type BudgetActions =
 	| EditBudgetAction
 	| DeleteBudgetAction;
 
-export type TransactionActions = AddTransactionAction | GetTransactionsAction;
+export type TransactionActions =
+	| AddTransactionAction
+	| GetTransactionsAction
+	| ClearTransactionsAction;
