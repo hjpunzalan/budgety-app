@@ -42,7 +42,10 @@ class TransactionController {
 					user: req.session.userId
 				};
 				// Add transaction to the budget
-				budget.transactions.push(transaction);
+				// Very important to use unshift! If push was used, which may be better but,
+				// unshift ensures new transaction sorted first, hence will show first at top with results
+				// push puts it at the bottom and mixes the result
+				budget.transactions.unshift(transaction);
 
 				// Update balance of budget and in transaction
 				// The transactions has to be sorted by date first! Otherwise incorrect running balance will be calculated
