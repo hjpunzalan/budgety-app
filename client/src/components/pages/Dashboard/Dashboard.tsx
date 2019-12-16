@@ -11,6 +11,7 @@ import {
 	AlertType
 } from "../../../actions";
 import Spinner from "../../utils/Spinner/Spinner";
+import { checkAmount } from "../../utils/CheckAmount";
 
 interface Params {
 	budgetId: string;
@@ -57,42 +58,52 @@ class Dashboard extends Component<Props, State> {
 		const { budgetIndex } = this.state;
 		const budget = this.props.budget[budgetIndex];
 		const transactions = this.props.transactions;
-		return this.props.budget[budgetIndex] ? (
+		return this.props.budget[budgetIndex] &&
+			this.props.transactions.length > 0 ? (
 			<div className={classes.container}>
-				<h2>{budget.name}</h2>
-				<h3>Balance: {budget.balance}</h3>
+				<div className={classes.budget}>
+					<h2 className={classes.budgetName}>{budget.name}</h2>
+					<h3 className={classes.budgetBalance}>
+						Balance: {checkAmount(budget.balance)}
+					</h3>
+				</div>
 				<table className={classes.table}>
-					<tr>
-						<th>Date</th>
-						<th>Description</th>
-						<th>Amount</th>
-						<th>Category</th>
-					</tr>
+					<thead>
+						<tr className={classes.heading}>
+							<th>Date</th>
+							<th>Description</th>
+							<th>Amount($AUD)</th>
+							<th>Category</th>
+							<th>Balance</th>
+						</tr>
+					</thead>
 					<tbody>
 						{transactions.map(group => {
 							return (
-								<>
+								<React.Fragment key={group._id.month + group._id.year}>
 									<tr>
-										<td className={classes.groupHeading} colSpan={4}>
+										<td className={classes.groupDate} colSpan={5}>
 											{moment(group._id.month, "MM").format("MMMM")}{" "}
 											{group._id.year}
 										</td>
 									</tr>
-									{group.transactions.map(t => {
+									{group.transactions.map((t, i) => {
 										return (
-											<tr key={t._id}>
+											//When double clicked redirect to edit transaction page!
+											<tr key={i} className={classes.transactions}>
 												<td>
 													{moment(t.date)
 														.format("DD MMM")
 														.toUpperCase()}
 												</td>
 												<td>{t.desc}</td>
-												<td>{t.amount}</td>
+												<td>{checkAmount(t.amount)}</td>
 												<td>{budget.categories[t.categoryIndex]}</td>
+												<td>{checkAmount(t.balance)}</td>
 											</tr>
 										);
 									})}
-								</>
+								</React.Fragment>
 							);
 						})}
 					</tbody>
