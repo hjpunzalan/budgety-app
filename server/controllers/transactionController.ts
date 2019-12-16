@@ -46,28 +46,21 @@ class TransactionController {
 
 				// Update balance of budget and in transaction
 				// The transactions has to be sorted by date first! Otherwise incorrect running balance will be calculated
+				// Recalculate balance
+
 				budget.balance += transaction.amount;
-				budget.transactions = budget.transactions.sort((a, b) => {
-					if (a.date > b.date) return -1;
+				budget.transactions.sort((a, b) => {
+					if (a.date > b.date) return 1;
 					// a , b (2nd Dec , 1st Dec)
-					else return 1; // b, a
+					else return -1; // b, a
 				});
 
-				// Find the index of the transaction and update balance
-				const i = budget.transactions.findIndex(t => {
-					// req.body.date is comes as a string
-					return t.date.getTime() === Date.parse(filterBody.date);
+				// Recalculate balance of budget and transactions
+				budget.balance = budget.startingBalance;
+				budget.transactions.forEach(t => {
+					t.balance = budget.balance + t.amount;
+					budget.balance += t.amount;
 				});
-
-				// [a,b,c,d,e,f,g] / Balance[f] = Balance [g] + Amount[f]
-				if (i < budget.transactions.length - 1) {
-					budget.transactions[i].balance =
-						budget.transactions[i + 1].balance + budget.transactions[i].amount;
-				}
-				// If last member of array or oldest transaction, add from startingBalance
-				else
-					budget.transactions[i].balance =
-						budget.transactions[i].amount + budget.startingBalance;
 
 				// save updated budget
 				await budget.save();
@@ -141,6 +134,15 @@ class TransactionController {
 			if (budget) {
 				// May need to update all the balance of each transaction
 				// Count each balance again
+
+				// Sort transactions first by date (oldest to newest!)
+				budget.transactions.sort((a, b) => {
+					if (a.date > b.date) return 1;
+					// a , b (2nd Dec , 1st Dec)
+					else return -1; // b, a
+				});
+
+				// Recalculate balance of budget and transactions
 				budget.balance = budget.startingBalance;
 				budget.transactions.forEach(t => {
 					t.balance = budget.balance + t.amount;
@@ -192,13 +194,23 @@ class TransactionController {
 			);
 			// Update every transaction's balance
 			if (budget) {
+				// Recalculate balance
+				budget.transactions.sort((a, b) => {
+					if (a.date > b.date) return 1;
+					// a , b (2nd Dec , 1st Dec)
+					else return -1; // b, a
+				});
+
+				// Recalculate balance of budget and transactions
 				budget.balance = budget.startingBalance;
 				budget.transactions.forEach(t => {
 					t.balance = budget.balance + t.amount;
 					budget.balance += t.amount;
 				});
 
+				// save updated budget
 				await budget.save();
+
 				// Send updated transactions
 				const transactions = await getTransactions(req);
 				res.status(200).json(transactions);
