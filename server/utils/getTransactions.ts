@@ -26,6 +26,9 @@ export const getTransactions = (req: Request) => {
 			$unwind: "$transactions"
 		},
 		{
+			$sort: { "transactions.date": -1 }
+		},
+		{
 			$skip: page ? skip : 0
 		},
 		{ $limit: limit ? limitPerPage : Number.MAX_SAFE_INTEGER },
