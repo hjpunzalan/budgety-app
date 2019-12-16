@@ -22,7 +22,7 @@ class TransactionController {
 		// Only user logged in can edit their transactions made but can delete any also
 
 		// Filter request body to make sure only allow parameters are passed
-		const filterBody: ITransaction = checkBody(
+		const filterBody = checkBody(
 			req.body,
 			["desc", "amount", "categoryIndex", "date"],
 			next
@@ -41,12 +41,33 @@ class TransactionController {
 					...filterBody,
 					user: req.session.userId
 				};
-				// Update balance of budget and in transaction
-				budget.balance += transaction.amount;
-				transaction.balance = budget.balance;
-
 				// Add transaction to the budget
 				budget.transactions.push(transaction);
+
+				// Update balance of budget and in transaction
+				// The transactions has to be sorted by date first! Otherwise incorrect running balance will be calculated
+				budget.balance += transaction.amount;
+				budget.transactions = budget.transactions.sort((a, b) => {
+					if (a.date > b.date) return -1;
+					// a , b (2nd Dec , 1st Dec)
+					else return 1; // b, a
+				});
+
+				// Find the index of the transaction and update balance
+				const i = budget.transactions.findIndex(t => {
+					// req.body.date is comes as a string
+					return t.date.getTime() === Date.parse(filterBody.date);
+				});
+
+				// [a,b,c,d,e,f,g] / Balance[f] = Balance [g] + Amount[f]
+				if (i < budget.transactions.length - 1) {
+					budget.transactions[i].balance =
+						budget.transactions[i + 1].balance + budget.transactions[i].amount;
+				}
+				// If last member of array or oldest transaction, add from startingBalance
+				else
+					budget.transactions[i].balance =
+						budget.transactions[i].amount + budget.startingBalance;
 
 				// save updated budget
 				await budget.save();
