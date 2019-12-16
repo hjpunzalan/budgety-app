@@ -64,10 +64,17 @@ class budgetController {
 			// Find and check budget exist
 			// Make sure its from user logged in
 			// Update budget
-			const budget = await Budget.findOne({
-				_id: req.params.id,
-				user: req.session.userId
-			});
+			const budget = await Budget.findOneAndUpdate(
+				{
+					_id: req.params.id,
+					user: req.session.userId
+				},
+				filterBody,
+				{
+					new: true,
+					runValidators: true
+				}
+			);
 			if (!budget) return next(new AppError("No budget found.", 404));
 
 			// Update each transactions category if it was changed!
@@ -84,13 +91,9 @@ class budgetController {
 					t.balance = budget.balance + t.amount;
 					budget.balance += t.amount;
 				});
+				// Save updated budget
+				await budget.save();
 			}
-
-			// Update budget other fields
-			const updatedBudget = { ...budget, filterBody };
-
-			// Save updated budget
-			await updatedBudget.save();
 
 			// Return updated budget list to the client
 			// Client updates entire store state
