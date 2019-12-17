@@ -25,6 +25,7 @@
     border: 1px solid $color-grey;
     border-top: 2px solid $color-primary;
     padding: 5rem;
+    min-height: 50rem;
 }
 
 @mixin pageTitle {
