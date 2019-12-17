@@ -80,7 +80,7 @@ const sendErrorProd = (err: Error | IAppError, res: Response) => {
 		});
 	}
 };
-const sendErrorDev = (err: IAppError, res: Response) => {
+const sendErrorDev = (err: any, res: Response) => {
 	res.status(err.statusCode).json({
 		status: err.status,
 		message: err.message,
@@ -110,7 +110,14 @@ export const globalErrorHandler = (
 		// destructuring doesnt work with error
 		if (isIAppError(err)) sendErrorDev(err, res);
 		else {
-			newError = { ...newError, status: "error", statusCode: 500 };
+			newError = {
+				...err,
+				name: err.name,
+				message: err.message,
+				stack: err.stack,
+				status: "error",
+				statusCode: 500
+			};
 			sendErrorDev(newError, res);
 		}
 	} else if (process.env.NODE_ENV === "production") {
