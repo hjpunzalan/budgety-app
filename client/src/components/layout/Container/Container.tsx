@@ -6,7 +6,7 @@ import { Link, Route } from "react-router-dom";
 import { RouteComponentProps, Switch } from "react-router";
 import { connect } from "react-redux";
 import classes from "./Container.module.scss";
-import { getLogout, getAllBudget } from "../../../actions";
+import { getLogout } from "../../../actions";
 import transactionIcon from "../../../images/transaction.png";
 import { StoreState } from "../../../reducers";
 import AddBudget from "../../pages/AddBudget/AddBudget";
@@ -18,7 +18,6 @@ import Dashboard from "../../pages/Dashboard/Dashboard";
 
 interface Props extends StoreState, RouteComponentProps {
 	getLogout: () => Promise<void>;
-	getAllBudget: () => Promise<void>;
 }
 interface State {}
 
@@ -26,10 +25,6 @@ class Container extends Component<Props, State> {
 	// Add selected state so the selected budget becomes highlighted
 	// Change budget id for edit based on selected budget
 	// Maybe
-
-	componentDidMount() {
-		this.props.getAllBudget();
-	}
 
 	render() {
 		return (
@@ -41,7 +36,6 @@ class Container extends Component<Props, State> {
 					{/* Routes */}
 					<div className={classes.routes}>
 						<Switch>
-							<Route exact path={this.props.match.url} component={Dashboard} />
 							<Route
 								exact
 								path={this.props.match.url + "/update"}
@@ -72,6 +66,7 @@ class Container extends Component<Props, State> {
 								path={this.props.match.url + "/budget/:budgetId"}
 								component={Dashboard}
 							/>
+							<Route exact path={this.props.match.url} component={Dashboard} />
 						</Switch>
 					</div>
 
@@ -89,7 +84,7 @@ class Container extends Component<Props, State> {
 					<div className={classes.budgets}>
 						<h3>Budgets</h3>
 						<ul>
-							{this.props.budget.map(b => {
+							{this.props.budgets.map(b => {
 								return (
 									<li key={b._id}>
 										<Link to={this.props.match.url + `/budget/${b._id}`}>
@@ -140,10 +135,10 @@ class Container extends Component<Props, State> {
 
 const mapStateToProps = (state: StoreState) => ({
 	auth: state.auth,
-	budget: state.budget
+	budgets: state.budgets
 });
 
 export default connect(
 	mapStateToProps,
-	{ getLogout, getAllBudget }
+	{ getLogout }
 )(Container);
