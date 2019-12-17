@@ -5,13 +5,18 @@ import { addTransaction } from "../../../actions";
 import classes from "./AddTransaction.module.scss";
 import { StoreState } from "../../../reducers";
 import Spinner from "../../utils/Spinner/Spinner";
+import { RouteComponentProps } from "react-router";
 
 // Get budget based on budgetIndex option and then onChange retrieve data from budget state store
 // Set state of budget and set loading to false to stop spinner
 // Select will be the name of the budget from budgetStore array
 // budgetIndex value by default will be the first in the array eg. this.props.budgets[0].name
 
-interface Props extends StoreState {
+interface Params {
+	budgetId: string;
+}
+
+interface Props extends StoreState, RouteComponentProps<Params> {
 	addTransaction: (budgetId: string, form: AddTransactionForm) => Promise<void>;
 }
 
@@ -40,6 +45,19 @@ class AddTransaction extends Component<Props, State> {
 		date: new Date(),
 		loading: false
 	};
+
+	componentDidMount() {
+		// If params were provided
+		if (this.props.match.params.budgetId) {
+			const budgetId = this.props.match.params.budgetId;
+			// Find index -- expected to be small group (1-5)
+			const i = this.props.budgets.findIndex(b => b._id === budgetId);
+			this.setState({
+				budgetIndex: i,
+				categoryIndex: 0
+			});
+		}
+	}
 
 	handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -103,7 +121,7 @@ class AddTransaction extends Component<Props, State> {
 								<select
 									autoFocus
 									name="Budgets"
-									// Add value here later
+									value={this.state.budgetIndex}
 									onChange={this.handleBudgetChange}>
 									{this.props.budgets.map((b, i) => {
 										return (
@@ -174,6 +192,8 @@ class AddTransaction extends Component<Props, State> {
 									value={this.state.amount === 0 ? "" : this.state.amount}
 									min={this.state.min}
 									max={this.state.max}
+									// pattern="^\d+(?:\.\d{1,2})?$"
+									// step=".01"
 								/>
 							</label>
 							<div className={classes.type}>
