@@ -2,8 +2,10 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import classes from "./AddBudget.module.scss";
 import { addBudget, setAlert, AlertType } from "../../../actions";
+import { StoreState } from "../../../reducers";
+import { RouteComponentProps } from "react-router";
 
-interface Props {
+interface Props extends StoreState, RouteComponentProps {
 	addBudget: (form: AddBudgetState) => Promise<void>;
 	setAlert: (msg: string, alertType: AlertType) => void;
 }
@@ -24,15 +26,23 @@ class AddBudget extends Component<Props, AddBudgetState> {
 
 	handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
+		const budgetListLength = this.props.budgets.length;
 		const { name, startingBalance, categories } = this.state;
 		this.props.addBudget({ name, startingBalance, categories }).then(() => {
-			// Reset form
-			this.setState({
-				nCategories: 1,
-				name: "",
-				startingBalance: 0,
-				categories: [""]
-			});
+			// If successful
+			if (this.props.budgets.length > budgetListLength) {
+				// Redirect to the budget
+				const budgetId = this.props.budgets[budgetListLength]._id;
+				this.props.history.push(`/user/budget/${budgetId}`);
+			}
+			// /Reset form
+			else
+				this.setState({
+					nCategories: 1,
+					name: "",
+					startingBalance: 0,
+					categories: [""]
+				});
 		});
 	};
 
@@ -135,7 +145,11 @@ class AddBudget extends Component<Props, AddBudgetState> {
 	}
 }
 
+const mapStateToProps = (state: StoreState) => ({
+	budgets: state.budgets
+});
+
 export default connect(
-	null,
+	mapStateToProps,
 	{ addBudget, setAlert }
 )(AddBudget);
