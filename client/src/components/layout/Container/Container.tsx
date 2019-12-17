@@ -63,6 +63,11 @@ class Container extends Component<Props, State> {
 							/>
 							<Route
 								exact
+								path={this.props.match.url + "/transactions/new/:budgetId"}
+								component={AddTransaction}
+							/>
+							<Route
+								exact
 								path={this.props.match.url + "/budget/:budgetId"}
 								component={Dashboard}
 							/>
