@@ -39,6 +39,11 @@ export interface DeleteBudgetAction {
 	payload: IBudget;
 }
 
+export interface GetBudgetAction {
+	type: ActionTypes.getBudget;
+	payload: IBudget;
+}
+
 export const addBudget = (form: AddBudgetState) =>
 	catchAsync(async dispatch => {
 		// Add new budget
@@ -90,4 +95,14 @@ export const deleteBudget = (budget: IBudget) =>
 		dispatch(
 			setAlert(`Budget ${budget.name} successfully deleted!`, AlertType.success)
 		);
+	});
+
+export const getBudget = (budgetId: string) =>
+	catchAsync(async dispatch => {
+		const res = await axios.get<IBudget>(`/api/budget/${budgetId}`);
+
+		dispatch<GetBudgetAction>({
+			type: ActionTypes.getBudget,
+			payload: res.data
+		});
 	});

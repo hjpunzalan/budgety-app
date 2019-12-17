@@ -1,5 +1,6 @@
+import { currentBudgetReducer } from "./currentBudget";
 import { combineReducers } from "redux";
-import { budgetReducer } from "./budget";
+import { budgetsReducer } from "./budgets";
 import { transactionReducer, ITransactionResult } from "./transactions";
 import { authReducer, AuthState } from "./auth";
 import { alertReducer } from "./alerts";
@@ -8,13 +9,15 @@ import { IBudget, Alert } from "../actions";
 export interface StoreState {
 	auth: AuthState;
 	alerts: Alert;
-	budget: IBudget[];
+	budgets: IBudget[];
+	currentBudget: IBudget;
 	transactions: ITransactionResult[];
 }
 
 export const reducers = combineReducers<StoreState>({
 	auth: authReducer,
 	alerts: alertReducer,
-	budget: budgetReducer,
+	budgets: budgetsReducer,
+	currentBudget: currentBudgetReducer,
 	transactions: transactionReducer
 });

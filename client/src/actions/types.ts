@@ -44,6 +44,7 @@ export enum ActionTypes {
 	clearBudget = "CLEAR_BUDGET",
 	editBudget = "EDIT_BUDGET",
 	deleteBudget = "DELETE_BUDGET",
+	getBudget = "GET_BUDGET",
 	//
 	//  TRANSACTIONS
 	addTransaction = "ADD_TRANSACTION",
