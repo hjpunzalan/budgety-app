@@ -37,17 +37,17 @@ interface State extends EditBudgetForm {
 class EditBudget extends Component<Props, State> {
 	state = {
 		budgetIndex: 0,
-		name: this.props.budget[0].name,
-		categories: [...this.props.budget[0].categories],
-		nCategories: this.props.budget[0].categories.length,
-		startingBalance: this.props.budget[0].startingBalance,
+		name: this.props.budgets[0].name,
+		categories: [...this.props.budgets[0].categories],
+		nCategories: this.props.budgets[0].categories.length,
+		startingBalance: this.props.budgets[0].startingBalance,
 		loading: false
 	};
 
 	handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		this.setState({ loading: true });
 		const { budgetIndex, name, categories, startingBalance } = this.state;
-		const budgetId = this.props.budget[budgetIndex]._id;
+		const budgetId = this.props.budgets[budgetIndex]._id;
 		e.preventDefault();
 		if (budgetId) {
 			this.props
@@ -85,7 +85,7 @@ class EditBudget extends Component<Props, State> {
 		const nCategories = this.state.nCategories - 1;
 		const categories = this.state.categories;
 		// Delete the last element of array and make it empty
-		if (this.state.nCategories > this.props.budget[i].categories.length) {
+		if (this.state.nCategories > this.props.budgets[i].categories.length) {
 			categories.pop();
 			this.setState({ nCategories, categories });
 		} else
@@ -108,10 +108,10 @@ class EditBudget extends Component<Props, State> {
 		const i = parseInt(e.target.value, 10);
 		this.setState({
 			budgetIndex: i,
-			name: this.props.budget[i].name,
-			categories: [...this.props.budget[i].categories],
-			nCategories: this.props.budget[i].categories.length,
-			startingBalance: this.props.budget[i].startingBalance
+			name: this.props.budgets[i].name,
+			categories: [...this.props.budgets[i].categories],
+			nCategories: this.props.budgets[i].categories.length,
+			startingBalance: this.props.budgets[i].startingBalance
 		});
 	};
 
@@ -125,15 +125,15 @@ class EditBudget extends Component<Props, State> {
 			this.setState({ loading: true });
 			const previousBudget = this.state.budgetIndex - 1;
 
-			const budget = this.props.budget[this.state.budgetIndex];
+			const budget = this.props.budgets[this.state.budgetIndex];
 			this.props.deleteBudget(budget).then(() => {
 				//Reset form after deleting budget
 				this.setState({
 					budgetIndex: previousBudget,
-					name: this.props.budget[previousBudget].name,
-					categories: [...this.props.budget[previousBudget].categories],
-					nCategories: this.props.budget[previousBudget].categories.length,
-					startingBalance: this.props.budget[previousBudget].startingBalance,
+					name: this.props.budgets[previousBudget].name,
+					categories: [...this.props.budgets[previousBudget].categories],
+					nCategories: this.props.budgets[previousBudget].categories.length,
+					startingBalance: this.props.budgets[previousBudget].startingBalance,
 					loading: false
 				});
 			});
@@ -144,10 +144,10 @@ class EditBudget extends Component<Props, State> {
 		e.preventDefault();
 		const i = this.state.budgetIndex;
 		this.setState({
-			name: this.props.budget[i].name,
-			categories: [...this.props.budget[i].categories],
-			nCategories: this.props.budget[i].categories.length,
-			startingBalance: this.props.budget[i].startingBalance
+			name: this.props.budgets[i].name,
+			categories: [...this.props.budgets[i].categories],
+			nCategories: this.props.budgets[i].categories.length,
+			startingBalance: this.props.budgets[i].startingBalance
 		});
 	};
 
@@ -169,7 +169,7 @@ class EditBudget extends Component<Props, State> {
 									autoFocus
 									name="Budgets"
 									required>
-									{this.props.budget.map((b, i) => (
+									{this.props.budgets.map((b, i) => (
 										<option key={b._id} value={i}>
 											{b.name}
 										</option>
@@ -244,7 +244,7 @@ class EditBudget extends Component<Props, State> {
 }
 
 const mapStateToProps = (state: StoreState) => ({
-	budget: state.budget
+	budgets: state.budgets
 });
 
 export default connect(

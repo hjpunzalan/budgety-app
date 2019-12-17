@@ -45,7 +45,7 @@ class AddTransaction extends Component<Props, State> {
 		e.preventDefault();
 		this.setState({ loading: true });
 		const { budgetIndex, desc, categoryIndex, amount, date } = this.state;
-		const budget = this.props.budget[budgetIndex];
+		const budget = this.props.budgets[budgetIndex];
 		if (budget._id)
 			this.props
 				.addTransaction(budget._id, { desc, categoryIndex, amount, date })
@@ -105,7 +105,7 @@ class AddTransaction extends Component<Props, State> {
 									name="Budgets"
 									// Add value here later
 									onChange={this.handleBudgetChange}>
-									{this.props.budget.map((b, i) => {
+									{this.props.budgets.map((b, i) => {
 										return (
 											<option key={i} value={i}>
 												{b.name}
@@ -135,7 +135,7 @@ class AddTransaction extends Component<Props, State> {
 										})
 									}
 									value={this.state.categoryIndex}>
-									{this.props.budget[this.state.budgetIndex].categories.map(
+									{this.props.budgets[this.state.budgetIndex].categories.map(
 										(c, i) => {
 											return (
 												<option key={i} value={i}>
@@ -209,7 +209,7 @@ class AddTransaction extends Component<Props, State> {
 }
 
 const mapStateToProps = (state: StoreState) => ({
-	budget: state.budget
+	budgets: state.budgets
 });
 
 export default connect(

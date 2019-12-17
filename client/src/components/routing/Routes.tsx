@@ -69,7 +69,8 @@ class Routes extends Component<Props> {
 const mapStateToProps = (state: StoreState) => ({
 	auth: state.auth,
 	alerts: state.alerts,
-	budget: state.budget,
+	budgets: state.budgets,
+	currentBudget: state.currentBudget,
 	transactions: state.transactions
 });
 

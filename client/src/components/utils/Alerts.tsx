@@ -50,7 +50,8 @@ class Alerts extends Component<Props, State> {
 const mapStateToProps = (state: StoreState) => ({
 	auth: state.auth,
 	alerts: state.alerts,
-	budget: state.budget,
+	budgets: state.budgets,
+	currentBudget: state.currentBudget,
 	transactions: state.transactions
 });
 
