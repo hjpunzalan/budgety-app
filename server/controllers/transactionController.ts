@@ -8,6 +8,7 @@ import { Budget } from "./../models/Budget";
 import { controller, get, patch, use, catchAsync } from "../decorators";
 import { requireAuth } from "../middlewares/requireAuth";
 import { bodyValidator } from "../middlewares/bodyValidator";
+import { Types } from "mongoose";
 
 export const transactionRoute = Router();
 
@@ -41,11 +42,18 @@ class TransactionController {
 					...filterBody,
 					user: req.session.userId
 				};
+
+				// Transaction date comes as a string
 				// Add transaction to the budget
-				// Very important to use unshift! If push was used, which may be better but,
-				// unshift ensures new transaction sorted first, hence will show first at top with results
-				// push puts it at the bottom and mixes the result
-				budget.transactions.unshift(transaction);
+				budget.transactions.push(transaction);
+
+				// Add 10 miliseconds for with default dates but if date picker was used, add the transaction's length
+				// Will fail if transaction's length is millions long which is assumed unreachable
+				const i = budget.transactions.length - 1;
+				const ms = budget.transactions[i].date.getMilliseconds();
+				budget.transactions[i].date.setMilliseconds(
+					ms + (ms === 0 ? budget.transactions.length : 10)
+				);
 
 				// Update balance of budget and in transaction
 				// The transactions has to be sorted by date first! Otherwise incorrect running balance will be calculated
@@ -83,29 +91,48 @@ class TransactionController {
 			// Using a method where most logic for finding index and updating is fulfilled by database queries instead of server
 
 			// Find the Budget then transaction to be updated
-			const findBudget = await Budget.findOne(
+			// Required to get the transaction length
+			interface FindBudget {
+				count: number;
+				transactions: ITransaction;
+				categories: string[];
+			}
+			const aggregateBudgets: FindBudget[] = await Budget.aggregate([
 				{
-					_id: req.params.budgetId,
-					user: req.session.userId,
-					"transactions._id": req.params.transactionId
+					$match: {
+						_id: Types.ObjectId(req.params.budgetId)
+					}
 				},
 				{
-					balance: 1,
-					categories: 1,
-					transactions: { $elemMatch: { _id: req.params.transactionId } }
+					$project: {
+						categories: 1,
+						transactions: 1,
+						count: { $size: "$transactions" }
+					}
+				},
+				{
+					$unwind: "$transactions"
+				},
+				{
+					$match: {
+						"transactions._id": Types.ObjectId(req.params.transactionId)
+					}
 				}
-			);
-			if (!findBudget)
-				return next(new AppError("Budget or transaction not found", 404));
+			]);
+			// Doesnt work with aggregation
+			// if (aggregateBudgets.length === 0)
+			// 	return next(new AppError("Budget or transaction not found", 404));
+
+			const findBudget = aggregateBudgets[0];
 
 			// Replace the transaction values with req.body
 			// Replace values in current transaction
-			let transaction = findBudget.transactions[0];
+			let transaction = findBudget.transactions;
 
 			// forEach key values does not work because string type keys cannot be indexed to redefine object
 			// This method does not require a filter checkBody
 			if (req.body.desc) transaction.desc = req.body.desc;
-			if (req.body.date) transaction.date = req.body.date;
+			if (req.body.date) transaction.date = new Date(req.body.date);
 			if (req.body.amount) transaction.amount = req.body.amount;
 			if (req.body.categoryIndex)
 				transaction.categoryIndex = req.body.categoryIndex;
@@ -114,6 +141,14 @@ class TransactionController {
 			const validCategory =
 				findBudget.categories.length > transaction.categoryIndex;
 			if (!validCategory) return next(new AppError("Invalid category", 400));
+
+			// Fix the date for calculating budget purposes
+			// Set req.body.date as a Date object - mongoDB assumed to update format
+			// Adding milliseconds ensures that the updating transaction's date is the newest and in order(prevent same dates)
+			//findBudget.transactions.length === 1 everytime
+
+			const ms = transaction.date.getMilliseconds();
+			transaction.date.setMilliseconds(ms + (ms === 0 ? findBudget.count : 10));
 
 			// Find the one transaction using indexing and update it
 			// The dollar represents the first matching array key index
