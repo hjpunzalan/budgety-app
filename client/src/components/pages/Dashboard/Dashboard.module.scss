@@ -9,7 +9,6 @@
 	display: flex;
 	width: 100%;
 	justify-content: space-between;
-	align-items: center;
 	margin-bottom: 5rem;
 
 	&Name {
@@ -17,8 +16,39 @@
 	}
 
 	&Balance {
-		font-size: 3rem;
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-end;
+
+		h3 {
+			font-size: 3rem;
+			margin-bottom: 1rem;
+		}
+
+		span {
+			font-size: 1.2rem;
+		}
 	}
+}
+
+.addTransactions {
+	margin-top: 5rem;
+	font-size: 3rem;
+	display: inline-block;
+	font-weight: 100;
+
+	span {
+		margin-right: 2rem;
+	}
+
+	a {
+		text-decoration: none;
+		color: black;
+		display: inline-block;
+		padding-bottom: .7rem;
+		border-bottom: 3px solid $color-primary;
+	}
+
 }
 
 .table {
@@ -28,6 +58,7 @@
 
 	.heading {
 		background: $color-primary;
+
 		th {
 			padding: 1rem 0;
 		}
@@ -40,6 +71,7 @@
 	.transactions {
 		td {
 			padding: 1rem 0.5rem;
+
 			&:not(:first-of-type) {
 				text-align: center;
 			}

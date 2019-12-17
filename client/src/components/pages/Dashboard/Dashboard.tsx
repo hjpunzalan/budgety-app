@@ -6,12 +6,14 @@ import classes from "./Dashboard.module.scss";
 import { StoreState } from "../../../reducers";
 import {
 	getTransactions,
+	getBudget,
 	getAllBudget,
 	setAlert,
 	AlertType
 } from "../../../actions";
 import Spinner from "../../utils/Spinner/Spinner";
 import { checkAmount } from "../../utils/CheckAmount";
+import { Link } from "react-router-dom";
 
 interface Params {
 	budgetId: string;
@@ -19,98 +21,134 @@ interface Params {
 interface Props extends StoreState, RouteComponentProps<Params> {
 	getTransactions: (budgetId: string) => Promise<void>;
 	setAlert: (msg: string, alertType: AlertType) => void;
+	getBudget: (budgetId: string) => Promise<void>;
 	getAllBudget: () => Promise<void>;
 }
 interface State {
-	budgetIndex: number;
 	loading: boolean;
 }
 
 class Dashboard extends Component<Props, State> {
 	state = {
-		budgetIndex: 0,
 		loading: true
 	};
 
+	componentDidUpdate(prevProps: Props) {
+		if (this.props.location !== prevProps.location) {
+			this.setState({ loading: true });
+			const budgetId = this.props.match.params.budgetId;
+			this.props.getBudget(budgetId).then(() => {
+				// Load transactions
+				this.props.getTransactions(budgetId).then(() => {
+					this.setState({
+						loading: false
+					});
+				});
+			});
+		}
+	}
+
 	componentDidMount() {
 		// Load budgets first
-		this.props.getAllBudget().then(() => {
+		// If default
+		if (this.props.budgets.length === 0) {
+			this.props.getAllBudget().then(() => {
+				// To be removed after dev
+				if (this.props.auth.currentUser)
+					if (this.props.budgets[0]._id) {
+						const firstBudgetId = this.props.budgets[0]._id;
+						// Load first budget
+						this.props.getBudget(firstBudgetId).then(() => {
+							// Load transactions
+							this.props.getTransactions(firstBudgetId).then(() => {
+								this.setState({
+									loading: false
+								});
+							});
+						});
+					} else this.props.history.push(this.props.match.url + "/budget/new");
+			});
+		} else {
 			const budgetId = this.props.match.params.budgetId;
-			// Load transactions
-			if (this.props.budget[0] && this.props.budget[0]._id) {
-				this.props.getTransactions(
-					budgetId ? budgetId : this.props.budget[0]._id
-				);
-				// Redirect new user with no budget in list
-			} else this.props.history.push(this.props.match.url + "/budget/new");
-			if (budgetId) {
-				// If budget Id is in params then set budgetIndex
-				const budgetIndex = this.props.budget.findIndex(
-					b => b._id === budgetId
-				);
-				this.setState({ budgetIndex });
-			}
-			this.setState({ loading: false });
-		});
+			this.props.getBudget(budgetId).then(() => {
+				// Load transactions
+				this.props.getTransactions(budgetId).then(() => {
+					this.setState({
+						loading: false
+					});
+				});
+			});
+		}
 	}
 
 	render() {
-		const { budgetIndex } = this.state;
-		const budget = this.props.budget[budgetIndex];
+		const budget = this.props.currentBudget;
 		const transactions = this.props.transactions;
-		return this.props.budget[budgetIndex] &&
-			this.props.transactions.length > 0 ? (
+
+		return budget && !this.state.loading ? (
 			<div className={classes.container}>
 				<div className={classes.budget}>
 					<h2 className={classes.budgetName}>{budget.name}</h2>
-					<h3 className={classes.budgetBalance}>
-						Balance: {checkAmount(budget.balance)}
-					</h3>
+					<div className={classes.budgetBalance}>
+						<h3>Balance: {checkAmount(budget.balance)}</h3>
+						<span>Starting Balance: {checkAmount(budget.startingBalance)}</span>
+					</div>
 				</div>
-				<table className={classes.table}>
-					<thead>
-						<tr className={classes.heading}>
-							<th>Date</th>
-							<th>Description</th>
-							<th>Amount($AUD)</th>
-							<th>Category</th>
-							<th>Balance</th>
-						</tr>
-					</thead>
-					<tbody>
-						{transactions.map(group => {
-							return (
-								<React.Fragment key={group._id.month + group._id.year}>
-									<tr>
-										<td className={classes.groupDate} colSpan={5}>
-											{moment(group._id.month, "MM").format("MMMM")}{" "}
-											{group._id.year}
-										</td>
-									</tr>
-									{group.transactions.map((t, i) => {
-										return (
-											//When double clicked redirect to edit transaction page!
-											<tr key={i} className={classes.transactions}>
-												<td>
-													{moment(t.date)
-														.format("DD MMM")
-														.toUpperCase()}
-												</td>
-												<td>{t.desc}</td>
-												<td>{checkAmount(t.amount)}</td>
-												<td>{budget.categories[t.categoryIndex]}</td>
-												<td>{checkAmount(t.balance)}</td>
-											</tr>
-										);
-									})}
-								</React.Fragment>
-							);
-						})}
-					</tbody>
-				</table>
+				{transactions.length > 0 ? (
+					<table className={classes.table}>
+						<thead>
+							<tr className={classes.heading}>
+								<th>Date</th>
+								<th>Description</th>
+								<th>Amount($AUD)</th>
+								<th>Category</th>
+								<th>Balance</th>
+							</tr>
+						</thead>
+						<tbody>
+							{transactions.map(group => {
+								return (
+									<React.Fragment key={group._id.month + group._id.year}>
+										<tr>
+											<td className={classes.groupDate} colSpan={5}>
+												{moment(group._id.month, "MM").format("MMMM")}{" "}
+												{group._id.year}
+											</td>
+										</tr>
+										{group.transactions.map((t, i) => {
+											return (
+												//When double clicked redirect to edit transaction page!
+												<tr key={i} className={classes.transactions}>
+													<td>
+														{moment(t.date)
+															.format("DD MMM")
+															.toUpperCase()}
+													</td>
+													<td>{t.desc}</td>
+													<td>{checkAmount(t.amount)}</td>
+													<td>{budget.categories[t.categoryIndex]}</td>
+													<td>{checkAmount(t.balance)}</td>
+												</tr>
+											);
+										})}
+									</React.Fragment>
+								);
+							})}
+						</tbody>
+					</table>
+				) : (
+					<div className={classes.addTransactions}>
+						<span>No transactions listed.</span>
+						<Link to={`/user/transactions/new/${budget._id}`}>
+							Add one now!
+						</Link>
+					</div>
+				)}
 			</div>
 		) : (
-			<Spinner />
+			<div className={classes.container}>
+				<Spinner />
+			</div>
 		);
 	}
 }
@@ -118,11 +156,12 @@ class Dashboard extends Component<Props, State> {
 const mapStateToProps = (state: StoreState) => ({
 	auth: state.auth,
 	alerts: state.alerts,
-	budget: state.budget,
+	budgets: state.budgets,
+	currentBudget: state.currentBudget,
 	transactions: state.transactions
 });
 
 export default connect(
 	mapStateToProps,
-	{ getTransactions, setAlert, getAllBudget }
+	{ getTransactions, setAlert, getBudget, getAllBudget }
 )(Dashboard);
