@@ -25,19 +25,22 @@ class PrivateRoute extends Route<Props> {
 					this.props.sessionExpired();
 				});
 	}
-	componentDidUpdate() {
-		// Log user out if session expires
-		if (this.props.isAuthenticated)
-			Axios.get<boolean>("/api/auth/isloggedin")
-				.then(res => {
-					if (res.data === false) this.props.sessionExpired();
-					else return;
-				})
-				.catch(err => {
-					console.error(err);
-					// If server fails, log user out
-					this.props.sessionExpired();
-				});
+	// Can be too much request
+	componentDidUpdate(prevProps: Props) {
+		if (prevProps.location !== this.props.location) {
+			// Log user out if session expires
+			if (this.props.isAuthenticated)
+				Axios.get<boolean>("/api/auth/isloggedin")
+					.then(res => {
+						if (res.data === false) this.props.sessionExpired();
+						else return;
+					})
+					.catch(err => {
+						console.error(err);
+						// If server fails, log user out
+						this.props.sessionExpired();
+					});
+		}
 	}
 	public render() {
 		return !this.props.isAuthenticated ? (
