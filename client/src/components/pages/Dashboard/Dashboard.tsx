@@ -24,13 +24,21 @@ interface Props extends StoreState, RouteComponentProps<Params> {
 	getBudget: (budgetId: string) => Promise<void>;
 	getAllBudget: () => Promise<void>;
 }
+
+enum Nav {
+	transactions,
+	graph
+}
+
 interface State {
 	loading: boolean;
+	nav: Nav;
 }
 
 class Dashboard extends Component<Props, State> {
 	state = {
-		loading: true
+		loading: true,
+		nav: Nav.transactions
 	};
 
 	componentDidUpdate(prevProps: Props) {
@@ -88,54 +96,79 @@ class Dashboard extends Component<Props, State> {
 		return budget && !this.state.loading ? (
 			<div className={classes.container}>
 				<div className={classes.budget}>
-					<h2 className={classes.budgetName}>{budget.name}</h2>
+					<h2 className={classes.budgetName}>Budget: {budget.name}</h2>
+
 					<div className={classes.budgetBalance}>
 						<h3>Balance: {checkAmount(budget.balance)}</h3>
 						<span>Starting Balance: {checkAmount(budget.startingBalance)}</span>
 					</div>
 				</div>
 				{transactions.length > 0 ? (
-					<table className={classes.table}>
-						<thead>
-							<tr className={classes.heading}>
-								<th>Date</th>
-								<th>Description</th>
-								<th>Amount($AUD)</th>
-								<th>Category</th>
-								<th>Balance</th>
-							</tr>
-						</thead>
-						<tbody>
-							{transactions.map(group => {
-								return (
-									<React.Fragment key={group._id.month + group._id.year}>
-										<tr>
-											<td className={classes.groupDate} colSpan={5}>
-												{moment(group._id.month, "MM").format("MMMM")}{" "}
-												{group._id.year}
-											</td>
-										</tr>
-										{group.transactions.map((t, i) => {
-											return (
-												//When double clicked redirect to edit transaction page!
-												<tr key={i} className={classes.transactions}>
-													<td>
-														{moment(t.date)
-															.format("DD MMM")
-															.toUpperCase()}
+					<>
+						<div className={classes.nav}>
+							<span
+								className={
+									this.state.nav === Nav.transactions ? classes.navSelected : ""
+								}
+								onClick={e => this.setState({ nav: Nav.transactions })}>
+								Transactions
+							</span>
+							<span> | </span>
+							<span
+								className={
+									this.state.nav === Nav.graph ? classes.navSelected : ""
+								}
+								onClick={e => this.setState({ nav: Nav.graph })}>
+								Graph
+							</span>
+						</div>
+						{/**Only show transactions here */}
+						{this.state.nav === Nav.transactions ? (
+							<table className={classes.table}>
+								<thead>
+									<tr className={classes.heading}>
+										<th>Date</th>
+										<th>Description</th>
+										<th>Amount($AUD)</th>
+										<th>Category</th>
+										<th>Balance</th>
+									</tr>
+								</thead>
+								<tbody>
+									{transactions.map(group => {
+										return (
+											<React.Fragment key={group._id.month + group._id.year}>
+												<tr>
+													<td className={classes.groupDate} colSpan={5}>
+														{moment(group._id.month, "MM").format("MMMM")}{" "}
+														{group._id.year}
 													</td>
-													<td>{t.desc}</td>
-													<td>{checkAmount(t.amount)}</td>
-													<td>{budget.categories[t.categoryIndex]}</td>
-													<td>{checkAmount(t.balance)}</td>
 												</tr>
-											);
-										})}
-									</React.Fragment>
-								);
-							})}
-						</tbody>
-					</table>
+												{group.transactions.map((t, i) => {
+													return (
+														//When double clicked redirect to edit transaction page!
+														<tr key={i} className={classes.transactions}>
+															<td>
+																{moment(t.date)
+																	.format("DD MMM")
+																	.toUpperCase()}
+															</td>
+															<td>{t.desc}</td>
+															<td>{checkAmount(t.amount)}</td>
+															<td>{budget.categories[t.categoryIndex]}</td>
+															<td>{checkAmount(t.balance)}</td>
+														</tr>
+													);
+												})}
+											</React.Fragment>
+										);
+									})}
+								</tbody>
+							</table>
+						) : (
+							<div></div>
+						)}
+					</>
 				) : (
 					<div className={classes.addTransactions}>
 						<span>No transactions listed.</span>
