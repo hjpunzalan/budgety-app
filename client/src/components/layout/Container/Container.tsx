@@ -80,7 +80,9 @@ class Container extends Component<Props, State> {
 						className={classes.add}
 						onClick={() =>
 							this.props.history.push(
-								this.props.match.url + "/transactions/new"
+								this.props.match.url +
+									"/transactions/new" +
+									`/${this.props.currentBudget && this.props.currentBudget._id}`
 							)
 						}>
 						<img src={transactionIcon} alt="Transaction icon" />
@@ -140,7 +142,8 @@ class Container extends Component<Props, State> {
 
 const mapStateToProps = (state: StoreState) => ({
 	auth: state.auth,
-	budgets: state.budgets
+	budgets: state.budgets,
+	currentBudget: state.currentBudget
 });
 
 export default connect(
