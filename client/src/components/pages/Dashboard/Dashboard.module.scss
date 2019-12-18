@@ -5,6 +5,26 @@
 	@include pageContainer;
 }
 
+.nav {
+	font-size: 1.5rem;
+	font-weight: 900;
+	margin-bottom: 3rem;
+	letter-spacing: 0.1rem;
+
+	span {
+		border-bottom: none;
+		color: black;
+		transition: all 0.2s;
+		cursor: pointer;
+
+		&.navSelected {
+			color: $color-primary;
+			border-bottom: 2px solid $color-primary;
+			padding-bottom: 0.5rem;
+		}
+	}
+}
+
 .budget {
 	display: flex;
 	width: 100%;
@@ -12,7 +32,7 @@
 	margin-bottom: 5rem;
 
 	&Name {
-		font-size: 4rem;
+		font-size: 3rem;
 	}
 
 	&Balance {
@@ -33,7 +53,7 @@
 
 .addTransactions {
 	margin-top: 5rem;
-	font-size: 3rem;
+	font-size: 2rem;
 	display: inline-block;
 	font-weight: 100;
 
@@ -45,10 +65,9 @@
 		text-decoration: none;
 		color: black;
 		display: inline-block;
-		padding-bottom: .7rem;
+		padding-bottom: 0.5rem;
 		border-bottom: 3px solid $color-primary;
 	}
-
 }
 
 .table {
