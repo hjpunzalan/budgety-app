@@ -43,7 +43,8 @@ class Dashboard extends Component<Props, State> {
 
 	componentDidUpdate(prevProps: Props) {
 		if (this.props.location !== prevProps.location) {
-			this.setState({ loading: true });
+			// set initial state
+			this.setState({ loading: true, nav: Nav.transactions });
 			const budgetId = this.props.match.params.budgetId;
 			this.props.getBudget(budgetId).then(() => {
 				// Load transactions
