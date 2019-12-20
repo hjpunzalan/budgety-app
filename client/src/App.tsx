@@ -4,8 +4,9 @@ import { checkUser } from "./actions";
 import classes from "./App.module.scss";
 import Routes from "./components/routing/Routes";
 import Alerts from "./components/utils/Alerts";
+import { StoreState } from "./reducers";
 
-interface Props {
+interface Props extends StoreState {
 	checkUser: () => Promise<void>;
 }
 
@@ -18,14 +19,21 @@ class App extends Component<Props> {
 	render() {
 		return (
 			<div className={classes.App}>
-				<Alerts />
-				<Routes />
+				<Alerts alerts={this.props.alerts} />
+				<Routes auth={this.props.auth} />
 			</div>
 		);
 	}
 }
+const mapStateToProps = (state: StoreState) => ({
+	auth: state.auth,
+	alerts: state.alerts,
+	budgets: state.budgets,
+	currentBudget: state.currentBudget,
+	transactions: state.transactions
+});
 
 export default connect(
-	null,
+	mapStateToProps,
 	{ checkUser }
 )(App);

@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import { Switch } from "react-router-dom";
-import { connect } from "react-redux";
-import { StoreState } from "../../reducers";
 import PrivateRoute from "./PrivateRoute";
 import Home from "../pages/Home/Home";
 import Login from "../auth/Login/Login";
@@ -11,8 +9,11 @@ import Register from "../auth/Register/Register";
 import PublicRoute from "./PublicRoute";
 import ForgotPassword from "../auth/ForgotPassword/ForgotPassword";
 import ResetPassword from "../auth/ResetPassword/ResetPassword";
+import { AuthState } from "../../reducers/auth";
 
-interface Props extends StoreState {}
+interface Props {
+	auth: AuthState;
+}
 
 // Public routes
 // !!!!!!!!!!!!!!!!!!!!!!!!
@@ -66,12 +67,4 @@ class Routes extends Component<Props> {
 	}
 }
 
-const mapStateToProps = (state: StoreState) => ({
-	auth: state.auth,
-	alerts: state.alerts,
-	budgets: state.budgets,
-	currentBudget: state.currentBudget,
-	transactions: state.transactions
-});
-
-export default connect(mapStateToProps)(Routes);
+export default Routes;

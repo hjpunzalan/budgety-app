@@ -4,11 +4,11 @@ import "react-status-alert/dist/status-alert.css";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { Location } from "history";
 import { connect } from "react-redux";
-import { StoreState } from "../../reducers";
-import { setAlert, resetAlert } from "../../actions";
+import { setAlert, resetAlert, Alert } from "../../actions";
 
 // RouteComponent Allow the use of withRouter
-interface Props extends RouteComponentProps, StoreState {
+interface Props extends RouteComponentProps {
+	alerts: Alert;
 	location: Location;
 }
 interface State {
@@ -47,16 +47,8 @@ class Alerts extends Component<Props, State> {
 	}
 }
 
-const mapStateToProps = (state: StoreState) => ({
-	auth: state.auth,
-	alerts: state.alerts,
-	budgets: state.budgets,
-	currentBudget: state.currentBudget,
-	transactions: state.transactions
-});
-
 export default connect(
-	mapStateToProps,
+	null,
 	{
 		setAlert,
 		resetAlert
