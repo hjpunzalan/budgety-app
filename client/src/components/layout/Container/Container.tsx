@@ -93,8 +93,10 @@ class Container extends Component<Props, State> {
 						<ul>
 							{this.props.budgets.map(b => {
 								return (
-									<Link to={this.props.match.url + `/budget/${b._id}`}>
-										<li key={b._id}>{b.name}</li>
+									<Link
+										key={b._id}
+										to={this.props.match.url + `/budget/${b._id}`}>
+										<li>{b.name}</li>
 									</Link>
 								);
 							})}
