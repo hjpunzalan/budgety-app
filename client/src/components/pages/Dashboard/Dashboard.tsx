@@ -14,6 +14,7 @@ import {
 import Spinner from "../../utils/Spinner/Spinner";
 import { checkAmount } from "../../utils/CheckAmount";
 import { Link } from "react-router-dom";
+import BarGraph from "../BarGraph/BarGraph";
 
 interface Params {
 	budgetId: string;
@@ -150,7 +151,8 @@ class Dashboard extends Component<Props, State> {
 														//When double clicked redirect to edit transaction page!
 														<tr key={i} className={classes.transactions}>
 															<td>
-																{moment(t.date)
+																{moment
+																	.utc(t.date)
 																	.format("DD MMM")
 																	.toUpperCase()}
 															</td>
@@ -167,7 +169,7 @@ class Dashboard extends Component<Props, State> {
 								</tbody>
 							</table>
 						) : (
-							<div></div>
+							<BarGraph transactions={this.props.transactions} />
 						)}
 					</>
 				) : (

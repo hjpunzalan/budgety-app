@@ -63,6 +63,13 @@ class AddTransaction extends Component<Props, State> {
 		e.preventDefault();
 		this.setState({ loading: true });
 		const { budgetIndex, desc, categoryIndex, amount, date } = this.state;
+		// This fixes the bug when sending different format of Date to server from client's format
+		// The bug is the date saved on server is the day before when its the beginning of the month
+		// The selections works correclty but the server assumes its the day before.
+		if (date instanceof Date) {
+			const day = date.getDate();
+			date.setDate(day + 1);
+		}
 		const budget = this.props.budgets[budgetIndex];
 		if (budget._id)
 			this.props
@@ -105,6 +112,10 @@ class AddTransaction extends Component<Props, State> {
 			budgetIndex,
 			categoryIndex: 0
 		});
+	};
+
+	handleDateChange = (date: Date | Date[]) => {
+		this.setState({ date });
 	};
 
 	render() {
@@ -167,7 +178,7 @@ class AddTransaction extends Component<Props, State> {
 							<label className={classes.date}>
 								<span className={classes.dateLabel}>Date: </span>
 								<DatePicker
-									onChange={date => this.setState({ date })}
+									onChange={this.handleDateChange}
 									value={this.state.date}
 									format="dd/MM/y"
 								/>
