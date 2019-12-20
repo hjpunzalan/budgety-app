@@ -1,21 +1,30 @@
 import React, { Component } from "react";
+import * as d3 from "d3";
 import { select } from "d3";
+import { ITransactionResult } from "../../../reducers/transactions";
 
-interface Props {}
+interface Props {
+	transactions: ITransactionResult[];
+}
 interface State {}
 
+const margin = {
+	top: 40,
+	right: 20,
+	bottom: 50,
+	left: 100
+};
+
+// give space to axis
+const graphWidth = 560 - margin.left - margin.right;
+const graphHeight = 400 - margin.top - margin.bottom;
+
 class BarGraph extends Component<Props, State> {
-	private canvas: React.RefObject<HTMLCanvasElement>;
-	constructor(props: Props) {
-		super(props);
-		this.canvas = React.createRef();
-	}
+	canvas = React.createRef<HTMLDivElement>();
 
 	componentDidMount() {
-		const margin = { top: 40, right: 20, bottom: 50, left: 100 }; // give space to axis
-		const graphWidth = 560 - margin.left - margin.left - margin.right;
-		const graphHeight = 400 - margin.top - margin.bottom;
-
+		const data = this.props.transactions;
+		// Selectors
 		const svg = select(this.canvas.current)
 			.append("svg")
 			.attr("width", graphWidth + margin.left + margin.right)
@@ -24,12 +33,41 @@ class BarGraph extends Component<Props, State> {
 		const graph = svg
 			.append("g")
 			.attr("width", graphWidth)
-			.attr("height", graphHeight)
-			.attr("transform", `translate(${margin.left}, ${margin.top})`);
+			.attr("height", graphHeight);
+		// .attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+		// scales for data
+		const y = d3.scaleLinear().range([0, graphHeight]);
+
+		const x = d3
+			.scaleBand<number>()
+			.range([0, 500])
+			.paddingInner(0.2)
+			.paddingOuter(0.2); //px
+
+		// Set domains
+		if (d3.max(data, d => d.transactions[0].balance))
+			y.domain([0, d3.max(data, d => d.transactions[0].balance) as number]);
+		x.domain([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+		graph
+			.selectAll("rect")
+			.data(data)
+			.enter()
+			.append("rect")
+			.attr("fill", "orange")
+			.attr("x", d => {
+				const val = x(d._id.month);
+				if (val) return val;
+				else return d._id.month;
+			})
+			// Creates space based on index
+			.attr("width", 50)
+			// .attr("y", d => y(d.transactions[0].balance))
+			.attr("height", d => y(d.transactions[0].balance));
 	}
 
 	render() {
-		return <canvas ref={this.canvas}></canvas>;
+		return <div ref={this.canvas}></div>;
 	}
 }
 

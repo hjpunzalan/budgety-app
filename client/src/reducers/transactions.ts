@@ -7,7 +7,6 @@ export interface ITransactionResult {
 	};
 	income: number;
 	expense: number;
-	balance: number;
 	transactions: ITransaction[];
 }
 
