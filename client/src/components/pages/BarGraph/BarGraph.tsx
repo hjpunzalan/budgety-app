@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import * as d3 from "d3";
 import { select } from "d3";
 import { ITransactionResult } from "../../../reducers/transactions";
+import moment from "moment";
 
 interface Props {
 	transactions: ITransactionResult[];
@@ -34,16 +35,27 @@ class BarGraph extends Component<Props, State> {
 			.append("g")
 			.attr("width", graphWidth)
 			.attr("height", graphHeight);
-		// .attr("transform", `translate(${margin.left}, ${margin.top})`);
+		// .attr("transform", `translate(-${margin.left}, ${margin.top})`);
+
+		const xAxisGroup = graph
+			.append("g")
+			.attr("transform", `translate(0,${graphHeight})`);
+		const yAxisGroup = graph.append("g");
 
 		// scales for data
-		const y = d3.scaleLinear().range([0, graphHeight]);
+		const y = d3.scaleLinear().range([graphHeight, 0]);
 
 		const x = d3
 			.scaleBand<number>()
 			.range([0, 500])
 			.paddingInner(0.2)
 			.paddingOuter(0.2); //px
+
+		// create the axis
+		const xAxis = d3
+			.axisBottom(x)
+			.tickFormat(d => moment(d.toString(), "MM").format("MMM"));
+		const yAxis = d3.axisLeft(y);
 
 		// Set domains
 		if (d3.max(data, d => d.transactions[0].balance))
@@ -62,8 +74,12 @@ class BarGraph extends Component<Props, State> {
 			})
 			// Creates space based on index
 			.attr("width", 50)
-			// .attr("y", d => y(d.transactions[0].balance))
-			.attr("height", d => y(d.transactions[0].balance));
+			.attr("y", d => y(d.transactions[0].balance))
+			.attr("height", d => graphHeight - y(d.transactions[0].balance));
+
+		// Call axis
+		xAxisGroup.call(xAxis);
+		yAxisGroup.call(yAxis);
 	}
 
 	render() {
