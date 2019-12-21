@@ -3,34 +3,51 @@ import * as d3 from "d3";
 import { select } from "d3";
 import { ITransactionResult } from "../../../reducers/transactions";
 import moment from "moment";
+import classes from "./BarGraph.module.scss";
 
 interface Props {
 	transactions: ITransactionResult[];
 }
 interface State {}
 
-const margin = {
-	top: 20,
-	right: 20,
-	bottom: 25,
-	left: 100
-};
-
-// give space to axis
-const graphWidth = 700 - margin.left - margin.right;
-const graphHeight = 400 - margin.top - margin.bottom;
-const barSpacing = 10;
-
 class BarGraph extends Component<Props, State> {
 	canvas = React.createRef<HTMLDivElement>();
 
 	componentDidMount() {
 		const data = this.props.transactions;
+
+		const margin = {
+			top: 10,
+			right: 10,
+			bottom: 25,
+			left: 100
+		};
+
+		const width = this.canvas.current
+			? this.canvas.current.offsetWidth
+			: 800;
+		const height = this.canvas.current
+			? this.canvas.current.offsetHeight
+			: 500;
+
 		// Selectors
 		const svg = select(this.canvas.current)
 			.append("svg")
-			.attr("width", graphWidth + margin.left + margin.right)
-			.attr("height", graphHeight + margin.bottom + margin.top);
+			.attr("width", "100%")
+			.attr("height", "100%")
+			.attr(
+				"viewBox",
+				`0 0 ${width}  ${height}`
+			)
+			.attr("preserveAspectRatio", "xMinYMin meet");
+		
+		const canvasWidth = svg.node()?.getBoundingClientRect().width || 800;
+		const canvasHeight = svg.node()?.getBoundingClientRect().height || 500
+
+				// give space to axis
+		const graphWidth = canvasWidth - margin.left - margin.right;
+		const graphHeight = canvasHeight - margin.top - margin.bottom;
+		const barSpacing = 20;
 
 		const graph = svg
 			.append("g")
@@ -40,13 +57,14 @@ class BarGraph extends Component<Props, State> {
 
 		const xAxisGroup = graph
 			.append("g")
-			.attr("transform", `translate(0,${graphHeight})`);
-		const yAxisGroup = graph.append("g");
+			.attr("transform", `translate(0,${graphHeight})`)
+			.style("font-size", "12px");
+		const yAxisGroup = graph.append("g").style("font-size", "12px");
 
 		// scales for data
 		const y = d3.scaleLinear().range([graphHeight, 0]);
 
-		const x = d3.scaleBand<number>().range([0, 500]);
+		const x = d3.scaleBand<number>().range([0, graphWidth]);
 
 		// Set domains
 		const xMax = d3.max(data, d => d.transactions[0].balance);
@@ -80,7 +98,7 @@ class BarGraph extends Component<Props, State> {
 			.data(data)
 			.enter()
 			.append("rect")
-			.attr("fill", "orange")
+			.attr("fill", "rgb(0, 153, 255)")
 			.attr("x", d => {
 				const val = x(d._id.month);
 				if (val) return val;
@@ -97,7 +115,7 @@ class BarGraph extends Component<Props, State> {
 	}
 
 	render() {
-		return <div ref={this.canvas}></div>;
+		return <div className={classes.canvas} ref={this.canvas}></div>;
 	}
 }
 
