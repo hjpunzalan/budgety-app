@@ -5,6 +5,7 @@ import d3Tip from 'd3-tip'
 import { ITransactionResult } from "../../../reducers/transactions";
 import moment from "moment";
 import classes from "./BarGraph.module.scss";
+import { checkAmount } from "../../utils/CheckAmount";
 
 interface Props {
 	transactions: ITransactionResult[];
@@ -98,9 +99,9 @@ class BarGraph extends Component<Props, State> {
 			.attr('class', classes.toolTip)
 			.offset([-10,0])
 		.html((d: ITransactionResult) => {
-			return `<div><strong>Balance: </strong> <span>${d.transactions[0].balance}</span></div>
-					<div><strong>Income: </strong> <span>${d.income}</span></div>
-					<div><strong>Expenses: </strong> <span>${d.expense}</span></div>
+			return `<div><strong>Balance: </strong> <span>${checkAmount(d.transactions[0].balance)}</span></div>
+					<div><strong>Income: </strong> <span>${checkAmount(d.income)}</span></div>
+					<div><strong>Expense: </strong> <span>${checkAmount(d.expense)}</span></div>
 			
 			`
 		});
