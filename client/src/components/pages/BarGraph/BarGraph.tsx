@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import * as d3 from "d3";
 import { select } from "d3";
+import d3Tip from 'd3-tip'
 import { ITransactionResult } from "../../../reducers/transactions";
 import moment from "moment";
 import classes from "./BarGraph.module.scss";
@@ -24,12 +25,13 @@ class BarGraph extends Component<Props, State> {
 		};
 
 		const width = this.canvas.current
-			? this.canvas.current.offsetWidth
-			: 800;
+		? this.canvas.current.offsetWidth
+		: 800;
 		const height = this.canvas.current
-			? this.canvas.current.offsetHeight
-			: 500;
-
+		? this.canvas.current.offsetHeight
+		: 500;
+		
+		const barSpacing = 10;
 		// Selectors
 		const svg = select(this.canvas.current)
 			.append("svg")
@@ -47,7 +49,6 @@ class BarGraph extends Component<Props, State> {
 				// give space to axis
 		const graphWidth = canvasWidth - margin.left - margin.right;
 		const graphHeight = canvasHeight - margin.top - margin.bottom;
-		const barSpacing = 20;
 
 		const graph = svg
 			.append("g")
@@ -91,7 +92,20 @@ class BarGraph extends Component<Props, State> {
 			.ticks(3)
 			.tickValues(ticks)
 			.tickFormat(d => "$" + d);
-
+		
+		// Mousseover tooltip
+		const tip = (d3Tip as Function)()
+			.attr('class', classes.toolTip)
+			.offset([-10,0])
+		.html((d: ITransactionResult) => {
+			return `<div><strong>Balance: </strong> <span>${d.transactions[0].balance}</span></div>
+					<div><strong>Income: </strong> <span>${d.income}</span></div>
+					<div><strong>Expenses: </strong> <span>${d.expense}</span></div>
+			
+			`
+		});
+	graph.call(tip); // apply tip to all graph group
+		
 		// Enter selection
 		graph
 			.selectAll("rect")
@@ -107,7 +121,10 @@ class BarGraph extends Component<Props, State> {
 			// Creates space based on index
 			.attr("width", graphWidth / 12 - barSpacing)
 			.attr("y", d => y(d.transactions[0].balance))
-			.attr("height", d => graphHeight - y(d.transactions[0].balance));
+			.attr("height", d => graphHeight - y(d.transactions[0].balance))
+			.style('cursor', 'pointer')
+			.on('mouseover',function(d){tip.show(d, this)})
+			.on('mouseout', function(d) { tip.hide(d,this)})
 
 		// Call axis
 		xAxisGroup.call(xAxis);
