@@ -40,20 +40,6 @@ export const getTransactions = (req: Request) => {
 				},
 				year: {
 					$year: "$transactions.date"
-				},
-				income: {
-					$cond: {
-						if: { $gte: ["$transactions.amount", 0] },
-						then: "$transactions.amount",
-						else: 0
-					}
-				},
-				expense: {
-					$cond: {
-						if: { $lt: ["$transactions.amount", 0] },
-						then: "$transactions.amount",
-						else: 0
-					}
 				}
 			}
 		},
@@ -62,15 +48,6 @@ export const getTransactions = (req: Request) => {
 				_id: {
 					month: "$month",
 					year: "$year"
-				},
-				income: {
-					$sum: "$income"
-				},
-				expense: {
-					$sum: "$expense"
-				},
-				balance: {
-					$sum: "$transactions.amount"
 				},
 				transactions: {
 					$push: "$transactions"

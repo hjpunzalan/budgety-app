@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import { Request, Response, NextFunction, Router } from "express";
 import { Budget } from "./../models/Budget";
 import { checkBody } from "../utils/checkBody";
@@ -151,5 +152,81 @@ class budgetController {
 				return next(new AppError("No budget belongs to the id", 404));
 			res.status(204).json({ success: "Budget Deleted" });
 		} else return next(new AppError("User no longer logged in", 403));
+	}
+
+	@get("/stats/:budgetId")
+	@use(requireAuth)
+	@catchAsync
+	async getStats(req: Request, res: Response, next: NextFunction) {
+		// Only show balance,income,expense
+		const stats = await Budget.aggregate([
+			{
+				$match: {
+					_id: Types.ObjectId(req.params.budgetId)
+				}
+			},
+			{
+				$unwind: "$transactions"
+			},
+			{
+				$sort: {
+					"transactions.date": -1
+				}
+			},
+			{
+				$project: {
+					lastTransaction: { $slice: ["$transactions", 0, 1] },
+					month: {
+						$month: "$transactions.date"
+					},
+					year: {
+						$year: "$transactions.date"
+					},
+					income: {
+						$cond: {
+							if: {
+								$gte: ["$transactions.amount", 0]
+							},
+							then: "$transactions.amount",
+							else: 0
+						}
+					},
+					expense: {
+						$cond: {
+							if: {
+								$lt: ["$transactions.amount", 0]
+							},
+							then: "$transactions.amount",
+							else: 0
+						}
+					}
+				}
+			},
+			{
+				$group: {
+					_id: {
+						month: "$month",
+						year: "$year"
+					},
+					income: {
+						$sum: "$income"
+					},
+					expense: {
+						$sum: "$expense"
+					},
+					transactions: {
+						$push: "$lastTransaction"
+					}
+				}
+			},
+
+			{
+				$sort: {
+					"_id.year": -1,
+					"_id.month": -1
+				}
+			}
+		]);
+		res.status(200).json(stats);
 	}
 }
