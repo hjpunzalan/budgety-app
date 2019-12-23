@@ -154,6 +154,83 @@ class budgetController {
 		} else return next(new AppError("User no longer logged in", 403));
 	}
 
+	// get method
+	// group by categoryindex
+	// display income and expenses
+
+	@get("/categories/:budgetId")
+	@use(requireAuth)
+	@catchAsync
+	async getCategories(req: Request, res: Response, next: NextFunction) {
+		const budget = await Budget.aggregate([
+			{
+				$match: {
+					_id: Types.ObjectId(req.params.budgetId)
+				}
+			},
+			{
+				$unwind: "$transactions"
+			},
+			{
+				$sort: {
+					"transactions.date": -1
+				}
+			},
+			{
+				$project: {
+					transactions: 1,
+					month: {
+						$month: "$transactions.date"
+					},
+					year: {
+						$year: "$transactions.date"
+					},
+					income: {
+						$cond: {
+							if: {
+								$gte: ["$transactions.amount", 0]
+							},
+							then: "$transactions.amount",
+							else: 0
+						}
+					},
+					expense: {
+						$cond: {
+							if: {
+								$lt: ["$transactions.amount", 0]
+							},
+							then: "$transactions.amount",
+							else: 0
+						}
+					}
+				}
+			},
+			{
+				$group: {
+					_id: {
+						month: "$month",
+						year: "$year",
+						category: "$transactions.categoryIndex"
+					},
+					income: {
+						$sum: "$income"
+					},
+					expense: {
+						$sum: "$expense"
+					}
+				}
+			},
+
+			{
+				$sort: {
+					"_id.year": -1,
+					"_id.month": -1
+				}
+			}
+		]);
+		res.status(200).json(budget);
+	}
+
 	@get("/stats/:budgetId")
 	@use(requireAuth)
 	@catchAsync
