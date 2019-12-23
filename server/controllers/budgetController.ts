@@ -175,7 +175,7 @@ class budgetController {
 			},
 			{
 				$project: {
-					lastTransaction: { $slice: ["$transactions", 0, 1] },
+					transactions: 1,
 					month: {
 						$month: "$transactions.date"
 					},
@@ -214,8 +214,8 @@ class budgetController {
 					expense: {
 						$sum: "$expense"
 					},
-					transactions: {
-						$push: "$lastTransaction"
+					balance: {
+						$first: "$transactions.balance"
 					}
 				}
 			},
