@@ -20,7 +20,7 @@ interface Params {
 	budgetId: string;
 }
 interface Props extends StoreState, RouteComponentProps<Params> {
-	getTransactions: (budgetId: string) => Promise<void>;
+	getTransactions: (budgetId: string, pageNumber: number) => Promise<void>;
 	setAlert: (msg: string, alertType: AlertType) => void;
 	getBudget: (budgetId: string) => Promise<void>;
 	getAllBudget: () => Promise<void>;
@@ -34,12 +34,14 @@ enum Nav {
 interface State {
 	loading: boolean;
 	nav: Nav;
+	pageNumber: number;
 }
 
 class Dashboard extends Component<Props, State> {
 	state = {
 		loading: true,
-		nav: Nav.transactions
+		nav: Nav.transactions,
+		pageNumber: 1
 	};
 
 	componentDidUpdate(prevProps: Props) {
@@ -47,9 +49,10 @@ class Dashboard extends Component<Props, State> {
 			// set initial state
 			this.setState({ loading: true, nav: Nav.transactions });
 			const budgetId = this.props.match.params.budgetId;
+			const pageNumber = this.state.pageNumber;
 			this.props.getBudget(budgetId).then(() => {
 				// Load transactions
-				this.props.getTransactions(budgetId).then(() => {
+				this.props.getTransactions(budgetId, pageNumber).then(() => {
 					this.setState({
 						loading: false
 					});
@@ -60,7 +63,8 @@ class Dashboard extends Component<Props, State> {
 
 	componentDidMount() {
 		// Load budgets first
-		// If default
+		// If default -------------------- JUST AFTER LOGGING IN ----------------------------
+		const pageNumber = this.state.pageNumber;
 		if (this.props.budgets.length === 0) {
 			this.props.getAllBudget().then(() => {
 				// To be removed after dev
@@ -70,7 +74,7 @@ class Dashboard extends Component<Props, State> {
 						// Load first budget
 						this.props.getBudget(firstBudgetId).then(() => {
 							// Load transactions
-							this.props.getTransactions(firstBudgetId).then(() => {
+							this.props.getTransactions(firstBudgetId, pageNumber).then(() => {
 								this.setState({
 									loading: false
 								});
@@ -79,10 +83,11 @@ class Dashboard extends Component<Props, State> {
 					} else this.props.history.push(this.props.match.url + "/budget/new");
 			});
 		} else {
+			// ----------------------OTHERWISE LOAD USING PARAMS--------------------
 			const budgetId = this.props.match.params.budgetId;
 			this.props.getBudget(budgetId).then(() => {
 				// Load transactions
-				this.props.getTransactions(budgetId).then(() => {
+				this.props.getTransactions(budgetId, pageNumber).then(() => {
 					this.setState({
 						loading: false
 					});

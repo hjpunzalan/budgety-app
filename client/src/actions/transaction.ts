@@ -39,10 +39,10 @@ export const clearTransactions = () => (dispatch: Dispatch) => {
 	});
 };
 
-export const getTransactions = (budgetId: string) =>
+export const getTransactions = (budgetId: string, pageNumber: number = 1) =>
 	catchAsync(async dispatch => {
 		const res = await axios.get<ITransactionResult[]>(
-			`/api/transactions/${budgetId}`
+			`/api/transactions/${budgetId}?page=${pageNumber}&limit=15`
 		);
 		dispatch<GetTransactionsAction>({
 			type: ActionTypes.getTransactions,
