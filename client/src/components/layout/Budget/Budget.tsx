@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router";
-import moment from "moment";
-import classes from "./Dashboard.module.scss";
+import classes from "./Budget.module.scss";
 import { StoreState } from "../../../reducers";
 import {
 	getTransactions,
@@ -14,7 +13,8 @@ import {
 import Spinner from "../../utils/Spinner/Spinner";
 import { checkAmount } from "../../utils/CheckAmount";
 import { Link } from "react-router-dom";
-import BarGraph from "../BarGraph/BarGraph";
+import BarGraph from "../../pages/BarGraph/BarGraph";
+import Table from "../../pages/Table/Table";
 
 interface Params {
 	budgetId: string;
@@ -131,48 +131,10 @@ class Dashboard extends Component<Props, State> {
 						</div>
 						{/**Only show transactions here */}
 						{this.state.nav === Nav.transactions ? (
-							<table className={classes.table}>
-								<thead>
-									<tr className={classes.heading}>
-										<th>Date</th>
-										<th>Description</th>
-										<th>Amount($AUD)</th>
-										<th>Category</th>
-										<th>Balance</th>
-									</tr>
-								</thead>
-								<tbody>
-									{transactions.map(group => {
-										return (
-											<React.Fragment key={group._id.month + group._id.year}>
-												<tr>
-													<td className={classes.groupDate} colSpan={5}>
-														{moment(group._id.month, "MM").format("MMMM")}{" "}
-														{group._id.year}
-													</td>
-												</tr>
-												{group.transactions.map((t, i) => {
-													return (
-														//When double clicked redirect to edit transaction page!
-														<tr key={i} className={classes.transactions}>
-															<td>
-																{moment
-																	.utc(t.date)
-																	.format("DD MMM")
-																	.toUpperCase()}
-															</td>
-															<td>{t.desc}</td>
-															<td>{checkAmount(t.amount)}</td>
-															<td>{budget.categories[t.categoryIndex]}</td>
-															<td>{checkAmount(t.balance)}</td>
-														</tr>
-													);
-												})}
-											</React.Fragment>
-										);
-									})}
-								</tbody>
-							</table>
+							<Table
+								transactions={this.props.transactions}
+								currentBudget={this.props.currentBudget}
+							/>
 						) : (
 							<BarGraph transactions={this.props.transactions} />
 						)}

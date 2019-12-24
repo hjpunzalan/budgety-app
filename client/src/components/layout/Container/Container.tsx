@@ -14,7 +14,7 @@ import EditBudget from "../../pages/EditBudget/EditBudget";
 import AddTransaction from "../../pages/AddTransaction/AddTransaction";
 import UpdateMe from "../../pages/UpdateMe/UpdateMe";
 import ChangePassword from "../../auth/ChangePassword/ChangePassword";
-import Dashboard from "../../pages/Dashboard/Dashboard";
+import Budget from "../Budget/Budget";
 
 interface Props extends StoreState, RouteComponentProps {
 	getLogout: () => Promise<void>;
@@ -69,9 +69,9 @@ class Container extends Component<Props, State> {
 							<Route
 								exact
 								path={this.props.match.url + "/budget/:budgetId"}
-								component={Dashboard}
+								component={Budget}
 							/>
-							<Route exact path={this.props.match.url} component={Dashboard} />
+							<Route exact path={this.props.match.url} component={Budget} />
 						</Switch>
 					</div>
 

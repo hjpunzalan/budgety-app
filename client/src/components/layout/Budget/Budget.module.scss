@@ -70,39 +70,3 @@
 		border-bottom: 3px solid $color-primary;
 	}
 }
-
-.table {
-	width: 100%;
-	font-size: 1.2rem;
-	border-collapse: collapse;
-
-	.heading {
-		background: $color-primary;
-
-		th {
-			padding: 1rem 0;
-		}
-	}
-
-	tr {
-		border: 1px solid $color-grey;
-	}
-
-	.transactions {
-		td {
-			padding: 1rem 0.5rem;
-
-			&:not(:first-of-type) {
-				text-align: center;
-			}
-		}
-	}
-}
-
-.groupDate {
-	background: rgba(241, 241, 241, 0.5);
-	width: 100%;
-	text-align: left !important;
-	padding: 1rem 0.5rem 0 0.5rem;
-	font-weight: bold;
-}
