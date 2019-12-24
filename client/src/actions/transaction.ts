@@ -1,3 +1,4 @@
+import { ClearBudgetAction } from "./budget";
 import { setAlert, AlertType } from "./alerts";
 import axios from "axios";
 import { ActionTypes } from "./types";
@@ -41,6 +42,12 @@ export const clearTransactions = () => (dispatch: Dispatch) => {
 
 export const getTransactions = (budgetId: string, pageNumber: number = 1) =>
 	catchAsync(async dispatch => {
+		// If first page - clear list first
+		if (pageNumber === 1)
+			dispatch<ClearTransactionsAction>({
+				type: ActionTypes.clearTransactions
+			});
+
 		const res = await axios.get<ITransactionResult[]>(
 			`/api/transactions/${budgetId}?page=${pageNumber}&limit=15`
 		);

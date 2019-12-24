@@ -18,6 +18,7 @@ export const transactionReducer = (
 ) => {
 	switch (action.type) {
 		case ActionTypes.getTransactions:
+			return [...action.payload];
 		case ActionTypes.addTransaction:
 			return action.payload;
 		case ActionTypes.clearTransactions:
