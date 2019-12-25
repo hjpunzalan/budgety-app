@@ -158,7 +158,7 @@ class budgetController {
 	// group by categoryindex
 	// display income and expenses
 
-	@get("/categories/:budgetId")
+	@get("/categories/:budgetId/month/:month/year/:year")
 	@use(requireAuth)
 	@catchAsync
 	async getCategories(req: Request, res: Response, next: NextFunction) {
@@ -203,6 +203,12 @@ class budgetController {
 							else: 0
 						}
 					}
+				}
+			},
+			{
+				$match: {
+					month: parseInt(req.params.month, 10),
+					year: parseInt(req.params.year, 10)
 				}
 			},
 			{
