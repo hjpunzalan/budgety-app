@@ -124,10 +124,14 @@ export const getStats = (budgetId: string) =>
 		});
 	});
 
-export const getCategoryData = (budgetId: string) =>
+export const getCategoryData = (
+	budgetId: string,
+	month: number,
+	year: number
+) =>
 	catchAsync(async dispatch => {
 		const res = await axios.get<BudgetCategoryData[]>(
-			`/api/budget/stats/${budgetId}`
+			`/api/budget/categories/${budgetId}/month/${month}/year/${year}`
 		);
 
 		dispatch<GetCategoryDataAction>({

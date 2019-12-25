@@ -52,7 +52,6 @@ class Table extends Component<Props, State> {
 
 	render() {
 		const { currentBudget, transactions } = this.props;
-		console.log(this.state.hasMore);
 		return (
 			<table className={classes.table}>
 				<thead>
