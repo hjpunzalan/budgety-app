@@ -20,7 +20,7 @@ interface Params {
 	budgetId: string;
 }
 interface Props extends StoreState, RouteComponentProps<Params> {
-	getTransactions: (budgetId: string, pageNumber: number) => Promise<void>;
+	getTransactions: (budgetId: string, pageNumber?: number) => Promise<void>;
 	setAlert: (msg: string, alertType: AlertType) => void;
 	getBudget: (budgetId: string) => Promise<void>;
 	getAllBudget: () => Promise<void>;
@@ -34,14 +34,12 @@ enum Nav {
 interface State {
 	loading: boolean;
 	nav: Nav;
-	pageNumber: number;
 }
 
 class Dashboard extends Component<Props, State> {
 	state = {
 		loading: true,
-		nav: Nav.transactions,
-		pageNumber: 1
+		nav: Nav.transactions
 	};
 
 	componentDidUpdate(prevProps: Props) {
@@ -49,10 +47,9 @@ class Dashboard extends Component<Props, State> {
 			// set initial state
 			this.setState({ loading: true, nav: Nav.transactions });
 			const budgetId = this.props.match.params.budgetId;
-			const pageNumber = this.state.pageNumber;
 			this.props.getBudget(budgetId).then(() => {
 				// Load transactions
-				this.props.getTransactions(budgetId, pageNumber).then(() => {
+				this.props.getTransactions(budgetId).then(() => {
 					this.setState({
 						loading: false
 					});
@@ -64,7 +61,6 @@ class Dashboard extends Component<Props, State> {
 	componentDidMount() {
 		// Load budgets first
 		// If default -------------------- JUST AFTER LOGGING IN ----------------------------
-		const pageNumber = this.state.pageNumber;
 		if (this.props.budgets.length === 0) {
 			this.props.getAllBudget().then(() => {
 				// To be removed after dev
@@ -74,7 +70,7 @@ class Dashboard extends Component<Props, State> {
 						// Load first budget
 						this.props.getBudget(firstBudgetId).then(() => {
 							// Load transactions
-							this.props.getTransactions(firstBudgetId, pageNumber).then(() => {
+							this.props.getTransactions(firstBudgetId).then(() => {
 								this.setState({
 									loading: false
 								});
@@ -87,7 +83,7 @@ class Dashboard extends Component<Props, State> {
 			const budgetId = this.props.match.params.budgetId;
 			this.props.getBudget(budgetId).then(() => {
 				// Load transactions
-				this.props.getTransactions(budgetId, pageNumber).then(() => {
+				this.props.getTransactions(budgetId).then(() => {
 					this.setState({
 						loading: false
 					});
@@ -117,7 +113,7 @@ class Dashboard extends Component<Props, State> {
 								className={
 									this.state.nav === Nav.transactions ? classes.navSelected : ""
 								}
-								onClick={e => this.setState({ nav: Nav.transactions })}>
+								onClick={() => this.setState({ nav: Nav.transactions })}>
 								Transactions
 							</span>
 							<span> | </span>
@@ -125,7 +121,7 @@ class Dashboard extends Component<Props, State> {
 								className={
 									this.state.nav === Nav.graph ? classes.navSelected : ""
 								}
-								onClick={e => this.setState({ nav: Nav.graph })}>
+								onClick={() => this.setState({ nav: Nav.graph })}>
 								Graph
 							</span>
 						</div>
@@ -134,6 +130,7 @@ class Dashboard extends Component<Props, State> {
 							<Table
 								transactions={this.props.transactions}
 								currentBudget={this.props.currentBudget}
+								getTransactions={this.props.getTransactions}
 							/>
 						) : (
 							<BarGraph transactions={this.props.transactions} />
