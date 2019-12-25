@@ -14,6 +14,7 @@ interface Props {
 		pageNumber?: number,
 		setHasMore?: (hasMore: boolean) => void
 	) => Promise<void>;
+	container: React.RefObject<HTMLDivElement>;
 }
 interface State {
 	pageNumber: number;
@@ -52,6 +53,7 @@ class Table extends Component<Props, State> {
 
 	render() {
 		const { currentBudget, transactions } = this.props;
+		console.log(this.state.hasMore);
 		return (
 			<table className={classes.table}>
 				<thead>
@@ -65,9 +67,10 @@ class Table extends Component<Props, State> {
 				</thead>
 				<InfiniteScroll
 					element="tbody"
-					pageStart={1}
 					loadMore={this.loadMore}
 					hasMore={this.state.hasMore}
+					useWindow={false}
+					getScrollParent={() => this.props.container.current}
 					loader={
 						<tr className={classes.loader} key={0}>
 							<td>Loading ...</td>
