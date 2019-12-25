@@ -16,9 +16,10 @@ import {
 import {
 	AddBudgetAction,
 	GetAllBudgetAction,
-	ClearBudgetAction,
 	EditBudgetAction,
-	DeleteBudgetAction
+	DeleteBudgetAction,
+	GetCategoryDataAction,
+	GetStatsAction
 } from "./budget";
 
 export enum ActionTypes {
@@ -49,7 +50,11 @@ export enum ActionTypes {
 	//  TRANSACTIONS
 	addTransaction = "ADD_TRANSACTION",
 	getTransactions = "GET_TRANSACTIONS",
-	clearTransactions = "CLEAR_TRANSACTIONS"
+	clearTransactions = "CLEAR_TRANSACTIONS",
+
+	// CHARTS
+	getStats = "GET_STATS",
+	getCategoryData = "GET_CATEGORY_DATA"
 }
 
 // export type UserActions = ;
@@ -65,11 +70,17 @@ export type AlertActions = SetAlertAction | ResetAlertAction;
 export type BudgetActions =
 	| AddBudgetAction
 	| GetAllBudgetAction
-	| ClearBudgetAction
 	| EditBudgetAction
-	| DeleteBudgetAction;
+	| DeleteBudgetAction
+	| LogoutAction;
+
+export type ChartActions =
+	| GetCategoryDataAction
+	| GetStatsAction
+	| LogoutAction;
 
 export type TransactionActions =
 	| AddTransactionAction
 	| GetTransactionsAction
-	| ClearTransactionsAction;
+	| ClearTransactionsAction
+	| LogoutAction;

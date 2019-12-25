@@ -55,6 +55,7 @@ export const transactionReducer = (
 		case ActionTypes.addTransaction:
 			return action.payload;
 		case ActionTypes.clearTransactions:
+		case ActionTypes.logoutUser:
 			return initialState;
 		default:
 			return state;

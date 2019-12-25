@@ -5,6 +5,7 @@ import { transactionReducer, ITransactionResult } from "./transactions";
 import { authReducer, AuthState } from "./auth";
 import { alertReducer } from "./alerts";
 import { IBudget, Alert } from "../actions";
+import { ChartStoreState, chartReducer } from "./charts";
 
 export interface StoreState {
 	auth: AuthState;
@@ -12,6 +13,7 @@ export interface StoreState {
 	budgets: IBudget[];
 	currentBudget: IBudget;
 	transactions: ITransactionResult[];
+	charts: ChartStoreState;
 }
 
 export const reducers = combineReducers<StoreState>({
@@ -19,5 +21,6 @@ export const reducers = combineReducers<StoreState>({
 	alerts: alertReducer,
 	budgets: budgetsReducer,
 	currentBudget: currentBudgetReducer,
-	transactions: transactionReducer
+	transactions: transactionReducer,
+	charts: chartReducer
 });

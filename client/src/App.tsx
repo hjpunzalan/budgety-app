@@ -29,7 +29,8 @@ const mapStateToProps = (state: StoreState) => ({
 	alerts: state.alerts,
 	budgets: state.budgets,
 	currentBudget: state.currentBudget,
-	transactions: state.transactions
+	transactions: state.transactions,
+	charts: state.charts
 });
 
 export default connect(

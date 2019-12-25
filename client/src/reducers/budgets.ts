@@ -9,11 +9,11 @@ export const budgetsReducer = (state = initialState, action: BudgetActions) => {
 		case ActionTypes.getAllBudget:
 		case ActionTypes.editBudget:
 			return action.payload;
-		case ActionTypes.clearBudget:
-			return [];
 		case ActionTypes.deleteBudget:
 			// Filter new budget list without the deleted budget
 			return state.filter(b => b._id !== action.payload._id);
+		case ActionTypes.logoutUser:
+			return initialState;
 		default:
 			return state;
 	}

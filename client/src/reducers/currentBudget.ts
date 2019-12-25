@@ -1,9 +1,5 @@
-import {
-	ActionTypes,
-	IBudget,
-	ClearBudgetAction,
-	GetBudgetAction
-} from "../actions";
+import { LogoutAction } from "./../actions/auth";
+import { ActionTypes, IBudget, GetBudgetAction } from "../actions";
 
 const initialState: IBudget = {
 	name: "",
@@ -14,12 +10,12 @@ const initialState: IBudget = {
 
 export const currentBudgetReducer = (
 	state = initialState,
-	action: GetBudgetAction | ClearBudgetAction
+	action: GetBudgetAction | LogoutAction
 ) => {
 	switch (action.type) {
 		case ActionTypes.getBudget:
 			return action.payload;
-		case ActionTypes.clearBudget:
+		case ActionTypes.logoutUser:
 			return initialState;
 		default:
 			return state;
