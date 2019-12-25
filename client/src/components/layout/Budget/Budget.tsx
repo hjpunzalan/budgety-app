@@ -17,6 +17,7 @@ import { checkAmount } from "../../utils/CheckAmount";
 import { Link } from "react-router-dom";
 import BarGraph from "../../pages/BarGraph/BarGraph";
 import Table from "../../pages/Table/Table";
+import PieGraph, { PieGraphType } from "../../pages/PieGraph/PieGraph";
 
 interface Params {
 	budgetId: string;
@@ -27,7 +28,11 @@ interface Props extends StoreState, RouteComponentProps<Params> {
 	getBudget: (budgetId: string) => Promise<void>;
 	getAllBudget: () => Promise<void>;
 	getStats: (budgetId: string) => Promise<void>;
-	getCategoryData: (budgetId: string) => Promise<void>;
+	getCategoryData: (
+		budgetId: string,
+		month: number,
+		year: number
+	) => Promise<void>;
 }
 
 enum Nav {
@@ -147,11 +152,22 @@ class Dashboard extends Component<Props, State> {
 								getTransactions={this.props.getTransactions}
 							/>
 						) : (
-							<BarGraph
-								barGraph={this.props.charts.barGraph}
-								getStats={this.props.getStats}
-								budgetId={this.state.budgetId}
-							/>
+							<>
+								<BarGraph
+									barGraph={this.props.charts.barGraph}
+									getStats={this.props.getStats}
+									budgetId={this.state.budgetId}
+								/>
+								<PieGraph
+									type={PieGraphType.income}
+									month={12}
+									year={2019}
+									budgets={this.props.budgets}
+									pieGraph={this.props.charts.pieGraph}
+									getCategoryData={this.props.getCategoryData}
+									budgetId={this.state.budgetId}
+								/>
+							</>
 						)}
 					</>
 				) : (
