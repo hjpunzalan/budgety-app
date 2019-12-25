@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { checkUser } from "./actions";
-import classes from "./App.module.scss";
 import Routes from "./components/routing/Routes";
 import Alerts from "./components/utils/Alerts";
 import { StoreState } from "./reducers";
@@ -18,7 +17,7 @@ class App extends Component<Props> {
 
 	render() {
 		return (
-			<div className={classes.App}>
+			<div>
 				<Alerts alerts={this.props.alerts} />
 				<Routes auth={this.props.auth} />
 			</div>
