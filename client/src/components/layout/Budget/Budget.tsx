@@ -37,7 +37,6 @@ interface State {
 }
 
 class Dashboard extends Component<Props, State> {
-	container = React.createRef<HTMLDivElement>();
 	state = {
 		loading: true,
 		nav: Nav.transactions
@@ -98,7 +97,7 @@ class Dashboard extends Component<Props, State> {
 		const transactions = this.props.transactions;
 
 		return budget && !this.state.loading ? (
-			<div className={classes.container} ref={this.container}>
+			<div className={classes.container}>
 				<div className={classes.budget}>
 					<h2 className={classes.budgetName}>Budget: {budget.name}</h2>
 
@@ -132,7 +131,6 @@ class Dashboard extends Component<Props, State> {
 								transactions={this.props.transactions}
 								currentBudget={this.props.currentBudget}
 								getTransactions={this.props.getTransactions}
-								container={this.container}
 							/>
 						) : (
 							<BarGraph transactions={this.props.transactions} />

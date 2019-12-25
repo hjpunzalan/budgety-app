@@ -14,7 +14,6 @@ interface Props {
 		pageNumber?: number,
 		setHasMore?: (hasMore: boolean) => void
 	) => Promise<void>;
-	container: React.RefObject<HTMLDivElement>;
 }
 interface State {
 	pageNumber: number;
@@ -69,8 +68,7 @@ class Table extends Component<Props, State> {
 					element="tbody"
 					loadMore={this.loadMore}
 					hasMore={this.state.hasMore}
-					useWindow={false}
-					getScrollParent={() => this.props.container.current}
+					threshold={50}
 					loader={
 						<tr className={classes.loader} key={0}>
 							<td>Loading ...</td>
