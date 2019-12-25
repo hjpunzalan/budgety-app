@@ -2,21 +2,36 @@ import React, { Component } from "react";
 import * as d3 from "d3";
 import { select } from "d3";
 import d3Tip from 'd3-tip'
-import { ITransactionResult } from "../../../reducers/transactions";
 import moment from "moment";
+import {withRouter, RouteComponentProps} from 'react-router-dom'
+import { BudgetStats } from "../../../reducers/charts";
 import classes from "./BarGraph.module.scss";
 import { checkAmount } from "../../utils/CheckAmount";
+import Spinner from "../../utils/Spinner/Spinner";
 
-interface Props {
-	transactions: ITransactionResult[];
+interface Props extends RouteComponentProps {
+	barGraph: BudgetStats[];
+	getStats: (budgetId: string) => Promise<void>;
+	budgetId?: string;
 }
-interface State {}
+interface State {
+	loading: boolean;
+}
 
 class BarGraph extends Component<Props, State> {
 	canvas = React.createRef<HTMLDivElement>();
 
+	state = {
+		loading: true
+	}
+
 	componentDidMount() {
-		const data = this.props.transactions;
+		const budgetId = this.props.budgetId;
+		if(budgetId)
+		{
+			this.props.getStats(budgetId).then(() => {
+			this.setState({loading: false})
+		const data = this.props.barGraph;
 
 		const margin = {
 			top: 10,
@@ -69,7 +84,7 @@ class BarGraph extends Component<Props, State> {
 		const x = d3.scaleBand<number>().range([0, graphWidth]);
 
 		// Set domains
-		const xMax = d3.max(data, d => d.transactions[0].balance);
+		const xMax = d3.max(data, d => d.balance);
 		y.domain([0, xMax as number]);
 		x.domain([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
 
@@ -98,8 +113,8 @@ class BarGraph extends Component<Props, State> {
 		const tip = (d3Tip as Function)()
 			.attr('class', classes.toolTip)
 			.offset([-10,0])
-		.html((d: ITransactionResult) => {
-			return `<div><strong>Balance: </strong> <span>${checkAmount(d.transactions[0].balance)}</span></div>
+		.html((d: BudgetStats) => {
+			return `<div><strong>Balance: </strong> <span>${checkAmount(d.balance)}</span></div>
 					<div><strong>Income: </strong> <span>${checkAmount(d.income)}</span></div>
 					<div><strong>Expense: </strong> <span>${checkAmount(d.expense)}</span></div>
 			
@@ -121,8 +136,8 @@ class BarGraph extends Component<Props, State> {
 			})
 			// Creates space based on index
 			.attr("width", graphWidth / 12 - barSpacing)
-			.attr("y", d => y(d.transactions[0].balance))
-			.attr("height", d => graphHeight - y(d.transactions[0].balance))
+			.attr("y", d => y(d.balance))
+			.attr("height", d => graphHeight - y(d.balance))
 			.style('cursor', 'pointer')
 			.on('mouseover',function(d){tip.show(d, this)})
 			.on('mouseout', function(d) { tip.hide(d,this)})
@@ -130,11 +145,14 @@ class BarGraph extends Component<Props, State> {
 		// Call axis
 		xAxisGroup.call(xAxis);
 		yAxisGroup.call(yAxis);
+		})}
 	}
 
+
+
 	render() {
-		return <div className={classes.canvas} ref={this.canvas}></div>;
+		return this.state.loading ? <Spinner/> : <div className={classes.canvas} ref={this.canvas}></div>;
 	}
 }
 
-export default BarGraph;
+export default withRouter(BarGraph);
