@@ -1,4 +1,3 @@
-import { ClearBudgetAction } from "./budget";
 import { setAlert, AlertType } from "./alerts";
 import axios from "axios";
 import { ActionTypes } from "./types";
@@ -40,7 +39,11 @@ export const clearTransactions = () => (dispatch: Dispatch) => {
 	});
 };
 
-export const getTransactions = (budgetId: string, pageNumber: number = 1) =>
+export const getTransactions = (
+	budgetId: string,
+	pageNumber: number = 1,
+	setHasMore?: (hasMore: boolean) => void
+) =>
 	catchAsync(async dispatch => {
 		// If first page - clear list first
 		if (pageNumber === 1)
@@ -51,10 +54,20 @@ export const getTransactions = (budgetId: string, pageNumber: number = 1) =>
 		const res = await axios.get<ITransactionResult[]>(
 			`/api/transactions/${budgetId}?page=${pageNumber}&limit=15`
 		);
+
 		dispatch<GetTransactionsAction>({
 			type: ActionTypes.getTransactions,
 			payload: res.data
 		});
+
+		// Must be after dispatch
+		// If this is called before dispatch, multiple calls will be executed
+		// Many duplicate calls will happen as a result
+		if (setHasMore) {
+			if (res.data.length === 0) {
+				setHasMore(false);
+			} else setHasMore(true);
+		}
 	});
 
 export const addTransaction = (budgetId: string, form: AddTransactionForm) =>
