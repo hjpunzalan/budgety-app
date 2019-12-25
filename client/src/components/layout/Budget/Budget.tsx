@@ -7,6 +7,8 @@ import {
 	getTransactions,
 	getBudget,
 	getAllBudget,
+	getStats,
+	getCategoryData,
 	setAlert,
 	AlertType
 } from "../../../actions";
@@ -24,6 +26,8 @@ interface Props extends StoreState, RouteComponentProps<Params> {
 	setAlert: (msg: string, alertType: AlertType) => void;
 	getBudget: (budgetId: string) => Promise<void>;
 	getAllBudget: () => Promise<void>;
+	getStats: (budgetId: string) => Promise<void>;
+	getCategoryData: (budgetId: string) => Promise<void>;
 }
 
 enum Nav {
@@ -34,18 +38,24 @@ enum Nav {
 interface State {
 	loading: boolean;
 	nav: Nav;
+	budgetId?: string;
 }
 
 class Dashboard extends Component<Props, State> {
 	state = {
 		loading: true,
-		nav: Nav.transactions
+		nav: Nav.transactions,
+		budgetId: ""
 	};
 
 	componentDidUpdate(prevProps: Props) {
 		if (this.props.location !== prevProps.location) {
 			// set initial state
-			this.setState({ loading: true, nav: Nav.transactions });
+			this.setState({
+				loading: true,
+				nav: Nav.transactions,
+				budgetId: this.props.match.params.budgetId
+			});
 			const budgetId = this.props.match.params.budgetId;
 			this.props.getBudget(budgetId).then(() => {
 				// Load transactions
@@ -65,30 +75,34 @@ class Dashboard extends Component<Props, State> {
 			this.props.getAllBudget().then(() => {
 				// To be removed after dev
 				if (this.props.auth.currentUser)
-					if (this.props.budgets[0]._id) {
-						const firstBudgetId = this.props.budgets[0]._id;
-						// Load first budget
-						this.props.getBudget(firstBudgetId).then(() => {
-							// Load transactions
-							this.props.getTransactions(firstBudgetId).then(() => {
-								this.setState({
-									loading: false
-								});
+					this.setState({ budgetId: this.props.budgets[0]._id });
+				if (this.state.budgetId) {
+					const budgetId = this.state.budgetId;
+					// Load first budget
+					this.props.getBudget(budgetId).then(() => {
+						// Load transactions
+						this.props.getTransactions(budgetId).then(() => {
+							this.setState({
+								loading: false
 							});
 						});
-					} else this.props.history.push(this.props.match.url + "/budget/new");
+					});
+				} else this.props.history.push(this.props.match.url + "/budget/new");
 			});
 		} else {
 			// ----------------------OTHERWISE LOAD USING PARAMS--------------------
-			const budgetId = this.props.match.params.budgetId;
-			this.props.getBudget(budgetId).then(() => {
-				// Load transactions
-				this.props.getTransactions(budgetId).then(() => {
-					this.setState({
-						loading: false
+			this.setState({ budgetId: this.props.match.params.budgetId });
+			const budgetId = this.state.budgetId;
+			if (budgetId) {
+				this.props.getBudget(budgetId).then(() => {
+					// Load transactions
+					this.props.getTransactions(budgetId).then(() => {
+						this.setState({
+							loading: false
+						});
 					});
 				});
-			});
+			}
 		}
 	}
 
@@ -133,7 +147,11 @@ class Dashboard extends Component<Props, State> {
 								getTransactions={this.props.getTransactions}
 							/>
 						) : (
-							<BarGraph transactions={this.props.transactions} />
+							<BarGraph
+								barGraph={this.props.charts.barGraph}
+								getStats={this.props.getStats}
+								budgetId={this.state.budgetId}
+							/>
 						)}
 					</>
 				) : (
@@ -158,10 +176,18 @@ const mapStateToProps = (state: StoreState) => ({
 	alerts: state.alerts,
 	budgets: state.budgets,
 	currentBudget: state.currentBudget,
-	transactions: state.transactions
+	transactions: state.transactions,
+	charts: state.charts
 });
 
 export default connect(
 	mapStateToProps,
-	{ getTransactions, setAlert, getBudget, getAllBudget }
+	{
+		getTransactions,
+		setAlert,
+		getBudget,
+		getAllBudget,
+		getStats,
+		getCategoryData
+	}
 )(Dashboard);
