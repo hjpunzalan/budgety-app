@@ -9,13 +9,49 @@ import { IBudget } from "../../../actions";
 interface Props {
 	transactions: ITransactionResult[];
 	currentBudget: IBudget;
+	getTransactions: (
+		budgetId: string,
+		pageNumber?: number,
+		setHasMore?: (hasMore: boolean) => void
+	) => Promise<void>;
 }
-interface State {}
+interface State {
+	pageNumber: number;
+	hasMore: boolean;
+}
 
 class Table extends Component<Props, State> {
-	state = {};
+	state = {
+		pageNumber: 1,
+		hasMore: true
+	};
+	// A method to be push to the action creator
+	// This checks if there are results from server,
+	// if not there are no more pages left
+	setHasMore = (hasMore: boolean) => {
+		this.setState({ hasMore });
+	};
+
+	loadMore = () => {
+		const { pageNumber, hasMore } = this.state;
+		if (hasMore) {
+			// Stop repeated execution
+			this.setState({ hasMore: false });
+			const nextPage = pageNumber + 1;
+			if (this.props.currentBudget._id)
+				// Set new transactions based on page
+				this.props.getTransactions(
+					this.props.currentBudget._id,
+					nextPage,
+					this.setHasMore
+				);
+			// Set new page before request even finish
+			this.setState({ pageNumber: nextPage });
+		}
+	};
 
 	render() {
+		const { currentBudget, transactions } = this.props;
 		return (
 			<table className={classes.table}>
 				<thead>
@@ -27,8 +63,17 @@ class Table extends Component<Props, State> {
 						<th>Balance</th>
 					</tr>
 				</thead>
-				<tbody>
-					{this.props.transactions.map(group => {
+				<InfiniteScroll
+					element="tbody"
+					pageStart={1}
+					loadMore={this.loadMore}
+					hasMore={this.state.hasMore}
+					loader={
+						<tr className={classes.loader} key={0}>
+							<td>Loading ...</td>
+						</tr>
+					}>
+					{transactions.map(group => {
 						return (
 							<React.Fragment key={group._id.month + group._id.year}>
 								<tr>
@@ -49,9 +94,7 @@ class Table extends Component<Props, State> {
 											</td>
 											<td>{t.desc}</td>
 											<td>{checkAmount(t.amount)}</td>
-											<td>
-												{this.props.currentBudget.categories[t.categoryIndex]}
-											</td>
+											<td>{currentBudget.categories[t.categoryIndex]}</td>
 											<td>{checkAmount(t.balance)}</td>
 										</tr>
 									);
@@ -59,7 +102,7 @@ class Table extends Component<Props, State> {
 							</React.Fragment>
 						);
 					})}
-				</tbody>
+				</InfiniteScroll>
 			</table>
 		);
 	}
