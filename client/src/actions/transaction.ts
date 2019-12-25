@@ -52,7 +52,7 @@ export const getTransactions = (
 			});
 
 		const res = await axios.get<ITransactionResult[]>(
-			`/api/transactions/${budgetId}?page=${pageNumber}&limit=15`
+			`/api/transactions/${budgetId}?page=${pageNumber}&limit=20`
 		);
 
 		dispatch<GetTransactionsAction>({
