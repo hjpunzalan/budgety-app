@@ -1,3 +1,4 @@
+import { BudgetStats, BudgetCategoryData } from "./../reducers/charts";
 import { setAlert, AlertType } from "./alerts";
 import axios from "axios";
 import { ITransaction } from "./transaction";
@@ -13,10 +14,6 @@ export interface IBudget {
 	startingBalance: number;
 	balance: number;
 	transactions?: ITransaction[];
-}
-
-export interface ClearBudgetAction {
-	type: ActionTypes.clearBudget;
 }
 
 export interface AddBudgetAction {
@@ -42,6 +39,16 @@ export interface DeleteBudgetAction {
 export interface GetBudgetAction {
 	type: ActionTypes.getBudget;
 	payload: IBudget;
+}
+
+export interface GetStatsAction {
+	type: ActionTypes.getStats;
+	payload: BudgetStats[];
+}
+
+export interface GetCategoryDataAction {
+	type: ActionTypes.getCategoryData;
+	payload: BudgetCategoryData[];
 }
 
 export const addBudget = (form: AddBudgetState) =>
@@ -103,6 +110,28 @@ export const getBudget = (budgetId: string) =>
 
 		dispatch<GetBudgetAction>({
 			type: ActionTypes.getBudget,
+			payload: res.data
+		});
+	});
+
+export const getStats = (budgetId: string) =>
+	catchAsync(async dispatch => {
+		const res = await axios.get<BudgetStats[]>(`/api/budget/stats/${budgetId}`);
+
+		dispatch<GetStatsAction>({
+			type: ActionTypes.getStats,
+			payload: res.data
+		});
+	});
+
+export const getCategoryData = (budgetId: string) =>
+	catchAsync(async dispatch => {
+		const res = await axios.get<BudgetCategoryData[]>(
+			`/api/budget/stats/${budgetId}`
+		);
+
+		dispatch<GetCategoryDataAction>({
+			type: ActionTypes.getCategoryData,
 			payload: res.data
 		});
 	});
