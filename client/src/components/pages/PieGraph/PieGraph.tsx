@@ -16,11 +16,6 @@ interface Props {
 	month: number;
 	year: number;
 	pieGraph: BudgetCategoryData[];
-	getCategoryData: (
-		budgetId: string,
-		month: number,
-		year: number
-	) => Promise<void>;
 	budgetId?: string;
 	budgets: IBudget[];
 }
@@ -47,18 +42,18 @@ class PieGraph extends Component<Props, State> {
 				} else data = this.props.pieGraph.filter(d => d.expense !== 0);
 
 				const size = 250;
+				const extra = 50;
 				const dims = { height: size, width: size, radius: size / 2 }; // dimension of the pie chart
-				// 5px extra
 				const centre = {
-					x: dims.width / 2 + 5,
-					y: dims.height / 2 + 5
+					x: (dims.width + extra) / 2,
+					y: (dims.width + extra) / 2
 				};
 
 				const svg = d3
 					.select(this.canvas.current)
 					.append("svg")
-					.attr("width", dims.width + 150) // 150px extra for legend
-					.attr("height", dims.height + 150); // 150px extra for legend
+					.attr("width", dims.width + extra)
+					.attr("height", dims.height + extra);
 
 				// Pie function to convert data into pieData
 				const pie = d3
@@ -73,7 +68,7 @@ class PieGraph extends Component<Props, State> {
 					.innerRadius(0);
 
 				// ordinal scale
-				const colour = d3.scaleOrdinal(d3["schemeSet2"]);
+				const colour = d3.scaleOrdinal(d3.schemeSet2);
 
 				// update colour scale domain
 				colour.domain(data.map(d => budget.categories[d._id.category]));
@@ -100,14 +95,20 @@ class PieGraph extends Component<Props, State> {
 					.attr("fill", d => colour(budget.categories[d.data._id.category]))
 					.style("cursor", "pointer")
 					.on("mouseover", d => {
-						d3.select(this.tooltip.current).style("opacity", 1);
+						d3.select(this.tooltip.current)
+							.style("opacity", 1)
+							.style("color", type === PieGraphType.income ? "green" : "red");
 					})
 					.on("mousemove", d => {
 						d3.select(this.tooltip.current)
 							.style("left", d3.event.pageX + 15 + "px")
 							.style("top", d3.event.pageY + "px")
 							.select("#pieGraphTip")
-							.text(checkAmount(d.data[type]));
+							.text(
+								`${budget.categories[d.data._id.category]}: ${checkAmount(
+									Math.abs(d.data[type])
+								)}`
+							);
 					})
 					.on("mouseout", d =>
 						d3.select(this.tooltip.current).style("opacity", 0)
@@ -129,7 +130,10 @@ class PieGraph extends Component<Props, State> {
 				<div ref={this.tooltip} className={classes.toolTip}>
 					<span id="pieGraphTip"></span>
 				</div>
-				<div ref={this.canvas}></div>
+				<div className={classes.chart}>
+					<div ref={this.canvas} className={classes.canvas}></div>
+					<h1 className={classes.title}>{this.props.type}</h1>
+				</div>
 			</>
 		);
 	}
