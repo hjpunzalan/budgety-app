@@ -237,7 +237,7 @@ class budgetController {
 		res.status(200).json(budget);
 	}
 
-	@get("/stats/:budgetId")
+	@get("/stats/:budgetId/year/:year")
 	@use(requireAuth)
 	@catchAsync
 	async getStats(req: Request, res: Response, next: NextFunction) {
@@ -283,6 +283,11 @@ class budgetController {
 							else: 0
 						}
 					}
+				}
+			},
+			{
+				$match: {
+					year: parseInt(req.params.year, 10)
 				}
 			},
 			{

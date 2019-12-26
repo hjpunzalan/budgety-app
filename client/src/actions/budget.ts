@@ -114,9 +114,11 @@ export const getBudget = (budgetId: string) =>
 		});
 	});
 
-export const getStats = (budgetId: string) =>
+export const getStats = (budgetId: string, year: number) =>
 	catchAsync(async dispatch => {
-		const res = await axios.get<BudgetStats[]>(`/api/budget/stats/${budgetId}`);
+		const res = await axios.get<BudgetStats[]>(
+			`/api/budget/stats/${budgetId}/year/${year}`
+		);
 
 		dispatch<GetStatsAction>({
 			type: ActionTypes.getStats,
