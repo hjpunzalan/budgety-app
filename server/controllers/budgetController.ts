@@ -317,4 +317,71 @@ class budgetController {
 		]);
 		res.status(200).json(stats);
 	}
+
+	@get("/dates/:budgetId")
+	@use(requireAuth)
+	@catchAsync
+	async getDates(req: Request, res: Response, next: NextFunction) {
+		const dates = await Budget.aggregate([
+			{
+				$match: {
+					_id: Types.ObjectId(req.params.budgetId)
+				}
+			},
+			{
+				$unwind: "$transactions"
+			},
+			{
+				$sort: {
+					"transactions.date": -1
+				}
+			},
+			{
+				$project: {
+					month: {
+						$month: "$transactions.date"
+					},
+					year: {
+						$year: "$transactions.date"
+					}
+				}
+			},
+			{
+				$group: {
+					_id: {
+						year: "$year"
+					},
+					months: {
+						$addToSet: "$month"
+					}
+				}
+			},
+
+			{
+				$unwind: "$months"
+			},
+			{
+				$sort: {
+					"_id.year": -1,
+					months: 1
+				}
+			},
+			{
+				$group: {
+					_id: {
+						year: "$_id.year"
+					},
+					months: {
+						$push: "$months"
+					}
+				}
+			},
+			{
+				$sort: {
+					"_id.year": -1
+				}
+			}
+		]);
+		res.status(200).json(dates);
+	}
 }
