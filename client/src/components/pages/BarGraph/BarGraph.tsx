@@ -3,34 +3,26 @@ import * as d3 from "d3";
 import { select } from "d3";
 import d3Tip from 'd3-tip'
 import moment from "moment";
-import {withRouter, RouteComponentProps} from 'react-router-dom'
 import { BudgetStats } from "../../../reducers/charts";
 import classes from "./BarGraph.module.scss";
 import { checkAmount } from "../../utils/CheckAmount";
-import Spinner from "../../utils/Spinner/Spinner";
 
-interface Props extends RouteComponentProps {
+interface Props {
 	barGraph: BudgetStats[];
-	getStats: (budgetId: string) => Promise<void>;
-	budgetId?: string;
 }
 interface State {
 	loading: boolean;
+	year:number
 }
 
 class BarGraph extends Component<Props, State> {
 	canvas = React.createRef<HTMLDivElement>();
-
 	state = {
-		loading: true
+		loading: true,
+		year: new Date().getFullYear()
 	}
 
 	componentDidMount() {
-		const budgetId = this.props.budgetId;
-		if(budgetId)
-		{
-			this.props.getStats(budgetId).then(() => {
-			this.setState({loading: false})
 		const data = this.props.barGraph;
 
 		const margin = {
@@ -57,7 +49,9 @@ class BarGraph extends Component<Props, State> {
 				"viewBox",
 				`0 0 ${width}  ${height}`
 			)
-			.attr("preserveAspectRatio", "xMinYMin meet");
+					.attr("preserveAspectRatio", "xMinYMin meet");
+				
+		// Ensures responsiveness to the screen's width
 		
 		const canvasWidth = svg.node()?.getBoundingClientRect().width || 800;
 		const canvasHeight = svg.node()?.getBoundingClientRect().height || 500
@@ -81,11 +75,12 @@ class BarGraph extends Component<Props, State> {
 		// scales for data
 		const y = d3.scaleLinear().range([graphHeight, 0]);
 
-		const x = d3.scaleBand<number>().range([0, graphWidth]);
+		const x = d3.scaleBand<number>().range([0, graphWidth]).paddingOuter(0.2);
 
 		// Set domains
 		const xMax = d3.max(data, d => d.balance);
-		y.domain([0, xMax as number]);
+				y.domain([0, xMax as number]);
+
 		x.domain([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
 
 		// Prevent empty value max tick
@@ -145,14 +140,13 @@ class BarGraph extends Component<Props, State> {
 		// Call axis
 		xAxisGroup.call(xAxis);
 		yAxisGroup.call(yAxis);
-		})}
 	}
 
 
 
 	render() {
-		return this.state.loading ? <Spinner/> : <div className={classes.canvas} ref={this.canvas}></div>;
+		return <div className={classes.canvas} ref={this.canvas}></div>;
 	}
 }
 
-export default withRouter(BarGraph);
+export default BarGraph;

@@ -7,17 +7,14 @@ import {
 	getTransactions,
 	getBudget,
 	getAllBudget,
-	getStats,
-	getCategoryData,
 	setAlert,
 	AlertType
 } from "../../../actions";
 import Spinner from "../../utils/Spinner/Spinner";
 import { checkAmount } from "../../utils/CheckAmount";
 import { Link } from "react-router-dom";
-import BarGraph from "../../pages/BarGraph/BarGraph";
 import Table from "../../pages/Table/Table";
-import PieGraph, { PieGraphType } from "../../pages/PieGraph/PieGraph";
+import Graphs from "../../pages/Graphs/Graphs";
 
 interface Params {
 	budgetId: string;
@@ -27,12 +24,6 @@ interface Props extends StoreState, RouteComponentProps<Params> {
 	setAlert: (msg: string, alertType: AlertType) => void;
 	getBudget: (budgetId: string) => Promise<void>;
 	getAllBudget: () => Promise<void>;
-	getStats: (budgetId: string) => Promise<void>;
-	getCategoryData: (
-		budgetId: string,
-		month: number,
-		year: number
-	) => Promise<void>;
 }
 
 enum Nav {
@@ -97,7 +88,7 @@ class Dashboard extends Component<Props, State> {
 		} else {
 			// ----------------------OTHERWISE LOAD USING PARAMS--------------------
 			this.setState({ budgetId: this.props.match.params.budgetId });
-			const budgetId = this.state.budgetId;
+			const budgetId = this.props.match.params.budgetId;
 			if (budgetId) {
 				this.props.getBudget(budgetId).then(() => {
 					// Load transactions
@@ -152,22 +143,7 @@ class Dashboard extends Component<Props, State> {
 								getTransactions={this.props.getTransactions}
 							/>
 						) : (
-							<>
-								<BarGraph
-									barGraph={this.props.charts.barGraph}
-									getStats={this.props.getStats}
-									budgetId={this.state.budgetId}
-								/>
-								<PieGraph
-									type={PieGraphType.income}
-									month={12}
-									year={2019}
-									budgets={this.props.budgets}
-									pieGraph={this.props.charts.pieGraph}
-									getCategoryData={this.props.getCategoryData}
-									budgetId={this.state.budgetId}
-								/>
-							</>
+							<Graphs budgetId={this.state.budgetId} />
 						)}
 					</>
 				) : (
@@ -202,8 +178,6 @@ export default connect(
 		getTransactions,
 		setAlert,
 		getBudget,
-		getAllBudget,
-		getStats,
-		getCategoryData
+		getAllBudget
 	}
 )(Dashboard);
