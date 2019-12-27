@@ -17,12 +17,16 @@ interface Props {
 	budgets: IBudget[];
 	budgetId: string;
 }
-interface State {}
+interface State {
+	removeGraph: boolean;
+}
 
 class PieGraph extends Component<Props, State> {
 	canvas = React.createRef<HTMLDivElement>();
 	tooltip = React.createRef<HTMLDivElement>();
-	state = {};
+	state = {
+		removeGraph: false
+	};
 
 	componentDidMount() {
 		// Locate budget to retrieve its categories
@@ -37,6 +41,11 @@ class PieGraph extends Component<Props, State> {
 		if (type === PieGraphType.income) {
 			data = this.props.pieGraph.filter(d => d.income !== 0);
 		} else data = this.props.pieGraph.filter(d => d.expense !== 0);
+
+		// Remove graph if there's no amount
+		if (data.length === 0) {
+			this.setState({ removeGraph: true });
+		}
 
 		const size = 250;
 		const extra = 50;
@@ -117,7 +126,9 @@ class PieGraph extends Component<Props, State> {
 	}
 
 	render() {
-		return (
+		return this.state.removeGraph ? (
+			<></>
+		) : (
 			<>
 				<div ref={this.tooltip} className={classes.toolTip}>
 					<span id="pieGraphTip"></span>
