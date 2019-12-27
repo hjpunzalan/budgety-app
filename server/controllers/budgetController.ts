@@ -363,7 +363,7 @@ class budgetController {
 			{
 				$sort: {
 					"_id.year": -1,
-					months: 1
+					months: -1
 				}
 			},
 			{
