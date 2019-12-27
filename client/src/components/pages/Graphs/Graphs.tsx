@@ -66,8 +66,6 @@ class Graphs extends Component<Props, State> {
 			<div className={classes.container}>
 				<div className={classes.barGraphHeading}>
 					<h2>Annual data</h2>
-                    <select>
-                    {</select>
 				</div>
 				<BarGraph barGraph={this.props.charts.barGraph} />
 

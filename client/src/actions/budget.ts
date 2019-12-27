@@ -1,4 +1,8 @@
-import { BudgetStats, BudgetCategoryData } from "./../reducers/charts";
+import {
+	BudgetStats,
+	BudgetCategoryData,
+	BudgetDates
+} from "./../reducers/charts";
 import { setAlert, AlertType } from "./alerts";
 import axios from "axios";
 import { ITransaction } from "./transaction";
@@ -49,6 +53,11 @@ export interface GetStatsAction {
 export interface GetCategoryDataAction {
 	type: ActionTypes.getCategoryData;
 	payload: BudgetCategoryData[];
+}
+
+export interface GetDatesAction {
+	type: ActionTypes.getDates;
+	payload: BudgetDates[];
 }
 
 export const addBudget = (form: AddBudgetState) =>
@@ -138,6 +147,16 @@ export const getCategoryData = (
 
 		dispatch<GetCategoryDataAction>({
 			type: ActionTypes.getCategoryData,
+			payload: res.data
+		});
+	});
+
+export const getDates = (budgetId: string) =>
+	catchAsync(async dispatch => {
+		const res = await axios.get<BudgetDates[]>(`/api/budget/dates/${budgetId}`);
+
+		dispatch<GetDatesAction>({
+			type: ActionTypes.getDates,
 			payload: res.data
 		});
 	});

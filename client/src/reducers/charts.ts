@@ -19,18 +19,29 @@ export interface BudgetCategoryData {
 	expense: number;
 }
 
+export interface BudgetDates {
+	_id: {
+		year: number;
+	};
+	months: number[];
+}
+
 export interface ChartStoreState {
 	barGraph: BudgetStats[];
 	pieGraph: BudgetCategoryData[];
+	dates: BudgetDates[];
 }
 
 export const initialState: ChartStoreState = {
 	barGraph: [],
-	pieGraph: []
+	pieGraph: [],
+	dates: []
 };
 
 export const chartReducer = (state = initialState, action: ChartActions) => {
 	switch (action.type) {
+		case ActionTypes.getDates:
+			return { ...state, dates: action.payload };
 		case ActionTypes.getStats:
 			return { ...state, barGraph: action.payload };
 		case ActionTypes.getCategoryData:

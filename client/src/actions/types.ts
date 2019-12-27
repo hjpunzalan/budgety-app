@@ -19,7 +19,8 @@ import {
 	EditBudgetAction,
 	DeleteBudgetAction,
 	GetCategoryDataAction,
-	GetStatsAction
+	GetStatsAction,
+	GetDatesAction
 } from "./budget";
 
 export enum ActionTypes {
@@ -54,7 +55,8 @@ export enum ActionTypes {
 
 	// CHARTS
 	getStats = "GET_STATS",
-	getCategoryData = "GET_CATEGORY_DATA"
+	getCategoryData = "GET_CATEGORY_DATA",
+	getDates = "GET_DATES"
 }
 
 // export type UserActions = ;
@@ -77,7 +79,8 @@ export type BudgetActions =
 export type ChartActions =
 	| GetCategoryDataAction
 	| GetStatsAction
-	| LogoutAction;
+	| LogoutAction
+	| GetDatesAction;
 
 export type TransactionActions =
 	| AddTransactionAction
