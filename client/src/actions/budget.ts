@@ -137,12 +137,15 @@ export const getStats = (budgetId: string, year: number) =>
 
 export const getCategoryData = (
 	budgetId: string,
-	month: number,
-	year: number
+	year: number,
+	month?: number
 ) =>
 	catchAsync(async dispatch => {
 		const res = await axios.get<BudgetCategoryData[]>(
-			`/api/budget/categories/${budgetId}/month/${month}/year/${year}`
+			month
+				? `/api/budget/categories/${budgetId}/month/${month}/year/${year}`
+				: // If only annual data required
+				  `/api/budget/categories/${budgetId}/year/${year}`
 		);
 
 		dispatch<GetCategoryDataAction>({
