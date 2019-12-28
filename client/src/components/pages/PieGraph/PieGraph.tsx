@@ -126,18 +126,18 @@ class PieGraph extends Component<Props, State> {
 	}
 
 	render() {
-		return this.state.removeGraph ? (
-			<></>
-		) : (
-			<>
-				<div ref={this.tooltip} className={classes.toolTip}>
-					<span id="pieGraphTip"></span>
-				</div>
-				<div className={classes.chart}>
-					<div ref={this.canvas} className={classes.canvas}></div>
-					<h1 className={classes.title}>{this.props.type}</h1>
-				</div>
-			</>
+		return (
+			!this.state.removeGraph && (
+				<>
+					<div ref={this.tooltip} className={classes.toolTip}>
+						<span id="pieGraphTip"></span>
+					</div>
+					<div className={classes.chart}>
+						<div ref={this.canvas} className={classes.canvas}></div>
+						<h1 className={classes.title}>{this.props.type}</h1>
+					</div>
+				</>
+			)
 		);
 	}
 }
