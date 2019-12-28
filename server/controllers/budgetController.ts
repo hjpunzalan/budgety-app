@@ -157,6 +157,79 @@ class budgetController {
 	// get method
 	// group by categoryindex
 	// display income and expenses
+	// Need annual category data
+
+	@get("/categories/:budgetId/year/:year")
+	@use(requireAuth)
+	@catchAsync
+	async getAnnualCategoryData(req: Request, res: Response, next: NextFunction) {
+		const data = await Budget.aggregate([
+			{
+				$match: {
+					_id: Types.ObjectId(req.params.budgetId)
+				}
+			},
+			{
+				$unwind: "$transactions"
+			},
+			{
+				$sort: {
+					"transactions.date": -1
+				}
+			},
+			{
+				$project: {
+					transactions: 1,
+					year: {
+						$year: "$transactions.date"
+					},
+					income: {
+						$cond: {
+							if: {
+								$gte: ["$transactions.amount", 0]
+							},
+							then: "$transactions.amount",
+							else: 0
+						}
+					},
+					expense: {
+						$cond: {
+							if: {
+								$lt: ["$transactions.amount", 0]
+							},
+							then: "$transactions.amount",
+							else: 0
+						}
+					}
+				}
+			},
+			{
+				$match: {
+					year: parseInt(req.params.year, 10)
+				}
+			},
+			{
+				$group: {
+					_id: {
+						category: "$transactions.categoryIndex"
+					},
+					income: {
+						$sum: "$income"
+					},
+					expense: {
+						$sum: "$expense"
+					}
+				}
+			},
+
+			{
+				$sort: {
+					"_id.year": -1
+				}
+			}
+		]);
+		res.status(200).json(data);
+	}
 
 	@get("/categories/:budgetId/month/:month/year/:year")
 	@use(requireAuth)
