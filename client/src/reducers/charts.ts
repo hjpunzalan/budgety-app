@@ -11,8 +11,8 @@ export interface BudgetStats {
 
 export interface BudgetCategoryData {
 	_id: {
-		month: number;
-		year: number;
+		month?: number;
+		year?: number;
 		category: number;
 	};
 	income: number;
