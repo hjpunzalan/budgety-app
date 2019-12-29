@@ -134,6 +134,7 @@ class BarGraph extends Component<Props, State> {
 			.attr("width", graphWidth / 12 - barSpacing)
 			.attr("y", d => y(d.balance))
 			.attr("height", d => graphHeight - y(d.balance))
+			.style('cursor', 'pointer')
 			.on('mouseover', function (d) { tip.show(d, this) })
 			.on('mouseout', function (d) { tip.hide(d, this) })
 			.on('click', d => this.props.changeMonth(d._id.month))

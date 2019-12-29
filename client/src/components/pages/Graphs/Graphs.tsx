@@ -156,14 +156,14 @@ class PieGraphGroup extends Component<PieGroupProps> {
 		loading: false
 	};
 	componentDidUpdate(prevProps: PieGroupProps) {
+		// If month is changed
 		if (prevProps.month !== this.props.month) {
 			this.setState({ loading: true });
-			console.log("start");
 		}
 
-		if (!this.props.pieGraphLoading) {
+		// When data is retrieved stop loading
+		if (!this.props.pieGraphLoading && this.state.loading) {
 			this.setState({ loading: false });
-			console.log("stop");
 		}
 	}
 
