@@ -23,6 +23,7 @@ interface State {
 	loading: boolean;
 	year: number;
 	month: number;
+	pieGraphLoading: boolean;
 }
 
 class Graphs extends Component<Props, State> {
@@ -66,19 +67,14 @@ class Graphs extends Component<Props, State> {
 	changeMonth = (month: number) => {
 		const { budgetId } = this.props;
 		const { year } = this.state;
-		this.setState({ month });
-		this.props.getCategoryData(budgetId, year, month);
+		this.setState({ month, pieGraphLoading: true });
+		this.props
+			.getCategoryData(budgetId, year, month)
+			.then(() => this.setState({ pieGraphLoading: false }));
 	};
 
 	render() {
 		const years = this.props.charts.dates.map(date => date._id.year);
-		let months: number[] = [];
-		if (this.props.charts.dates.length > 0) {
-			const yearData = this.props.charts.dates.filter(
-				date => date._id.year === this.state.year
-			)[0];
-			months = yearData.months.map(m => m);
-		}
 		return this.state.loading ? (
 			<Spinner />
 		) : (
@@ -109,7 +105,8 @@ class Graphs extends Component<Props, State> {
 					pieGraph={this.props.charts.pieGraph}
 					budgetId={this.props.budgetId}
 					getCategoryData={this.props.getCategoryData}
-					changeMonth={this.changeMonth}>
+					changeMonth={this.changeMonth}
+					pieGraphLoading={this.state.pieGraphLoading}>
 					<PieGraph
 						type={PieGraphType.income}
 						budgets={this.props.budgets}
@@ -152,6 +149,7 @@ interface PieGroupProps {
 	) => Promise<void>;
 	changeMonth: (month: number) => void;
 	pieGraph: BudgetCategoryData[];
+	pieGraphLoading: boolean;
 }
 class PieGraphGroup extends Component<PieGroupProps> {
 	state = {
@@ -161,10 +159,11 @@ class PieGraphGroup extends Component<PieGroupProps> {
 		if (prevProps.month !== this.props.month) {
 			this.setState({ loading: true });
 			console.log("start");
-			console.log(prevProps.pieGraph !== this.props.pieGraph);
-			if (prevProps.pieGraph !== this.props.pieGraph) {
-				this.setState({ loading: false });
-			}
+		}
+
+		if (!this.props.pieGraphLoading) {
+			this.setState({ loading: false });
+			console.log("stop");
 		}
 	}
 
