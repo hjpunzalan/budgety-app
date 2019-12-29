@@ -7,6 +7,7 @@ import PieGraph, { PieGraphType } from "../PieGraph/PieGraph";
 import classes from "./Graphs.module.scss";
 import Spinner from "../../utils/Spinner/Spinner";
 import moment from "moment";
+import { BudgetCategoryData } from "../../../reducers/charts";
 
 interface Props extends StoreState {
 	budgetId: string;
@@ -22,7 +23,6 @@ interface State {
 	loading: boolean;
 	year: number;
 	month: number;
-	pieGraphLoading: boolean;
 }
 
 class Graphs extends Component<Props, State> {
@@ -64,7 +64,10 @@ class Graphs extends Component<Props, State> {
 	};
 
 	changeMonth = (month: number) => {
+		const { budgetId } = this.props;
+		const { year } = this.state;
 		this.setState({ month });
+		this.props.getCategoryData(budgetId, year, month);
 	};
 
 	render() {
@@ -96,12 +99,14 @@ class Graphs extends Component<Props, State> {
 						</select>
 					</label>
 				</div>
-				<BarGraph barGraph={this.props.charts.barGraph} />
-
+				<BarGraph
+					barGraph={this.props.charts.barGraph}
+					changeMonth={this.changeMonth}
+				/>
+				{/** Group required to ensure rerendering occurs on props change -> only for pieGraphs and not BarGraph */}
 				<PieGraphGroup
 					month={this.state.month}
-					year={this.state.year}
-					months={months}
+					pieGraph={this.props.charts.pieGraph}
 					budgetId={this.props.budgetId}
 					getCategoryData={this.props.getCategoryData}
 					changeMonth={this.changeMonth}>
@@ -139,8 +144,6 @@ export default connect(
 
 interface PieGroupProps {
 	month: number;
-	year: number;
-	months: number[];
 	budgetId: string;
 	getCategoryData: (
 		budgetId: string,
@@ -148,51 +151,26 @@ interface PieGroupProps {
 		month?: number
 	) => Promise<void>;
 	changeMonth: (month: number) => void;
+	pieGraph: BudgetCategoryData[];
 }
 class PieGraphGroup extends Component<PieGroupProps> {
 	state = {
 		loading: false
 	};
-
-	handleCategoryData = (e: React.ChangeEvent<HTMLSelectElement>) => {
-		const { budgetId, year } = this.props;
-		this.setState({ loading: true });
-		// If annual data is chosen
-		if (parseInt(e.target.value, 10) === this.props.year) {
-			// setState to initial state
-			this.setState({ month: 0 });
-			this.props.getCategoryData(budgetId, year).then(() => {
+	componentDidUpdate(prevProps: PieGroupProps) {
+		if (prevProps.month !== this.props.month) {
+			this.setState({ loading: true });
+			console.log("start");
+			console.log(prevProps.pieGraph !== this.props.pieGraph);
+			if (prevProps.pieGraph !== this.props.pieGraph) {
 				this.setState({ loading: false });
-			});
-		} else {
-			const month = parseInt(e.target.value, 10);
-			this.props.changeMonth(month);
-			this.props.getCategoryData(budgetId, year, month).then(() => {
-				this.setState({ loading: false });
-			});
+			}
 		}
-	};
+	}
 
 	render() {
 		return (
 			<div className={classes.pieGraphs}>
-				<label>
-					<h2>Category data</h2>
-					<select
-						autoFocus
-						name="Budgets"
-						value={this.props.month === 0 ? this.props.year : this.props.month}
-						onChange={this.handleCategoryData}>
-						<option key={this.props.year} value={this.props.year}>
-							Annual
-						</option>
-						{this.props.months.map(y => (
-							<option key={y} value={y}>
-								{moment(y, "MM").format("MMMM")}
-							</option>
-						))}
-					</select>
-				</label>
 				{this.state.loading ? <Spinner /> : this.props.children}
 			</div>
 		);
