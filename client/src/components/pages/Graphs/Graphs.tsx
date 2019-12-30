@@ -7,7 +7,6 @@ import PieGraph, { PieGraphType } from "../PieGraph/PieGraph";
 import classes from "./Graphs.module.scss";
 import Spinner from "../../utils/Spinner/Spinner";
 import moment from "moment";
-import { BudgetCategoryData } from "../../../reducers/charts";
 
 interface Props extends StoreState {
 	budgetId: string;
@@ -23,13 +22,11 @@ interface State {
 	loading: boolean;
 	year: number;
 	month: number;
-	pieGraphLoading: boolean;
 }
 
 class Graphs extends Component<Props, State> {
 	state = {
 		loading: true,
-		pieGraphLoading: false,
 		//Initial state is based on latest transaction
 		year: parseInt(
 			moment
@@ -67,10 +64,8 @@ class Graphs extends Component<Props, State> {
 	changeMonth = (month: number) => {
 		const { budgetId } = this.props;
 		const { year } = this.state;
-		this.setState({ month, pieGraphLoading: true });
-		this.props
-			.getCategoryData(budgetId, year, month)
-			.then(() => this.setState({ pieGraphLoading: false }));
+		this.setState({ month });
+		this.props.getCategoryData(budgetId, year, month);
 	};
 
 	render() {
@@ -99,14 +94,7 @@ class Graphs extends Component<Props, State> {
 					barGraph={this.props.charts.barGraph}
 					changeMonth={this.changeMonth}
 				/>
-				{/** Group required to ensure rerendering occurs on props change -> only for pieGraphs and not BarGraph */}
-				<PieGraphGroup
-					month={this.state.month}
-					pieGraph={this.props.charts.pieGraph}
-					budgetId={this.props.budgetId}
-					getCategoryData={this.props.getCategoryData}
-					changeMonth={this.changeMonth}
-					pieGraphLoading={this.state.pieGraphLoading}>
+				<div className={classes.pieGraphs}>
 					<PieGraph
 						type={PieGraphType.income}
 						budgets={this.props.budgets}
@@ -119,7 +107,7 @@ class Graphs extends Component<Props, State> {
 						pieGraph={this.props.charts.pieGraph}
 						budgetId={this.props.budgetId}
 					/>
-				</PieGraphGroup>
+				</div>
 			</div>
 		);
 	}
@@ -138,40 +126,3 @@ export default connect(
 	mapStateToProps,
 	{ getStats, getCategoryData, getDates }
 )(Graphs);
-
-interface PieGroupProps {
-	month: number;
-	budgetId: string;
-	getCategoryData: (
-		budgetId: string,
-		year: number,
-		month?: number
-	) => Promise<void>;
-	changeMonth: (month: number) => void;
-	pieGraph: BudgetCategoryData[];
-	pieGraphLoading: boolean;
-}
-class PieGraphGroup extends Component<PieGroupProps> {
-	state = {
-		loading: false
-	};
-	componentDidUpdate(prevProps: PieGroupProps) {
-		// If month is changed
-		if (prevProps.month !== this.props.month) {
-			this.setState({ loading: true });
-		}
-
-		// When data is retrieved stop loading
-		if (!this.props.pieGraphLoading && this.state.loading) {
-			this.setState({ loading: false });
-		}
-	}
-
-	render() {
-		return (
-			<div className={classes.pieGraphs}>
-				{this.state.loading ? <Spinner /> : this.props.children}
-			</div>
-		);
-	}
-}
