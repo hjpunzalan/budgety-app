@@ -48,12 +48,19 @@ export const graph = (component: PieGraph, size: number, extra: number) => {
 			.select("g");
 
 		const slice = graph.selectAll("g.slice").data(pie(data));
-
-		// Handle current selection
 		slice
-			.select("path")
-			.attr("d", arcPath)
-			.attr("d", arcPath)
+			.select("text")
+			.attr("text-anchor", "middle")
+			.attr("transform", d => `translate(${arcPath.centroid(d)})`)
+			.text(d => budget.categories[d.data._id.category])
+			.attr("class", classes.labels);
+
+		////////////////////////// Handle current selection//////////////////////////////
+		const path = slice.select("path");
+
+		path.attr("d", arcPath);
+
+		path
 			.attr("stroke", "#fff")
 			.attr("stroke-width", 2)
 			.attr("fill", d => colour(budget.categories[d.data._id.category]))
@@ -77,15 +84,7 @@ export const graph = (component: PieGraph, size: number, extra: number) => {
 			.on("mouseout", d =>
 				d3.select(component.tooltip.current).style("opacity", 0)
 			);
-
-		slice
-			.select("text")
-			.attr("text-anchor", "middle")
-			.attr("transform", d => `translate(${arcPath.centroid(d)})`)
-			.text(d => budget.categories[d.data._id.category])
-			.attr("class", classes.labels);
-
-		// Handle enter selection
+		/////////////////////////// Handle enter selection///////////////////////
 		const newSlice = slice
 			.enter()
 			.append("g")
@@ -124,9 +123,8 @@ export const graph = (component: PieGraph, size: number, extra: number) => {
 			.text(d => budget.categories[d.data._id.category])
 			.attr("class", classes.labels);
 
-		// Handle exit selection
+		/////////////////////////// Handle exit selection/////////////////////////
 		slice.exit().remove();
-		newSlice.exit().remove();
 	};
 
 	// Remove graph if there's no amount depending on type

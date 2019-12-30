@@ -64,8 +64,9 @@ class Graphs extends Component<Props, State> {
 	changeMonth = (month: number) => {
 		const { budgetId } = this.props;
 		const { year } = this.state;
-		this.setState({ month });
-		this.props.getCategoryData(budgetId, year, month);
+		this.props.getCategoryData(budgetId, year, month).then(() => {
+			this.setState({ month });
+		});
 	};
 
 	render() {
@@ -95,6 +96,17 @@ class Graphs extends Component<Props, State> {
 					changeMonth={this.changeMonth}
 				/>
 				<div className={classes.pieGraphs}>
+					<span>
+						Amount by category for&nbsp;
+						{this.state.month > 0
+							? moment(this.state.month, "MM").format("MMMM")
+							: this.state.year}
+					</span>
+
+					<button onClick={() => this.changeMonth(0)}>
+						Annual category Data
+					</button>
+
 					<PieGraph
 						type={PieGraphType.income}
 						budgets={this.props.budgets}
