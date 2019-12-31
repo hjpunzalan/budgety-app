@@ -224,7 +224,7 @@ class budgetController {
 
 			{
 				$sort: {
-					"_id.year": -1
+					"_id.category": 1
 				}
 			}
 		]);
@@ -302,8 +302,7 @@ class budgetController {
 
 			{
 				$sort: {
-					"_id.year": -1,
-					"_id.month": -1
+					"_id.category": 1
 				}
 			}
 		]);
