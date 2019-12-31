@@ -66,8 +66,8 @@ class PieGraph extends Component<Props, State> {
 						<span id="pieGraphTip"></span>
 					</div>
 					<div className={classes.chart}>
-						<div className={classes.canvas} ref={this.canvas}></div>
 						<h1 className={classes.title}>{this.props.type}</h1>
+						<div className={classes.canvas} ref={this.canvas}></div>
 					</div>
 				</>
 			)
