@@ -1,4 +1,65 @@
-.pieGraphs {
+@import "../../../styles/privMixins";
+@import "../../../styles/variables";
+
+.barGraphHeading {
     display: flex;
-    justify-content: space-around;
+    align-items: center;
+    justify-content: center;
+
+    h2 {
+        font-size: 3rem;
+        display: inline-block;
+    }
+
+    select {
+        margin: 0 2rem;
+    }
+
+    select,
+    option {
+        font-size: 2.5rem;
+        font-weight: bold;
+        cursor: pointer;
+    }
+}
+
+.barGraphTip {
+    display: block;
+    font-size: 1.2rem;
+    font-style: italic;
+    text-align: center;
+    margin: 2rem 0;
+}
+
+.pieGraphGroup {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-top: 7rem;
+
+    h2 {
+        font-size: 3rem;
+        display: inline-block;
+    }
+
+    .pieGraph {
+        margin-top: 2rem;
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+    }
+
+    button {
+        font-size: 1.2rem;
+        font-style: italic;
+        margin-top: 1rem;
+        padding: .5rem 1rem;
+        background: white;
+        cursor: pointer;
+
+        &:focus {
+            outline: none;
+        }
+    }
 }

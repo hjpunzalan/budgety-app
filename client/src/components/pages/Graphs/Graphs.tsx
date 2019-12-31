@@ -77,7 +77,7 @@ class Graphs extends Component<Props, State> {
 			<div className={classes.container}>
 				<div className={classes.barGraphHeading}>
 					<label>
-						<h2>Annual data</h2>
+						<h2>Annual data for </h2>
 						<select
 							autoFocus
 							name="Budgets"
@@ -91,34 +91,38 @@ class Graphs extends Component<Props, State> {
 						</select>
 					</label>
 				</div>
+				<span className={classes.barGraphTip}>
+					Click graph to see category data by month
+				</span>
 				<BarGraph
 					barGraph={this.props.charts.barGraph}
 					changeMonth={this.changeMonth}
 				/>
-				<div className={classes.pieGraphs}>
-					<span>
+				<div className={classes.pieGraphGroup}>
+					<h2>
 						Amount by category for&nbsp;
 						{this.state.month > 0
 							? moment(this.state.month, "MM").format("MMMM")
 							: this.state.year}
-					</span>
+					</h2>
+					<div className={classes.pieGraph}>
+						<PieGraph
+							type={PieGraphType.income}
+							budgets={this.props.budgets}
+							pieGraph={this.props.charts.pieGraph}
+							budgetId={this.props.budgetId}
+						/>
+						<PieGraph
+							type={PieGraphType.expense}
+							budgets={this.props.budgets}
+							pieGraph={this.props.charts.pieGraph}
+							budgetId={this.props.budgetId}
+						/>
+					</div>
 
 					<button onClick={() => this.changeMonth(0)}>
-						Annual category Data
+						Get the annual category data
 					</button>
-
-					<PieGraph
-						type={PieGraphType.income}
-						budgets={this.props.budgets}
-						pieGraph={this.props.charts.pieGraph}
-						budgetId={this.props.budgetId}
-					/>
-					<PieGraph
-						type={PieGraphType.expense}
-						budgets={this.props.budgets}
-						pieGraph={this.props.charts.pieGraph}
-						budgetId={this.props.budgetId}
-					/>
 				</div>
 			</div>
 		);
