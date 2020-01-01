@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import moment from "moment";
-import { checkAmount } from "../../utils/CheckAmount";
 import InfiniteScroll from "react-infinite-scroller";
+import { RouteComponentProps, withRouter } from "react-router";
+import { checkAmount } from "../../utils/CheckAmount";
 import classes from "./Table.module.scss";
 import { ITransactionResult } from "../../../reducers/transactions";
 import { IBudget } from "../../../actions";
 
-interface Props {
+interface Props extends RouteComponentProps {
 	transactions: ITransactionResult[];
 	currentBudget: IBudget;
 	getTransactions: (
@@ -18,12 +19,14 @@ interface Props {
 interface State {
 	pageNumber: number;
 	hasMore: boolean;
+	selectedId?: string;
 }
 
 class Table extends Component<Props, State> {
 	state = {
 		pageNumber: 1,
-		hasMore: true
+		hasMore: true,
+		selectedId: ""
 	};
 	// A method to be push to the action creator
 	// This checks if there are results from server,
@@ -82,10 +85,22 @@ class Table extends Component<Props, State> {
 										{group._id.year}
 									</td>
 								</tr>
-								{group.transactions.map((t, i) => {
+								{group.transactions.map((t, i: number) => {
 									return (
 										//When double clicked redirect to edit transaction page!
-										<tr key={i} className={classes.transactions}>
+										<tr
+											key={i}
+											className={
+												this.state.selectedId === t._id
+													? classes.transactionSelected
+													: classes.transaction
+											}
+											onClick={() => this.setState({ selectedId: t._id })}
+											onDoubleClick={() =>
+												this.props.history.push(
+													`/user/transactions/edit/${t._id}`
+												)
+											}>
 											<td>
 												{moment
 													.utc(t.date)
@@ -108,4 +123,4 @@ class Table extends Component<Props, State> {
 	}
 }
 
-export default Table;
+export default withRouter(Table);

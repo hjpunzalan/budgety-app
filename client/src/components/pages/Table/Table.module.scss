@@ -1,8 +1,6 @@
 @import "../../../styles/privMixins";
 @import "../../../styles/variables";
 
-
-
 .table {
     width: 100%;
     font-size: 1.2rem;
@@ -20,7 +18,10 @@
         border: 1px solid $color-grey;
     }
 
-    .transactions {
+    .transaction,
+    .transactionSelected {
+        cursor: pointer;
+
         td {
             padding: 1rem 0.5rem;
 
@@ -28,6 +29,10 @@
                 text-align: center;
             }
         }
+    }
+
+    .transactionSelected {
+        background: #d9f4fd;
     }
 }
 
