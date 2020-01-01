@@ -30,6 +30,12 @@ export const graph = (component: PieGraph, size: number, extra: number) => {
 		data = component.props.pieGraph.filter(d => d.income !== 0);
 	} else data = component.props.pieGraph.filter(d => d.expense !== 0);
 
+	// To find total amount
+	let totalAmount = 0;
+	if (data.length > 0)
+		totalAmount = data.map(m => m[type]).reduce((acc, val) => acc + val);
+	console.log(totalAmount);
+
 	const renderPieGraph = () => {
 		// Pie function to convert data into pieData
 		const pie = d3
@@ -46,8 +52,26 @@ export const graph = (component: PieGraph, size: number, extra: number) => {
 		// ordinal scale
 		const colour = d3.scaleOrdinal(
 			component.props.type === PieGraphType.income
-				? d3.schemeSet2
-				: d3.schemeSet1
+				? [
+						"#fbb4ae",
+						"#b3cde3",
+						"#ccebc5",
+						"#decbe4",
+						"#fed9a6",
+						"#ffffcc",
+						"#e5d8bd",
+						"#fddaec"
+				  ]
+				: [
+						"#b3e2cd",
+						"#fdcdac",
+						"#cbd5e8",
+						"#f4cae4",
+						"#e6f5c9",
+						"#fff2ae",
+						"#f1e2cc",
+						"#cccccc"
+				  ]
 		);
 
 		//////////////////////////////////////// TWEENS //////////////////////////////////////////
@@ -107,6 +131,7 @@ export const graph = (component: PieGraph, size: number, extra: number) => {
 			.text(d => budget.categories[d.data._id.category])
 			.attr("class", classes.labels);
 
+		// Update path and fill colour with animation
 		slice
 			.select<PathElement>("path")
 			.attr("d", arcPath)
@@ -114,6 +139,20 @@ export const graph = (component: PieGraph, size: number, extra: number) => {
 			.transition()
 			.duration(750)
 			.attrTween("d", arcTweenUpdate);
+
+		// Update tooltip data and position
+		slice.on("mousemove", d => {
+			d3.select(component.tooltip.current)
+				.style("left", d3.event.pageX + 15 + "px")
+				.style("top", d3.event.pageY + "px")
+				.select("#pieGraphTip")
+				.text(
+					`${budget.categories[d.data._id.category]}: ${checkAmount(
+						Math.abs(d.data[type])
+					)} (${((100 * d.data[type]) / totalAmount).toFixed(0)}%)
+						`
+				);
+		});
 
 		/////////////////////////// Handle exit selection/////////////////////////
 
@@ -144,7 +183,7 @@ export const graph = (component: PieGraph, size: number, extra: number) => {
 			.append<PathElement>("path")
 			.attr("d", arcPath)
 			.attr("stroke", "#fff")
-			.attr("stroke-width", 2)
+			.attr("stroke-width", 3)
 			.attr("fill", d => colour(budget.categories[d.data._id.category]))
 			.style("cursor", "pointer")
 			.each(function(d) {
@@ -156,7 +195,6 @@ export const graph = (component: PieGraph, size: number, extra: number) => {
 
 		// Add mouse events
 		newSlice
-			.select("path")
 			.on("mouseover", () => {
 				d3.select(component.tooltip.current)
 					.style("opacity", 1)
@@ -170,7 +208,8 @@ export const graph = (component: PieGraph, size: number, extra: number) => {
 					.text(
 						`${budget.categories[d.data._id.category]}: ${checkAmount(
 							Math.abs(d.data[type])
-						)}`
+						)} (${((100 * d.data[type]) / totalAmount).toFixed(0)}%)
+						`
 					);
 			})
 			.on("mouseout", d =>
