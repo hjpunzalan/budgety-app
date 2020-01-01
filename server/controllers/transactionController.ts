@@ -258,53 +258,26 @@ class TransactionController {
 
 	// Get transactions by budget id, year, month
 
-	@get("/:budgetId/month/:month/year/:year")
+	@get("/:budgetId/:transactionId")
 	@use(requireAuth)
 	@catchAsync
-	async getMonthTransactions(req: Request, res: Response, next: NextFunction) {
-		const transactions = await Budget.aggregate([
-			{
-				$match: {
-					_id: Types.ObjectId(req.params.budgetId)
-				}
-			},
-			{
-				$unwind: "$transactions"
-			},
-			{
-				$sort: {
-					"transactions.date": -1
-				}
-			},
-			{
-				$project: {
-					transactions: 1,
-					month: {
-						$month: "$transactions.date"
-					},
-					year: {
-						$year: "$transactions.date"
-					}
-				}
-			},
-			{
-				$match: {
-					month: parseInt(req.params.month, 10),
-					year: parseInt(req.params.year, 10)
-				}
-			},
-			{
-				$group: {
-					_id: {
-						month: "$month",
-						year: "$year"
-					},
+	async getTransaction(req: Request, res: Response, next: NextFunction) {
+		if (req.session) {
+			const budget = await Budget.findOne(
+				{
+					_id: req.params.budgetId,
+					user: req.session.userId
+				},
+				{
 					transactions: {
-						$push: "$transactions"
+						$elemMatch: { _id: req.params.transactionId }
 					}
 				}
-			}
-		]);
-		res.status(200).json(transactions);
+			);
+			if (budget) {
+				const transaction = budget.transactions[0];
+				res.status(200).json(transaction);
+			} else return next(new AppError("Budget or transaction not found", 404));
+		} else return next(new AppError("User no longer logged in", 403));
 	}
 }
