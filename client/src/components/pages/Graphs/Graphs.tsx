@@ -77,7 +77,7 @@ class Graphs extends Component<Props, State> {
 			<div className={classes.container}>
 				<div className={classes.barGraphHeading}>
 					<label>
-						<h2>Annual data for </h2>
+						<h2>Annual data for</h2>
 						<select
 							autoFocus
 							name="Budgets"
@@ -99,14 +99,14 @@ class Graphs extends Component<Props, State> {
 					changeMonth={this.changeMonth}
 				/>
 				<div className={classes.pieGraphGroup}>
-					<h2>
+					<h3>
 						Amount by category for&nbsp;
 						{this.state.month > 0
 							? moment(this.state.month, "MM").format("MMMM") +
 							  " " +
 							  this.state.year
 							: this.state.year}
-					</h2>
+					</h3>
 					<span>Hover each slice for more details</span>
 					<div className={classes.pieGraph}>
 						<PieGraph
