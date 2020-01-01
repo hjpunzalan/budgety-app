@@ -34,7 +34,6 @@ export const graph = (component: PieGraph, size: number, extra: number) => {
 	let totalAmount = 0;
 	if (data.length > 0)
 		totalAmount = data.map(m => m[type]).reduce((acc, val) => acc + val);
-	console.log(totalAmount);
 
 	const renderPieGraph = () => {
 		// Pie function to convert data into pieData

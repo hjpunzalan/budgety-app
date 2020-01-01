@@ -68,15 +68,22 @@ class EditBudget extends Component<Props, State> {
 
 	addCategories = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		e.preventDefault();
-		const categories = this.state.categories;
-		const nCategories = this.state.nCategories + 1;
-		categories.push("");
+		// Max categories is 8 due to the colour scheme of the pieGraph
+		if (this.state.nCategories < 8) {
+			const categories = this.state.categories;
+			const nCategories = this.state.nCategories + 1;
+			categories.push("");
 
-		this.setState({ nCategories, categories });
-		this.props.setAlert(
-			"Be careful when adding categories as these cannot be deleted after updating the budget.",
-			AlertType.info
-		);
+			this.setState({ nCategories, categories });
+			this.props.setAlert(
+				"Be careful when adding categories as these cannot be deleted after updating the budget.",
+				AlertType.info
+			);
+		} else
+			this.props.setAlert(
+				"Maximum number of categories reached!!",
+				AlertType.warning
+			);
 	};
 
 	delCategories = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
