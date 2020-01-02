@@ -3,15 +3,24 @@ import classes from "./EditTransaction.module.scss";
 import DatePicker from "react-date-picker";
 import Axios from "axios";
 import { withRouter, RouteComponentProps } from "react-router-dom";
-import { AddTransactionForm } from "../AddTransaction/AddTransaction";
-import { ITransaction } from "../../../actions";
+import { connect } from "react-redux";
+import { ITransaction, setAlert, AlertType } from "../../../actions";
 import Spinner from "../../utils/Spinner/Spinner";
+import { StoreState } from "../../../reducers";
 interface Params {
 	budgetId: string;
 	transactionId: string;
 }
-interface Props extends RouteComponentProps<Params> {}
-interface State extends AddTransactionForm {
+export interface EditTransactionForm {
+	desc?: string;
+	categoryIndex?: number;
+	amount?: number;
+	date?: Date | Date[];
+}
+interface Props extends RouteComponentProps<Params>, StoreState {
+	setAlert: (message: string, alertType: AlertType) => void;
+}
+interface State extends EditTransactionForm {
 	min: number;
 	max: number;
 	loading: boolean;
@@ -37,9 +46,64 @@ class EditTransaction extends Component<Props, State> {
 		);
 		const { desc, amount, categoryIndex, date } = res.data;
 		this.setState({ desc, amount, categoryIndex, date, loading: false });
+		// Set min and max
+		if (amount < 0) this.setState({ max: 0, min: -Infinity, amount });
+		else this.setState({ max: Infinity, min: 0 });
 	}
 
+	handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		this.setState({
+			loading: true
+		});
+		const { desc, categoryIndex, amount, date } = this.state;
+		// This fixes the bug when sending different format of Date to server from client's format
+		// The bug is the date saved on server is the day before when its the beginning of the month
+		// The selections works correclty but the server assumes its the day before.
+		if (date instanceof Date) {
+			const day = date.getDate();
+			date.setDate(day + 1);
+		}
+		const { budgetId, transactionId } = this.props.match.params;
+		await Axios.patch(`/api/transactions/update/${budgetId}/${transactionId}`, {
+			desc,
+			categoryIndex,
+			date,
+			amount
+		});
+
+		// stop loading
+		this.setState({
+			loading: false
+		});
+
+		this.props.setAlert("Transaction updated!", AlertType.success);
+	};
+
+	handleChangeType = (e: React.ChangeEvent<HTMLInputElement>) => {
+		let amount = this.state.amount;
+		if (!amount) amount = 1; // if amount = 0 or undefined
+		if (e.target.value === "expense" && amount > 0) {
+			amount *= -1;
+			this.setState({ max: 0, min: -Infinity, amount });
+		} else if (amount < 0 && e.target.value === "income") {
+			amount *= -1;
+			this.setState({ max: Infinity, min: 0 });
+		} else {
+			// Initially negative value but changed type to expense
+			this.setState({ max: 0, min: -Infinity, amount });
+		}
+
+		this.setState({ amount });
+	};
+
+	handleDateChange = (date: Date | Date[]) => {
+		this.setState({ date });
+	};
+
 	render() {
+		const { budgetId } = this.props.match.params;
+		const budget = this.props.budgets.find(b => b._id === budgetId);
 		return (
 			<div className={classes.container}>
 				{this.state.loading ? (
@@ -69,15 +133,14 @@ class EditTransaction extends Component<Props, State> {
 										})
 									}
 									value={this.state.categoryIndex}>
-									{this.props.budgets[this.state.budgetIndex].categories.map(
-										(c, i) => {
+									{budget &&
+										budget.categories.map((c, i) => {
 											return (
 												<option key={i} value={i}>
 													{c}
 												</option>
 											);
-										}
-									)}
+										})}
 								</select>
 							</label>
 							<label className={classes.date}>
@@ -144,4 +207,11 @@ class EditTransaction extends Component<Props, State> {
 	}
 }
 
-export default withRouter(EditTransaction);
+const mapStateToProps = (state: StoreState) => ({
+	budgets: state.budgets
+});
+
+export default connect(
+	mapStateToProps,
+	{ setAlert }
+)(withRouter(EditTransaction));
