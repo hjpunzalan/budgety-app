@@ -67,7 +67,8 @@ class Dashboard extends Component<Props, State> {
 	componentDidMount() {
 		// Load budgets first
 		// If default -------------------- JUST AFTER LOGGING IN ----------------------------
-		if (this.props.budgets.length === 0) {
+		// Check if it doesn't have any params then its default just after logging in
+		if (!this.props.match.params.budgetId) {
 			this.props.getAllBudget().then(() => {
 				// To be removed after dev
 				if (this.props.auth.currentUser)
