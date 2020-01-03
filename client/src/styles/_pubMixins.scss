@@ -19,8 +19,7 @@
 }
 
 @mixin publicPageSpinner {
-    grid-column: 4/6;
-    grid-row: 2/5;
+    grid-column: 1/-1;
     align-self: center;
 
 }
@@ -31,6 +30,7 @@
     display: grid;
     grid-template-columns: repeat(8, minmax(max-content, 1fr));
     grid-template-rows: repeat(auto-fit, minmax(10rem, 1fr));
+    min-height: 70rem;
 }
 
 
@@ -41,7 +41,7 @@
     display: grid;
     grid-template-columns: minmax(max-content, 1fr) minmax(max-content, 1fr);
     grid-template-rows: repeat(auto-fit, minmax(5rem, max-content)) 1fr;
-    gap: 3rem;
+    column-gap: 3rem;
     background: rgb(255, 255, 255);
     border: 1px solid $color-grey;
     border-top: 3px solid $color-primary;
@@ -72,8 +72,8 @@
         label:nth-of-type(#{$i}) {
             grid-column: 1/-1;
             width: 100%;
-            grid-row-start: $i+2;
-            grid-row-end: $i+3;
+            grid-row-start: $i+1;
+            grid-row-end: $i+2;
             align-self: center;
             justify-self: center;
             display: grid;
