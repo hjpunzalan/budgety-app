@@ -1,0 +1,18 @@
+@import "../../node_modules/react-datepicker/dist/react-datepicker.css";
+
+.react-datepicker {
+    select {
+        padding: 0 !important;
+    }
+}
+
+.react-datepicker__day,
+.react-datepicker__day-name {
+    margin: .4rem;
+    padding: .2rem
+}
+
+.react-datepicker__month-dropdown-container {
+    margin: 1rem;
+    margin-left: 0;
+}
