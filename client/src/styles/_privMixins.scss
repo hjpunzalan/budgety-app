@@ -44,9 +44,9 @@
     gap: 3rem;
     justify-items: center;
 
-    //  All buttons
+    //  All direct child buttons
     input[type="submit"],
-    button {
+    &>button {
         cursor: pointer;
         outline: none;
         border: none;
