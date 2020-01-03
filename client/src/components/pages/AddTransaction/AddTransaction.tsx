@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import DatePicker from "react-date-picker";
 import { connect } from "react-redux";
 import { addTransaction } from "../../../actions";
+import DatePicker from "react-datepicker";
 import classes from "./AddTransaction.module.scss";
 import { StoreState } from "../../../reducers";
 import Spinner from "../../utils/Spinner/Spinner";
@@ -24,7 +24,7 @@ export interface AddTransactionForm {
 	desc: string;
 	categoryIndex: number;
 	amount: number;
-	date: Date | Date[];
+	date: Date | string;
 }
 
 interface State extends AddTransactionForm {
@@ -61,19 +61,21 @@ class AddTransaction extends Component<Props, State> {
 
 	handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		this.setState({ loading: true });
+		this.setState({
+			loading: true
+		});
 		const { budgetIndex, desc, categoryIndex, amount, date } = this.state;
-		// This fixes the bug when sending different format of Date to server from client's format
-		// The bug is the date saved on server is the day before when its the beginning of the month
-		// The selections works correclty but the server assumes its the day before.
-		if (date instanceof Date) {
-			const day = date.getDate();
-			date.setDate(day + 1);
-		}
 		const budget = this.props.budgets[budgetIndex];
+		// Need to convert date to ISO format before sending to server otherwise, it will send incorrect date
+		const isoDate = date.toISOString();
 		if (budget._id)
 			this.props
-				.addTransaction(budget._id, { desc, categoryIndex, amount, date })
+				.addTransaction(budget._id, {
+					desc,
+					categoryIndex,
+					amount,
+					date: isoDate
+				})
 				.then(() => {
 					// Reset form and stop loading
 					this.setState({
@@ -86,7 +88,10 @@ class AddTransaction extends Component<Props, State> {
 						date: new Date()
 					});
 				});
-		else this.setState({ loading: false });
+		else
+			this.setState({
+				loading: false
+			});
 	};
 
 	handleChangeType = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -114,8 +119,10 @@ class AddTransaction extends Component<Props, State> {
 		});
 	};
 
-	handleDateChange = (date: Date | Date[]) => {
-		this.setState({ date });
+	handleDateChange = (date: Date | null) => {
+		if (date) {
+			this.setState({ date });
+		}
 	};
 
 	render() {
@@ -175,12 +182,16 @@ class AddTransaction extends Component<Props, State> {
 									)}
 								</select>
 							</label>
-							<label className={classes.date}>
+							<label onClick={e => e.preventDefault()} className={classes.date}>
 								<span className={classes.dateLabel}>Date: </span>
 								<DatePicker
 									onChange={this.handleDateChange}
-									value={this.state.date}
-									format="dd/MM/y"
+									selected={this.state.date}
+									dateFormat="dd/MM/yyyy"
+									peekNextMonth
+									showMonthDropdown
+									showYearDropdown
+									dropdownMode="select"
 								/>
 							</label>
 							<label className={classes.amount}>

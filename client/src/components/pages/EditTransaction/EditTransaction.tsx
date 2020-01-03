@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import classes from "./EditTransaction.module.scss";
-import DatePicker from "react-date-picker";
+import DatePicker from "react-datepicker";
 import Axios from "axios";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { connect } from "react-redux";
+import classes from "./EditTransaction.module.scss";
 import { ITransaction, setAlert, AlertType } from "../../../actions";
 import Spinner from "../../utils/Spinner/Spinner";
 import { StoreState } from "../../../reducers";
@@ -15,7 +15,7 @@ export interface EditTransactionForm {
 	desc?: string;
 	categoryIndex?: number;
 	amount?: number;
-	date?: Date | Date[];
+	date?: Date | string;
 }
 interface Props extends RouteComponentProps<Params>, StoreState {
 	setAlert: (message: string, alertType: AlertType) => void;
@@ -45,9 +45,21 @@ class EditTransaction extends Component<Props, State> {
 			`/api/transactions/${budgetId}/${transactionId}`
 		);
 		const { desc, amount, categoryIndex, date } = res.data;
-		this.setState({ desc, amount, categoryIndex, date, loading: false });
+		const dateFixed = new Date(date);
+		this.setState({
+			desc,
+			amount,
+			categoryIndex,
+			date: dateFixed,
+			loading: false
+		});
 		// Set min and max
-		if (amount < 0) this.setState({ max: 0, min: -Infinity, amount });
+		if (amount < 0)
+			this.setState({
+				max: 0,
+				min: -Infinity,
+				amount
+			});
 		else this.setState({ max: Infinity, min: 0 });
 	}
 
@@ -57,25 +69,17 @@ class EditTransaction extends Component<Props, State> {
 			loading: true
 		});
 		const { desc, categoryIndex, amount, date } = this.state;
-		// This fixes the bug when sending different format of Date to server from client's format
-		// The bug is the date saved on server is the day before when its the beginning of the month
-		// The selections works correclty but the server assumes its the day before.
-		if (date instanceof Date) {
-			const day = date.getDate();
-			date.setDate(day + 1);
-		}
+		// Need to convert date to ISO format before sending to server otherwise, it will send incorrect date
+		const isoDate = date.toISOString();
 		const { budgetId, transactionId } = this.props.match.params;
 		await Axios.patch(`/api/transactions/update/${budgetId}/${transactionId}`, {
 			desc,
 			categoryIndex,
-			date,
+			date: isoDate,
 			amount
 		});
 
-		// stop loading
-		this.setState({
-			loading: false
-		});
+		this.props.history.push(`/user/budget/${budgetId}`);
 
 		this.props.setAlert("Transaction updated!", AlertType.success);
 	};
@@ -97,8 +101,8 @@ class EditTransaction extends Component<Props, State> {
 		this.setState({ amount });
 	};
 
-	handleDateChange = (date: Date | Date[]) => {
-		this.setState({ date });
+	handleDateChange = (date: Date | null) => {
+		if (date) this.setState({ date });
 	};
 
 	render() {
@@ -143,12 +147,16 @@ class EditTransaction extends Component<Props, State> {
 										})}
 								</select>
 							</label>
-							<label className={classes.date}>
+							<label onClick={e => e.preventDefault()} className={classes.date}>
 								<span className={classes.dateLabel}>Date: </span>
 								<DatePicker
 									onChange={this.handleDateChange}
-									value={this.state.date}
-									format="dd/MM/y"
+									selected={this.state.date}
+									dateFormat="dd/MM/yyyy"
+									peekNextMonth
+									showMonthDropdown
+									showYearDropdown
+									dropdownMode="select"
 								/>
 							</label>
 							<label className={classes.amount}>
@@ -197,7 +205,14 @@ class EditTransaction extends Component<Props, State> {
 									<span>Expense - </span>
 								</label>
 							</div>
-
+							<button
+								className={classes.btnGrey}
+								onClick={e => {
+									e.preventDefault();
+									this.props.history.goBack();
+								}}>
+								Go back
+							</button>
 							<input type="submit" value="Submit" />
 						</form>
 					</>
