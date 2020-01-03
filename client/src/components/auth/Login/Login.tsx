@@ -48,42 +48,40 @@ class Login extends Component<Props, State> {
 	render() {
 		return (
 			<div className={classes.page}>
-				{!this.state.loading && (
-					<Link className={classes.homeLink} to="/">
-						<button>{`<<`}</button>
-					</Link>
-				)}
+				<Link className={classes.homeLink} to="/">
+					<button>{`<<`}</button>
+				</Link>
 				<div className={classes.container}>
-					{this.state.loading ? (
-						<div className={classes.spinner}>
-							<Spinner />
-						</div>
-					) : (
-						<>
-							<form className={classes.form} onSubmit={this.handleSubmit}>
-								<h1>Login</h1>
-								<label>
-									<span>Email</span>
-									<input
-										type="email"
-										name="email"
-										value={this.state.email}
-										onChange={this.handleChange}
-										required
-									/>
-								</label>
+					<form className={classes.form} onSubmit={this.handleSubmit}>
+						<h1>Login</h1>
+						<label>
+							<span>Email</span>
+							<input
+								type="email"
+								name="email"
+								value={this.state.email}
+								onChange={this.handleChange}
+								required
+							/>
+						</label>
 
-								<label>
-									<span>Password</span>
-									<input
-										type="password"
-										name="password"
-										value={this.state.password}
-										onChange={this.handleChange}
-										minLength={6}
-										required
-									/>
-								</label>
+						<label>
+							<span>Password</span>
+							<input
+								type="password"
+								name="password"
+								value={this.state.password}
+								onChange={this.handleChange}
+								minLength={6}
+								required
+							/>
+						</label>
+						{this.state.loading ? (
+							<div className={classes.spinner}>
+								<Spinner />
+							</div>
+						) : (
+							<>
 								<button className={classes.loginBtn}>Login</button>
 								<Link className={classes.registerBtn} to="/register">
 									<button>Sign Up </button>
@@ -92,9 +90,9 @@ class Login extends Component<Props, State> {
 								<Link className={classes.link} to="/forgotpassword">
 									Forgot your password?
 								</Link>
-							</form>
-						</>
-					)}
+							</>
+						)}
+					</form>
 				</div>
 			</div>
 		);

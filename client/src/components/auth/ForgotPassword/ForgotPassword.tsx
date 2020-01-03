@@ -43,43 +43,40 @@ class ForgotPassword extends Component<Props, IForgotPassState> {
 	render() {
 		return (
 			<div className={classes.page}>
-				{!this.state.loading && (
-					<div className={classes.nav}>
-						<Link to="/">
-							<button>
-								<TiHomeOutline />
-							</button>
-						</Link>
-						<Link to="/login">
-							<button>Login</button>
-						</Link>
-					</div>
-				)}
+				<div className={classes.nav}>
+					<Link to="/">
+						<button>
+							<TiHomeOutline />
+						</button>
+					</Link>
+					<Link to="/login">
+						<button>Login</button>
+					</Link>
+				</div>
+
 				<div className={classes.container}>
-					{this.state.loading ? (
-						<div className={classes.spinner}>
-							<Spinner />
-						</div>
-					) : (
-						<>
-							<form className={classes.form} onSubmit={this.handleSubmit}>
-								<h1>Forgot password?</h1>
-								<p className={classes.desc}>
-									Please enter the email address registered to your account and
-									we will send you the link to reset your password.
-								</p>
-								<input
-									type="email"
-									placeholder="Enter Email"
-									name="email"
-									value={this.state.email}
-									onChange={this.handleChange}
-									required
-								/>
-								<input type="submit" value="Send to email" />
-							</form>
-						</>
-					)}
+					<form className={classes.form} onSubmit={this.handleSubmit}>
+						<h1>Forgot password?</h1>
+						<p className={classes.desc}>
+							Please enter the email address registered to your account and we
+							will send you the link to reset your password.
+						</p>
+						<input
+							type="email"
+							placeholder="Enter Email"
+							name="email"
+							value={this.state.email}
+							onChange={this.handleChange}
+							required
+						/>
+						{this.state.loading ? (
+							<div className={classes.spinner}>
+								<Spinner />
+							</div>
+						) : (
+							<input type="submit" value="Send to email" />
+						)}
+					</form>
 				</div>
 			</div>
 		);

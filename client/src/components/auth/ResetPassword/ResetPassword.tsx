@@ -12,7 +12,6 @@ interface RouteParams {
 }
 
 interface Props extends RouteComponentProps<RouteParams>, StoreState {
-	isAuthenticated: boolean;
 	patchResetPassword: (form: IResetPassState, url: string) => Promise<void>;
 }
 
@@ -65,56 +64,52 @@ class ResetPassword extends Component<Props, IResetPassState> {
 	render() {
 		return (
 			<div className={classes.page}>
-				{!this.state.loading && (
-					<div className={classes.nav}>
-						<Link className={classes.homeLink} to="/">
-							<button>
-								<TiHomeOutline />
-							</button>
-						</Link>
-						<Link to="/login">
-							<button>Login</button>
-						</Link>
-					</div>
-				)}
+				<div className={classes.nav}>
+					<Link className={classes.homeLink} to="/">
+						<button>
+							<TiHomeOutline />
+						</button>
+					</Link>
+					<Link to="/login">
+						<button>Login</button>
+					</Link>
+				</div>
 
 				<div className={classes.container}>
-					{this.state.loading ? (
-						<div className={classes.spinner}>
-							<Spinner />
-						</div>
-					) : (
-						<>
-							<form className={classes.form} onSubmit={this.handleSubmit}>
-								<h1>Reset password</h1>
-								<p className={classes.desc}>
-									Please enter a new password below.
-								</p>
-								<label>
-									<span>Password</span>
-									<input
-										type="password"
-										placeholder="Enter a new Password"
-										name="newPassword"
-										value={this.state.newPassword}
-										onChange={this.handleChange}
-										minLength={6}
-										autoComplete="on"
-										required
-									/>
-								</label>
-								<label>
-									<span>Confirm Password</span>
-									<input
-										type="password"
-										placeholder="Confirm password"
-										name="confirmPassword"
-										value={this.state.confirmPassword}
-										onChange={this.handleChange}
-										minLength={6}
-										required
-									/>
-								</label>
+					<form className={classes.form} onSubmit={this.handleSubmit}>
+						<h1>Reset password</h1>
+						<p className={classes.desc}>Please enter a new password below.</p>
+						<label>
+							<span>Password</span>
+							<input
+								type="password"
+								placeholder="Enter a new Password"
+								name="newPassword"
+								value={this.state.newPassword}
+								onChange={this.handleChange}
+								minLength={6}
+								autoComplete="on"
+								required
+							/>
+						</label>
+						<label>
+							<span>Confirm Password</span>
+							<input
+								type="password"
+								placeholder="Confirm password"
+								name="confirmPassword"
+								value={this.state.confirmPassword}
+								onChange={this.handleChange}
+								minLength={6}
+								required
+							/>
+						</label>
+						{this.state.loading ? (
+							<div className={classes.spinner}>
+								<Spinner />
+							</div>
+						) : (
+							<>
 								<input
 									type="submit"
 									className="btn btn__submit"
@@ -123,20 +118,16 @@ class ResetPassword extends Component<Props, IResetPassState> {
 								<Link className={classes.btmLink} to="/forgotpassword">
 									Send another reset token?
 								</Link>
-							</form>
-						</>
-					)}
+							</>
+						)}
+					</form>
 				</div>
 			</div>
 		);
 	}
 }
 
-const mapStateToProps = (state: StoreState) => ({
-	auth: state.auth
-});
-
 export default connect(
-	mapStateToProps,
+	null,
 	{ patchResetPassword }
 )(ResetPassword);

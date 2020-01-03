@@ -1,12 +1,14 @@
 @import '../../../styles/pubMixins';
 @import '../../../styles/variables';
 
+
 .page {
     @include page;
 }
 
 .spinner {
     @include publicPageSpinner;
+    grid-row: 5/6;
 }
 
 .homeLink {
@@ -28,6 +30,11 @@
 
 .form {
     @include formPage;
+
+    a {
+        display: inline-block;
+        height: min-content
+    }
 
     .loginBtn {
         grid-column: 1/2;
