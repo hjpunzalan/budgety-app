@@ -5,7 +5,7 @@ import { RouteComponentProps, withRouter } from "react-router";
 import { checkAmount } from "../../utils/CheckAmount";
 import classes from "./Table.module.scss";
 import { ITransactionResult } from "../../../reducers/transactions";
-import { IBudget } from "../../../actions";
+import { IBudget, ITransaction } from "../../../actions";
 
 interface Props extends RouteComponentProps {
 	transactions: ITransactionResult[];
@@ -56,69 +56,72 @@ class Table extends Component<Props, State> {
 	render() {
 		const { currentBudget, transactions } = this.props;
 		return (
-			<table className={classes.table}>
-				<thead>
-					<tr className={classes.heading}>
-						<th>Date</th>
-						<th>Description</th>
-						<th>Amount($AUD)</th>
-						<th>Category</th>
-						<th>Balance</th>
-					</tr>
-				</thead>
-				<InfiniteScroll
-					element="tbody"
-					loadMore={this.loadMore}
-					hasMore={this.state.hasMore}
-					threshold={50}
-					loader={
-						<tr className={classes.loader} key={0}>
-							<td>Loading ...</td>
+			<>
+				<span className={classes.tip}>Double click to edit a transaction</span>
+				<table className={classes.table}>
+					<thead>
+						<tr className={classes.heading}>
+							<th>Date</th>
+							<th>Description</th>
+							<th>Amount($AUD)</th>
+							<th>Category</th>
+							<th>Balance</th>
 						</tr>
-					}>
-					{transactions.map(group => {
-						return (
-							<React.Fragment key={group._id.month + group._id.year}>
-								<tr>
-									<td className={classes.groupDate} colSpan={5}>
-										{moment(group._id.month, "MM").format("MMMM")}{" "}
-										{group._id.year}
-									</td>
-								</tr>
-								{group.transactions.map((t, i: number) => {
-									return (
-										//When double clicked redirect to edit transaction page!
-										<tr
-											key={i}
-											className={
-												this.state.selectedId === t._id
-													? classes.transactionSelected
-													: classes.transaction
-											}
-											onClick={() => this.setState({ selectedId: t._id })}
-											onDoubleClick={() =>
-												this.props.history.push(
-													`/user/transactions/edit/${t._id}`
-												)
-											}>
-											<td>
-												{moment
-													.utc(t.date)
-													.format("DD MMM")
-													.toUpperCase()}
-											</td>
-											<td>{t.desc}</td>
-											<td>{checkAmount(t.amount)}</td>
-											<td>{currentBudget.categories[t.categoryIndex]}</td>
-											<td>{checkAmount(t.balance)}</td>
-										</tr>
-									);
-								})}
-							</React.Fragment>
-						);
-					})}
-				</InfiniteScroll>
-			</table>
+					</thead>
+					<InfiniteScroll
+						element="tbody"
+						loadMore={this.loadMore}
+						hasMore={this.state.hasMore}
+						threshold={50}
+						loader={
+							<tr className={classes.loader} key={0}>
+								<td>Loading ...</td>
+							</tr>
+						}>
+						{transactions.map(group => {
+							return (
+								<React.Fragment key={group._id.month + group._id.year}>
+									<tr>
+										<td className={classes.groupDate} colSpan={5}>
+											{moment(group._id.month, "MM").format("MMMM")}{" "}
+											{group._id.year}
+										</td>
+									</tr>
+									{group.transactions.map((t: ITransaction, i: number) => {
+										return (
+											//When double clicked redirect to edit transaction page!
+											<tr
+												key={i}
+												className={
+													this.state.selectedId === t._id
+														? classes.transactionSelected
+														: classes.transaction
+												}
+												onClick={() => this.setState({ selectedId: t._id })}
+												onDoubleClick={() =>
+													this.props.history.push(
+														`/user/transactions/${currentBudget._id}/edit/${t._id}`
+													)
+												}>
+												<td>
+													{moment
+														.utc(t.date)
+														.format("DD MMM")
+														.toUpperCase()}
+												</td>
+												<td>{t.desc}</td>
+												<td>{checkAmount(t.amount)}</td>
+												<td>{currentBudget.categories[t.categoryIndex]}</td>
+												<td>{checkAmount(t.balance)}</td>
+											</tr>
+										);
+									})}
+								</React.Fragment>
+							);
+						})}
+					</InfiniteScroll>
+				</table>
+			</>
 		);
 	}
 }

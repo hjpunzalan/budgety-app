@@ -1,6 +1,14 @@
 @import "../../../styles/privMixins";
 @import "../../../styles/variables";
 
+.tip {
+    display: block;
+    font-size: 1.2rem;
+    font-style: italic;
+    margin-bottom: .5rem;
+}
+
+
 .table {
     width: 100%;
     font-size: 1.2rem;
