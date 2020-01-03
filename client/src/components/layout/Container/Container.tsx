@@ -88,6 +88,7 @@ class Container extends Component<Props, State> {
 					<button
 						className={classes.add}
 						onClick={() =>
+							this.props.currentBudget._id &&
 							this.props.history.push(
 								this.props.match.url +
 									"/transactions/new" +
