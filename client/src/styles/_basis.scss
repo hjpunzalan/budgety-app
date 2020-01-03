@@ -13,7 +13,7 @@ html {
 
 body {
     background: url('../images/background-opacity.png') repeat center;
-    animation: movingBackground 500s linear infinite;
+    animation: movingBackground 50s linear infinite;
 
 }
 
@@ -36,6 +36,6 @@ input[type='number'] {
     }
 
     to {
-        background-position-x: 1000%;
+        background-position-x: 100%;
     }
 }
