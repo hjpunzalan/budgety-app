@@ -86,19 +86,13 @@ class EditTransaction extends Component<Props, State> {
 
 	handleChangeType = (e: React.ChangeEvent<HTMLInputElement>) => {
 		let amount = this.state.amount;
-		if (!amount) amount = 1; // if amount = 0 or undefined
 		if (e.target.value === "expense" && amount > 0) {
 			amount *= -1;
 			this.setState({ max: 0, min: -Infinity, amount });
 		} else if (amount < 0 && e.target.value === "income") {
 			amount *= -1;
-			this.setState({ max: Infinity, min: 0 });
-		} else {
-			// Initially negative value but changed type to expense
-			this.setState({ max: 0, min: -Infinity, amount });
+			this.setState({ max: Infinity, min: 0, amount });
 		}
-
-		this.setState({ amount });
 	};
 
 	handleDateChange = (date: Date | null) => {
@@ -176,7 +170,7 @@ class EditTransaction extends Component<Props, State> {
 										if (amount > 0 && this.state.min < 0) amount *= -1;
 										this.setState({ amount });
 									}}
-									value={this.state.amount === 0 ? "" : this.state.amount}
+									value={this.state.amount}
 									min={this.state.min}
 									max={this.state.max}
 									// pattern="^\d+(?:\.\d{1,2})?$"
@@ -189,7 +183,11 @@ class EditTransaction extends Component<Props, State> {
 										type="radio"
 										name="amountType"
 										value="income"
-										checked={this.state.amount >= 0 ? true : false}
+										checked={
+											this.state.min >= 0 && this.state.amount > 0
+												? true
+												: false
+										}
 										onChange={e => this.handleChangeType(e)}
 									/>
 									<span>Income +</span>
@@ -200,7 +198,9 @@ class EditTransaction extends Component<Props, State> {
 										name="amountType"
 										value="expense"
 										onChange={e => this.handleChangeType(e)}
-										checked={this.state.amount < 0 ? true : false}
+										checked={
+											this.state.min < 0 && this.state.amount < 0 ? true : false
+										}
 									/>
 									<span>Expense - </span>
 								</label>

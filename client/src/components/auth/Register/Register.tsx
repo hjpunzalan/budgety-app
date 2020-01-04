@@ -124,7 +124,6 @@ class Register extends Component<Props, IRegisterState> {
 							</>
 						)}
 					</form>
-					)}
 				</div>
 			</div>
 		);

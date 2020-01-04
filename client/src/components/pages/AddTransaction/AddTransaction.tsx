@@ -32,10 +32,12 @@ interface State extends AddTransactionForm {
 	min: number;
 	max: number;
 	loading: boolean;
+	init: boolean;
 }
 class AddTransaction extends Component<Props, State> {
 	// Initial state
 	state = {
+		init: true,
 		budgetIndex: 0,
 		desc: "",
 		categoryIndex: 0,
@@ -96,19 +98,13 @@ class AddTransaction extends Component<Props, State> {
 
 	handleChangeType = (e: React.ChangeEvent<HTMLInputElement>) => {
 		let amount = this.state.amount;
-		if (!amount) amount = 1;
-		if (e.target.value === "expense" && amount > 0) {
+		if (e.target.value === "expense") {
 			amount *= -1;
 			this.setState({ max: 0, min: -Infinity, amount });
-		} else if (amount < 0 && e.target.value === "income") {
+		} else if (e.target.value === "income") {
 			amount *= -1;
-			this.setState({ max: Infinity, min: 0 });
-		} else {
-			// Initially negative value but changed type to expense
-			this.setState({ max: 0, min: -Infinity, amount });
+			this.setState({ max: Infinity, min: 0, amount });
 		}
-
-		this.setState({ amount });
 	};
 
 	handleBudgetChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -207,11 +203,12 @@ class AddTransaction extends Component<Props, State> {
 									type="number"
 									maxLength={20}
 									onChange={e => {
+										this.setState({ init: false });
 										let amount = parseFloat(e.target.value);
 										if (amount > 0 && this.state.min < 0) amount *= -1;
 										this.setState({ amount });
 									}}
-									value={this.state.amount === 0 ? "" : this.state.amount}
+									value={this.state.init ? "" : this.state.amount}
 									min={this.state.min}
 									max={this.state.max}
 									// pattern="^\d+(?:\.\d{1,2})?$"
@@ -224,7 +221,11 @@ class AddTransaction extends Component<Props, State> {
 										type="radio"
 										name="amountType"
 										value="income"
-										checked={this.state.amount >= 0 ? true : false}
+										checked={
+											this.state.min >= 0 && this.state.amount > 0
+												? true
+												: false
+										}
 										onChange={e => this.handleChangeType(e)}
 									/>
 									<span>Income +</span>
@@ -235,7 +236,9 @@ class AddTransaction extends Component<Props, State> {
 										name="amountType"
 										value="expense"
 										onChange={e => this.handleChangeType(e)}
-										checked={this.state.amount < 0 ? true : false}
+										checked={
+											this.state.min < 0 && this.state.amount < 0 ? true : false
+										}
 									/>
 									<span>Expense - </span>
 								</label>
