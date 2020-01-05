@@ -6,10 +6,13 @@ import classes from "./Register.module.scss";
 import Spinner from "../../utils/Spinner/Spinner";
 import { Link } from "react-router-dom";
 import { TiHomeOutline } from "react-icons/ti";
-import { RouterProps } from "react-router";
+import { RouteComponentProps } from "react-router";
 
-interface Props extends StoreState, RouterProps {
-	registerUser: (form: IRegisterState) => Promise<void>;
+interface Props extends StoreState, RouteComponentProps {
+	registerUser: (
+		form: IRegisterState,
+		Props: RouteComponentProps
+	) => Promise<void>;
 }
 
 export interface IRegisterState extends IUser {
@@ -40,7 +43,7 @@ class Register extends Component<Props, IRegisterState> {
 		this.setState({ loading: true });
 		const { firstName, lastName, email, password } = this.state;
 		this.props
-			.registerUser({ firstName, lastName, email, password })
+			.registerUser({ firstName, lastName, email, password }, { ...this.props })
 			.then(() => {
 				if (this.props.history.location.pathname === this.state.pathname) {
 					this.setState({ loading: false });

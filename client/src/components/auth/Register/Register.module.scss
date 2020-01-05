@@ -25,11 +25,13 @@
         grid-column: 1/2;
         grid-row: 7/8;
         justify-self: flex-end;
+        align-self: center;
     }
 
     button {
         grid-column: 2/3;
         grid-row: 7/8;
+        align-self: center;
         @include clearBtn;
 
     }
