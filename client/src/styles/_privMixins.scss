@@ -19,6 +19,13 @@
 
 }
 
+@mixin privPageSpinner {
+    grid-column: 1/-1;
+    align-self: center;
+    justify-content: center;
+
+}
+
 /**********************   For each page component    **********************/
 @mixin pageContainer {
     background: white;
@@ -157,7 +164,6 @@
     }
 
     ul {
-        padding: 1rem 2rem;
         list-style: none;
         line-height: 2.5rem;
         overflow-y: auto;
@@ -165,6 +171,8 @@
         li {
             cursor: pointer;
             font-size: 1.5rem;
+            padding: .5rem 2rem;
+
         }
     }
 
