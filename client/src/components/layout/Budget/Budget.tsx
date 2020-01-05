@@ -24,6 +24,7 @@ interface Props extends StoreState, RouteComponentProps<Params> {
 	setAlert: (msg: string, alertType: AlertType) => void;
 	getBudget: (budgetId: string) => Promise<void>;
 	getAllBudget: () => Promise<void>;
+	stopLoading: () => void;
 }
 
 enum Nav {
@@ -70,10 +71,13 @@ class Dashboard extends Component<Props, State> {
 		// Check if it doesn't have any params then its default just after logging in
 		if (!this.props.match.params.budgetId) {
 			this.props.getAllBudget().then(() => {
-				// To be removed after dev
-				if (this.props.auth.currentUser)
+				// Stop loading state from Container component
+				//  Mainly to let container know that budget list has loaded
+				this.props.stopLoading();
+
+				// After loading budget check if user already has budgets listed
+				if (this.props.budgets.length > 0) {
 					this.setState({ budgetId: this.props.budgets[0]._id });
-				if (this.state.budgetId) {
 					const budgetId = this.state.budgetId;
 					// Load first budget
 					this.props.getBudget(budgetId).then(() => {
@@ -84,7 +88,8 @@ class Dashboard extends Component<Props, State> {
 							});
 						});
 					});
-				} else this.props.history.push(this.props.match.url + "/budget/new");
+				} else if (this.props.budgets.length === 0 && !this.state.budgetId)
+					this.props.history.push(this.props.match.url + "/budget/new");
 			});
 		} else {
 			// ----------------------OTHERWISE LOAD USING PARAMS--------------------
