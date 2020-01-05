@@ -258,7 +258,7 @@ class EditBudget extends Component<Props, State> {
 							<span
 								className={classes.deleteBudget}
 								onClick={this.handleDelete}>
-								<FaTrashAlt /> Delete Budget?
+								<FaTrashAlt /> Delete Budget
 							</span>
 						</>
 					)}

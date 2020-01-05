@@ -7,6 +7,7 @@ import classes from "./EditTransaction.module.scss";
 import { ITransaction, setAlert, AlertType } from "../../../actions";
 import Spinner from "../../utils/Spinner/Spinner";
 import { StoreState } from "../../../reducers";
+import { FaTrashAlt } from "react-icons/fa";
 interface Params {
 	budgetId: string;
 	transactionId: string;
@@ -107,6 +108,18 @@ class EditTransaction extends Component<Props, State> {
 		// Check if initial value is negative or positive  value
 		if (this.state.amount < 0) this.setState({ min: -Infinity, max: 0 });
 		else this.setState({ min: 0, max: Infinity });
+	};
+
+	handleDelete = async () => {
+		this.setState({ loading: true });
+		const { budgetId, transactionId } = this.props.match.params;
+		await Axios.patch(
+			`/api/transactions/delete/${budgetId}/${transactionId}`
+		).then(() => {
+			this.setState({ loading: false });
+			this.props.history.push(`/user/budget/${budgetId}`);
+			this.props.setAlert("Transaction deleted!", AlertType.success);
+		});
 	};
 
 	render() {
@@ -220,6 +233,11 @@ class EditTransaction extends Component<Props, State> {
 								Go back
 							</button>
 							<input type="submit" value="Submit" />
+							<span
+								className={classes.deleteTransaction}
+								onClick={this.handleDelete}>
+								<FaTrashAlt /> Delete Transaction
+							</span>
 						</>
 					)}
 				</form>

@@ -64,4 +64,18 @@
     .inputNumberExp {
         color: red;
     }
+
+    .deleteTransaction {
+        grid-column: 1/-1;
+        justify-self: center;
+        display: flex;
+        align-items: center;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: rgba(255, 0, 0, 0.5);
+
+        svg {
+            margin-right: 1rem;
+        }
+    }
 }
