@@ -9,6 +9,11 @@
     @include pageContainer;
 }
 
+.spinner {
+    @include privPageSpinner;
+    grid-row: 5/6;
+}
+
 // Fix this so theres two or multiple columns
 .form {
     @include pageForm;

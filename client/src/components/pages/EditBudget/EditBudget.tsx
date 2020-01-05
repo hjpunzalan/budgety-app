@@ -13,14 +13,11 @@ import {
 } from "../../../actions";
 import Spinner from "../../utils/Spinner/Spinner";
 
-// Get budget based on selected option and then onChange retrieve data from budget state store
-// Set state of budget and set loading to false to stop spinner
-// Select will be the name of the budget from budgetStore array
-
 interface Props extends RouteComponentProps, StoreState {
 	editBudget: (budgetId: string, form: EditBudgetForm) => Promise<void>;
 	deleteBudget: (budget: IBudget) => Promise<void>;
 	setAlert: (msg: string, alertType: AlertType) => void;
+	selectBudget: (budgetIndex: number) => void;
 }
 
 export interface EditBudgetForm {
@@ -43,6 +40,22 @@ class EditBudget extends Component<Props, State> {
 		startingBalance: this.props.budgets[0].startingBalance,
 		loading: false
 	};
+
+	componentDidMount() {
+		if (this.props.currentBudget._id) {
+			const budgetIndex = this.props.budgets.findIndex(
+				b => b._id === this.props.currentBudget._id
+			);
+			const { name, categories, startingBalance } = this.props.currentBudget;
+			this.setState({
+				budgetIndex,
+				name,
+				categories,
+				startingBalance,
+				nCategories: categories.length
+			});
+		}
+	}
 
 	handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		this.setState({ loading: true });
@@ -134,6 +147,9 @@ class EditBudget extends Component<Props, State> {
 
 			const budget = this.props.budgets[this.state.budgetIndex];
 			this.props.deleteBudget(budget).then(() => {
+				// Select new budget from Container component
+				const i = this.props.budgets.length - 1;
+				this.props.selectBudget(i);
 				//Reset form after deleting budget
 				this.setState({
 					budgetIndex: previousBudget,
@@ -162,77 +178,79 @@ class EditBudget extends Component<Props, State> {
 		// Add spinner while data is being retreived from database
 		return (
 			<div className={classes.container}>
-				{this.state.loading ? (
-					<Spinner />
-				) : (
-					<>
-						<h1 className={classes.title}>Edit budget</h1>
-						<form className={classes.form} onSubmit={this.handleSubmit}>
-							<label>
-								<span>Select Budget: </span>
-								<select
-									value={this.state.budgetIndex}
-									onChange={this.onChangeSelect}
-									autoFocus
-									name="Budgets"
-									required>
-									{this.props.budgets.map((b, i) => (
-										<option key={b._id} value={i}>
-											{b.name}
-										</option>
-									))}
-								</select>
-							</label>
-							<label className={classes.name}>
-								<span>Budget name:</span>
+				<h1 className={classes.title}>Edit budget</h1>
+				<form className={classes.form} onSubmit={this.handleSubmit}>
+					<label>
+						<span>Select Budget: </span>
+						<select
+							value={this.state.budgetIndex}
+							onChange={this.onChangeSelect}
+							autoFocus
+							name="Budgets"
+							required>
+							{this.props.budgets.map((b, i) => (
+								<option key={b._id} value={i}>
+									{b.name}
+								</option>
+							))}
+						</select>
+					</label>
+					<label className={classes.name}>
+						<span>Budget name:</span>
+						<input
+							type="text"
+							maxLength={20}
+							onChange={e => this.setState({ name: e.target.value })}
+							value={this.state.name}
+							required
+						/>
+					</label>
+					<label>
+						<span>Starting balance $:</span>
+						<input
+							type="number"
+							onChange={e =>
+								this.setState({
+									startingBalance: parseFloat(e.target.value)
+								})
+							}
+							value={
+								this.state.startingBalance === 0
+									? undefined
+									: this.state.startingBalance
+							}
+							required
+						/>
+					</label>
+					<label className={classes.categories}>
+						<span>Categories:</span>
+						{this.state.categories.map((c, i) => {
+							return (
 								<input
+									key={i}
 									type="text"
 									maxLength={20}
-									onChange={e => this.setState({ name: e.target.value })}
-									value={this.state.name}
+									onChange={e => this.onChangeCategory(e, i)}
+									value={this.state.categories[i]}
 									required
 								/>
-							</label>
-							<label>
-								<span>Starting balance $:</span>
-								<input
-									type="number"
-									onChange={e =>
-										this.setState({
-											startingBalance: parseFloat(e.target.value)
-										})
-									}
-									value={
-										this.state.startingBalance === 0
-											? undefined
-											: this.state.startingBalance
-									}
-									required
-								/>
-							</label>
-							<label className={classes.categories}>
-								<span>Categories:</span>
-								{this.state.categories.map((c, i) => {
-									return (
-										<input
-											key={i}
-											type="text"
-											maxLength={20}
-											onChange={e => this.onChangeCategory(e, i)}
-											value={this.state.categories[i]}
-											required
-										/>
-									);
-								})}
-							</label>
-							<button className={classes.btnGrey} onClick={this.addCategories}>
-								Add more
-							</button>
-							<button className={classes.btnDel} onClick={this.delCategories}>
-								Delete category
-							</button>
+							);
+						})}
+					</label>
+					<button className={classes.btnGrey} onClick={this.addCategories}>
+						Add more
+					</button>
+					<button className={classes.btnDel} onClick={this.delCategories}>
+						Delete category
+					</button>
 
-							{/** Bottom buttons */}
+					{/** Bottom buttons */}
+					{this.state.loading ? (
+						<div className={classes.spinner}>
+							<Spinner />
+						</div>
+					) : (
+						<>
 							<button className={classes.btnCancel} onClick={this.handleCancel}>
 								Cancel
 							</button>
@@ -242,16 +260,21 @@ class EditBudget extends Component<Props, State> {
 								onClick={this.handleDelete}>
 								<FaTrashAlt /> Delete Budget?
 							</span>
-						</form>
-					</>
-				)}
+						</>
+					)}
+				</form>
 			</div>
 		);
 	}
 }
 
 const mapStateToProps = (state: StoreState) => ({
-	budgets: state.budgets
+	auth: state.auth,
+	alerts: state.alerts,
+	budgets: state.budgets,
+	currentBudget: state.currentBudget,
+	transactions: state.transactions,
+	charts: state.charts
 });
 
 export default connect(

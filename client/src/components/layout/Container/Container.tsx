@@ -22,6 +22,7 @@ interface Props extends StoreState, RouteComponentProps {
 }
 interface State {
 	loading: boolean;
+	selected: number;
 }
 
 class Container extends Component<Props, State> {
@@ -30,11 +31,16 @@ class Container extends Component<Props, State> {
 	// Maybe
 
 	state = {
-		loading: true
+		loading: true,
+		selected: 0
 	};
 
 	stopLoading = () => {
 		this.setState({ loading: false });
+	};
+
+	selectBudget = (budgetIndex: number) => {
+		this.setState({ selected: budgetIndex });
 	};
 
 	render() {
@@ -60,12 +66,16 @@ class Container extends Component<Props, State> {
 							<Route
 								exact
 								path={this.props.match.url + "/budget/new"}
-								component={AddBudget}
+								render={props => (
+									<AddBudget selectBudget={this.selectBudget} {...props} />
+								)}
 							/>
 							<Route
 								exact
 								path={this.props.match.url + "/budget/edit"}
-								component={EditBudget}
+								render={props => (
+									<EditBudget selectBudget={this.selectBudget} {...props} />
+								)}
 							/>
 							<Route
 								exact
@@ -108,9 +118,7 @@ class Container extends Component<Props, State> {
 						onClick={() =>
 							this.props.currentBudget._id &&
 							this.props.history.push(
-								this.props.match.url +
-									"/transactions/new" +
-									`/${this.props.currentBudget && this.props.currentBudget._id}`
+								this.props.match.url + "/transactions/new"
 							)
 						}>
 						<img src={transactionIcon} alt="Transaction icon" />
@@ -121,12 +129,18 @@ class Container extends Component<Props, State> {
 						<ul>
 							{!this.state.loading &&
 								(this.props.budgets.length > 0 ? (
-									this.props.budgets.map(b => {
+									this.props.budgets.map((b, i) => {
 										return (
 											<Link
 												key={b._id}
-												to={this.props.match.url + `/budget/${b._id}`}>
-												<li>{b.name}</li>
+												to={this.props.match.url + `/budget/${b._id}`}
+												onClick={() => this.selectBudget(i)}>
+												<li
+													className={
+														this.state.selected === i ? classes.selected : ""
+													}>
+													{b.name}
+												</li>
 											</Link>
 										);
 									})
@@ -161,18 +175,18 @@ class Container extends Component<Props, State> {
 					<div className={classes.userActions}>
 						<h3>User Actions</h3>
 						<ul>
-							<li>
-								<Link to="/user/update">
+							<Link to="/user/update">
+								<li>
 									<GoPerson />
 									Update user details
-								</Link>
-							</li>
-							<li>
-								<Link to="/user/changepassword">
+								</li>
+							</Link>
+							<Link to="/user/changepassword">
+								<li>
 									<FaKey />
 									Change password
-								</Link>
-							</li>
+								</li>
+							</Link>
 						</ul>
 					</div>
 				</div>

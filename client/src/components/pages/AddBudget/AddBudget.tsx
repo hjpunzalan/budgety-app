@@ -4,35 +4,47 @@ import classes from "./AddBudget.module.scss";
 import { addBudget, setAlert, AlertType } from "../../../actions";
 import { StoreState } from "../../../reducers";
 import { RouteComponentProps } from "react-router";
+import Spinner from "../../utils/Spinner/Spinner";
 
 interface Props extends StoreState, RouteComponentProps {
-	addBudget: (form: AddBudgetState) => Promise<void>;
+	addBudget: (form: AddBudgetForm) => Promise<void>;
 	setAlert: (msg: string, alertType: AlertType) => void;
+	selectBudget: (budgetIndex: number) => void;
 }
-export interface AddBudgetState {
+export interface AddBudgetForm {
 	nCategories?: number;
 	name: string;
 	categories: string[];
 	startingBalance: number;
 }
 
-class AddBudget extends Component<Props, AddBudgetState> {
+interface State extends AddBudgetForm {
+	loading: boolean;
+}
+
+class AddBudget extends Component<Props, State> {
 	state = {
 		nCategories: 1,
 		name: "",
 		startingBalance: 0,
-		categories: [""]
+		categories: [""],
+		loading: false
 	};
 
 	handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
-		const budgetListLength = this.props.budgets.length;
+		this.setState({ loading: true });
+		const prevBudgetListLength = this.props.budgets.length;
 		const { name, startingBalance, categories } = this.state;
 		this.props.addBudget({ name, startingBalance, categories }).then(() => {
+			this.setState({ loading: false });
 			// If successful
-			if (this.props.budgets.length > budgetListLength) {
+			if (this.props.budgets.length > prevBudgetListLength) {
+				// Select new budget from Container component
+				const i = this.props.budgets.length - 1;
+				this.props.selectBudget(i);
 				// Redirect to the budget
-				const budgetId = this.props.budgets[budgetListLength]._id;
+				const budgetId = this.props.budgets[prevBudgetListLength]._id;
 				this.props.history.push(`/user/budget/${budgetId}`);
 			}
 			// /Reset form
@@ -143,8 +155,13 @@ class AddBudget extends Component<Props, AddBudgetState> {
 					<button className={classes.btnDel} onClick={this.delCategories}>
 						Delete category
 					</button>
-
-					<input type="submit" value="Submit" />
+					{this.state.loading ? (
+						<div className={classes.spinner}>
+							<Spinner />
+						</div>
+					) : (
+						<input type="submit" value="Submit" />
+					)}
 				</form>
 			</div>
 		);
@@ -152,7 +169,12 @@ class AddBudget extends Component<Props, AddBudgetState> {
 }
 
 const mapStateToProps = (state: StoreState) => ({
-	budgets: state.budgets
+	auth: state.auth,
+	alerts: state.alerts,
+	budgets: state.budgets,
+	currentBudget: state.currentBudget,
+	transactions: state.transactions,
+	charts: state.charts
 });
 
 export default connect(
