@@ -40,7 +40,7 @@
     display: grid;
     height: 100%;
     grid-template-columns: minmax(max-content, 1fr) minmax(max-content, 1fr);
-    grid-template-rows: repeat(auto-fit, minmax(5rem, max-content)) 1fr;
+    grid-template-rows: repeat(auto-fit, minmax(5rem, max-content));
     gap: 3rem;
     justify-items: center;
 
@@ -60,7 +60,7 @@
 
     // All input types of the form
     input {
-        width: 90%;
+        width: 60%;
         padding: 10px;
         outline: none;
     }
@@ -69,7 +69,7 @@
         padding: 10px;
         cursor: pointer;
         outline: none;
-        width: calc(90% + 20px); // input padding adds width to its element
+        width: calc(60% + 20px); // input padding adds width to its element
     }
 
 
@@ -84,7 +84,7 @@
             align-self: center;
             justify-self: center;
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 2fr;
             column-gap: 3rem;
             font-size: 2rem;
 
@@ -93,9 +93,8 @@
                 align-self: center;
             }
 
-            font-size: 2rem;
-
             input {
+
                 grid-column: 2/3;
 
                 // Add margin to additional inputs such as more categories
