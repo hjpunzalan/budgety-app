@@ -9,7 +9,7 @@ import axios from "axios";
 import { ITransaction } from "./transaction";
 import { ActionTypes } from "./types";
 import catchAsync from "../utils/catchAsync";
-import { AddBudgetState } from "../components/pages/AddBudget/AddBudget";
+import { AddBudgetForm } from "./../components/pages/AddBudget/AddBudget";
 import { EditBudgetForm } from "../components/pages/EditBudget/EditBudget";
 import { ThunkDispatch } from "redux-thunk";
 import { StoreState } from "../reducers";
@@ -63,7 +63,7 @@ export interface GetDatesAction {
 	payload: BudgetDates[];
 }
 
-export const addBudget = (form: AddBudgetState) =>
+export const addBudget = (form: AddBudgetForm) =>
 	catchAsync(async dispatch => {
 		// Add new budget
 		const res = await axios.post<IBudget>("/api/budget/new", form);
