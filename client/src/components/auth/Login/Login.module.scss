@@ -9,7 +9,6 @@
 .spinner {
     @include publicPageSpinner;
     grid-row: 4/6;
-    align-self: center;
 }
 
 .homeLink {

@@ -52,53 +52,49 @@ class ChangePassword extends Component<Props, State> {
 	render() {
 		return (
 			<div className={classes.container}>
-				{this.state.loading ? (
-					<Spinner />
-				) : (
-					<>
-						<h1 className={classes.title}>Change Your Password</h1>
-						<form className={classes.form} onSubmit={this.handleSubmit}>
-							<label>
-								<span>Current Password</span>
-								<input
-									type="password"
-									name="currentPassword"
-									value={this.state.currentPassword}
-									onChange={e =>
-										this.setState({ currentPassword: e.target.value })
-									}
-									minLength={6}
-									required
-								/>
-							</label>
-							<label>
-								<span>New Password</span>
-								<input
-									type="password"
-									name="newPassword"
-									value={this.state.newPassword}
-									onChange={e => this.setState({ newPassword: e.target.value })}
-									minLength={6}
-									required
-								/>
-							</label>
-							<label>
-								<span>Confirm New Password</span>
-								<input
-									type="password"
-									name="confirmPassword"
-									value={this.state.confirmPassword}
-									onChange={e =>
-										this.setState({ confirmPassword: e.target.value })
-									}
-									minLength={6}
-									required
-								/>
-							</label>
-							<input type="submit" value="Change Password" />
-						</form>
-					</>
-				)}
+				<h1 className={classes.title}>Change Your Password</h1>
+				<form className={classes.form} onSubmit={this.handleSubmit}>
+					<label>
+						<span>Current Password</span>
+						<input
+							type="password"
+							name="currentPassword"
+							value={this.state.currentPassword}
+							onChange={e => this.setState({ currentPassword: e.target.value })}
+							minLength={6}
+							required
+						/>
+					</label>
+					<label>
+						<span>New Password</span>
+						<input
+							type="password"
+							name="newPassword"
+							value={this.state.newPassword}
+							onChange={e => this.setState({ newPassword: e.target.value })}
+							minLength={6}
+							required
+						/>
+					</label>
+					<label>
+						<span>Confirm New Password</span>
+						<input
+							type="password"
+							name="confirmPassword"
+							value={this.state.confirmPassword}
+							onChange={e => this.setState({ confirmPassword: e.target.value })}
+							minLength={6}
+							required
+						/>
+					</label>
+					{this.state.loading ? (
+						<div className={classes.spinner}>
+							<Spinner />
+						</div>
+					) : (
+						<input type="submit" value="Change Password" />
+					)}
+				</form>
 			</div>
 		);
 	}

@@ -47,53 +47,54 @@ class UpdateMe extends Component<Props, State> {
 		const { firstName, lastName, email } = this.state;
 		return (
 			<div className={classes.container}>
-				{this.state.loading ? (
-					<Spinner />
-				) : (
-					<>
-						<h1 className={classes.title}>Update your details</h1>
-						<form className={classes.form} onSubmit={this.handleSubmit}>
-							<label>
-								<span>First Name</span>
-								<input
-									type="text"
-									placeholder="Enter first name"
-									name="firstName"
-									value={firstName}
-									onChange={e => this.setState({ firstName: e.target.value })}
-									required
-								/>
-							</label>
-							<label>
-								<span>Last Name</span>
-								<input
-									type="text"
-									placeholder="Enter last name"
-									name="lastName"
-									value={lastName}
-									onChange={e => this.setState({ lastName: e.target.value })}
-									required
-								/>
-							</label>
-							<label>
-								<span>Email</span>
-								<input
-									type="email"
-									placeholder="Enter Email"
-									name="email"
-									value={email}
-									onChange={e => this.setState({ email: e.target.value })}
-									required
-								/>
-							</label>
-
+				<h1 className={classes.title}>Update your details</h1>
+				<form className={classes.form} onSubmit={this.handleSubmit}>
+					<label>
+						<span>First Name</span>
+						<input
+							type="text"
+							placeholder="Enter first name"
+							name="firstName"
+							value={firstName}
+							onChange={e => this.setState({ firstName: e.target.value })}
+							required
+						/>
+					</label>
+					<label>
+						<span>Last Name</span>
+						<input
+							type="text"
+							placeholder="Enter last name"
+							name="lastName"
+							value={lastName}
+							onChange={e => this.setState({ lastName: e.target.value })}
+							required
+						/>
+					</label>
+					<label>
+						<span>Email</span>
+						<input
+							type="email"
+							placeholder="Enter Email"
+							name="email"
+							value={email}
+							onChange={e => this.setState({ email: e.target.value })}
+							required
+						/>
+					</label>
+					{this.state.loading ? (
+						<div className={classes.spinner}>
+							<Spinner />
+						</div>
+					) : (
+						<>
 							<button className={classes.btnGrey} onClick={this.handleCancel}>
 								Clear
 							</button>
 							<input type="submit" className="btn btn__submit" value="Update" />
-						</form>
-					</>
-				)}
+						</>
+					)}
+				</form>
 			</div>
 		);
 	}

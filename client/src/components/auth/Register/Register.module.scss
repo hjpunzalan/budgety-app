@@ -20,17 +20,18 @@
 
 .form {
     @include formPage;
+    grid-template-rows: 1fr 7rem 7rem 7rem 7rem 1fr 1fr;
 
     input[type='submit'] {
         grid-column: 1/2;
-        grid-row: 7/8;
+        grid-row: 6/8;
         justify-self: flex-end;
         align-self: center;
     }
 
     button {
         grid-column: 2/3;
-        grid-row: 7/8;
+        grid-row: 6/8;
         align-self: center;
         @include clearBtn;
 
