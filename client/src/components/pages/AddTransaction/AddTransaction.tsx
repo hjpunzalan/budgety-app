@@ -50,8 +50,8 @@ class AddTransaction extends Component<Props, State> {
 
 	componentDidMount() {
 		// If params were provided
-		if (this.props.match.params.budgetId) {
-			const budgetId = this.props.match.params.budgetId;
+		if (this.props.currentBudget._id) {
+			const budgetId = this.props.currentBudget._id;
 			// Find index -- expected to be small group (1-5)
 			const i = this.props.budgets.findIndex(b => b._id === budgetId);
 			this.setState({
@@ -121,140 +121,144 @@ class AddTransaction extends Component<Props, State> {
 		}
 	};
 
+	handleAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
+		this.setState({ init: false });
+		let amount = parseFloat(e.target.value);
+		if (amount > 0 && this.state.min < 0) amount *= -1;
+		this.setState({ amount });
+
+		// Check if initial value is negative or positive  value
+		if (this.state.amount < 0) this.setState({ min: -Infinity, max: 0 });
+		else this.setState({ min: 0, max: Infinity });
+	};
+
 	render() {
 		return (
 			<div className={classes.container}>
-				{this.state.loading ? (
-					<Spinner />
-				) : (
-					<>
-						<h1 className={classes.title}>Add new transaction</h1>
-						<form className={classes.form} onSubmit={this.handleSubmit}>
-							<label>
-								<span>Select Budget: </span>
-								<select
-									autoFocus
-									name="Budgets"
-									value={this.state.budgetIndex}
-									onChange={this.handleBudgetChange}>
-									{this.props.budgets.map((b, i) => {
-										return (
-											<option key={i} value={i}>
-												{b.name}
-											</option>
-										);
-									})}
-								</select>
-							</label>
-							<label className={classes.desc}>
-								<span>Description:</span>
-								<input
-									type="text"
-									maxLength={50}
-									onChange={e => this.setState({ desc: e.target.value })}
-									value={this.state.desc}
-								/>
-							</label>
-							<label className={classes.categoryIndex}>
-								<span>Category:</span>
-								<select
-									autoFocus
-									name="categoryIndex"
-									// Add value here later
-									onChange={e =>
-										this.setState({
-											categoryIndex: parseInt(e.target.value, 10)
-										})
-									}
-									value={this.state.categoryIndex}>
-									{this.props.budgets[this.state.budgetIndex].categories.map(
-										(c, i) => {
-											return (
-												<option key={i} value={i}>
-													{c}
-												</option>
-											);
-										}
-									)}
-								</select>
-							</label>
-							<label onClick={e => e.preventDefault()} className={classes.date}>
-								<span className={classes.dateLabel}>Date: </span>
-								<DatePicker
-									onChange={this.handleDateChange}
-									selected={this.state.date}
-									dateFormat="dd/MM/yyyy"
-									peekNextMonth
-									showMonthDropdown
-									showYearDropdown
-									dropdownMode="select"
-								/>
-							</label>
-							<label className={classes.amount}>
-								<span>Amount $:</span>
-								{/**Need to include a select for expense or income */}
+				<h1 className={classes.title}>Add new transaction</h1>
+				<form className={classes.form} onSubmit={this.handleSubmit}>
+					<label>
+						<span>Select Budget: </span>
+						<select
+							autoFocus
+							name="Budgets"
+							value={this.state.budgetIndex}
+							onChange={this.handleBudgetChange}>
+							{this.props.budgets.map((b, i) => {
+								return (
+									<option key={i} value={i}>
+										{b.name}
+									</option>
+								);
+							})}
+						</select>
+					</label>
+					<label className={classes.desc}>
+						<span>Description:</span>
+						<input
+							type="text"
+							maxLength={50}
+							onChange={e => this.setState({ desc: e.target.value })}
+							value={this.state.desc}
+						/>
+					</label>
+					<label className={classes.categoryIndex}>
+						<span>Category:</span>
+						<select
+							autoFocus
+							name="categoryIndex"
+							// Add value here later
+							onChange={e =>
+								this.setState({
+									categoryIndex: parseInt(e.target.value, 10)
+								})
+							}
+							value={this.state.categoryIndex}>
+							{this.props.budgets[this.state.budgetIndex].categories.map(
+								(c, i) => {
+									return (
+										<option key={i} value={i}>
+											{c}
+										</option>
+									);
+								}
+							)}
+						</select>
+					</label>
+					<label onClick={e => e.preventDefault()} className={classes.date}>
+						<span className={classes.dateLabel}>Date: </span>
+						<DatePicker
+							onChange={this.handleDateChange}
+							selected={this.state.date}
+							dateFormat="dd/MM/yyyy"
+							peekNextMonth
+							showMonthDropdown
+							showYearDropdown
+							dropdownMode="select"
+						/>
+					</label>
+					<label className={classes.amount}>
+						<span>Amount $:</span>
+						{/**Need to include a select for expense or income */}
 
-								<input
-									className={
-										this.state.amount < 0
-											? classes.inputNumberExp
-											: classes.inputNumberInc
-									}
-									type="number"
-									maxLength={20}
-									onChange={e => {
-										this.setState({ init: false });
-										let amount = parseFloat(e.target.value);
-										if (amount > 0 && this.state.min < 0) amount *= -1;
-										this.setState({ amount });
-									}}
-									value={this.state.init ? "" : this.state.amount}
-									min={this.state.min}
-									max={this.state.max}
-									// pattern="^\d+(?:\.\d{1,2})?$"
-									// step=".01"
-								/>
-							</label>
-							<div className={classes.type}>
-								<label>
-									<input
-										type="radio"
-										name="amountType"
-										value="income"
-										checked={
-											this.state.min >= 0 && this.state.amount > 0
-												? true
-												: false
-										}
-										onChange={e => this.handleChangeType(e)}
-									/>
-									<span>Income +</span>
-								</label>
-								<label>
-									<input
-										type="radio"
-										name="amountType"
-										value="expense"
-										onChange={e => this.handleChangeType(e)}
-										checked={
-											this.state.min < 0 && this.state.amount < 0 ? true : false
-										}
-									/>
-									<span>Expense - </span>
-								</label>
-							</div>
-
-							<input type="submit" value="Submit" />
-						</form>
-					</>
-				)}
+						<input
+							className={
+								this.state.amount < 0
+									? classes.inputNumberExp
+									: classes.inputNumberInc
+							}
+							type="number"
+							maxLength={20}
+							onChange={this.handleAmount}
+							value={this.state.init ? "" : this.state.amount}
+							min={this.state.min}
+							max={this.state.max}
+							// pattern="^\d+(?:\.\d{1,2})?$"
+							// step=".01"
+						/>
+					</label>
+					<div className={classes.type}>
+						<label>
+							<input
+								type="radio"
+								name="amountType"
+								value="income"
+								checked={
+									this.state.min >= 0 && this.state.amount > 0 ? true : false
+								}
+								onChange={e => this.handleChangeType(e)}
+							/>
+							<span>Income +</span>
+						</label>
+						<label>
+							<input
+								type="radio"
+								name="amountType"
+								value="expense"
+								onChange={e => this.handleChangeType(e)}
+								checked={
+									this.state.min < 0 && this.state.amount < 0 ? true : false
+								}
+							/>
+							<span>Expense - </span>
+						</label>
+					</div>
+					{this.state.loading ? (
+						<div className={classes.spinner}>
+							<Spinner />
+						</div>
+					) : (
+						<input type="submit" value="Submit" />
+					)}
+				</form>
 			</div>
 		);
 	}
 }
 
 const mapStateToProps = (state: StoreState) => ({
-	budgets: state.budgets
+	budgets: state.budgets,
+	currentBudget: state.currentBudget
 });
 
 export default connect(
