@@ -137,7 +137,10 @@ class Container extends Component<Props, State> {
 												onClick={() => this.selectBudget(i)}>
 												<li
 													className={
-														this.state.selected === i ? classes.selected : ""
+														this.state.selected === i &&
+														this.props.budgets.length > 1
+															? classes.selected
+															: ""
 													}>
 													{b.name}
 												</li>
