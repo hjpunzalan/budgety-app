@@ -20,12 +20,22 @@ import EditTransaction from "../../pages/EditTransaction/EditTransaction";
 interface Props extends StoreState, RouteComponentProps {
 	getLogout: () => Promise<void>;
 }
-interface State {}
+interface State {
+	loading: boolean;
+}
 
 class Container extends Component<Props, State> {
 	// Add selected state so the selected budget becomes highlighted
 	// Change budget id for edit based on selected budget
 	// Maybe
+
+	state = {
+		loading: true
+	};
+
+	stopLoading = () => {
+		this.setState({ loading: false });
+	};
 
 	render() {
 		return (
@@ -78,9 +88,17 @@ class Container extends Component<Props, State> {
 							<Route
 								exact
 								path={this.props.match.url + "/budget/:budgetId"}
-								component={Budget}
+								render={props => (
+									<Budget stopLoading={this.stopLoading} {...props} />
+								)}
 							/>
-							<Route exact path={this.props.match.url} component={Budget} />
+							<Route
+								exact
+								path={this.props.match.url}
+								render={props => (
+									<Budget stopLoading={this.stopLoading} {...props} />
+								)}
+							/>
 						</Switch>
 					</div>
 
@@ -101,15 +119,26 @@ class Container extends Component<Props, State> {
 					<div className={classes.budgets}>
 						<h3>Budgets</h3>
 						<ul>
-							{this.props.budgets.map(b => {
-								return (
+							{!this.state.loading &&
+								(this.props.budgets.length > 0 ? (
+									this.props.budgets.map(b => {
+										return (
+											<Link
+												key={b._id}
+												to={this.props.match.url + `/budget/${b._id}`}>
+												<li>{b.name}</li>
+											</Link>
+										);
+									})
+								) : (
 									<Link
-										key={b._id}
-										to={this.props.match.url + `/budget/${b._id}`}>
-										<li>{b.name}</li>
+										key={"nobudget"}
+										to={this.props.match.url + `/budget/new`}>
+										<li>
+											<i>No budgets listed....</i>
+										</li>
 									</Link>
-								);
-							})}
+								))}
 						</ul>
 						<div className={classes.budgetActions}>
 							<Link
@@ -118,12 +147,14 @@ class Container extends Component<Props, State> {
 								<GoDiffAdded />
 								Add
 							</Link>
-							<Link
-								to={this.props.match.url + "/budget/edit"}
-								className={classes.budgetActionEdit}>
-								<FaRegEdit />
-								Edit
-							</Link>
+							{this.props.budgets.length > 0 && (
+								<Link
+									to={this.props.match.url + "/budget/edit"}
+									className={classes.budgetActionEdit}>
+									<FaRegEdit />
+									Edit
+								</Link>
+							)}
 						</div>
 					</div>
 
