@@ -155,9 +155,7 @@ class Dashboard extends Component<Props, State> {
 				) : (
 					<div className={classes.addTransactions}>
 						<span>No transactions listed.</span>
-						<Link to={`/user/transactions/new/${budget._id}`}>
-							Add one now!
-						</Link>
+						<Link to={`/user/transactions/new`}>Add one now!</Link>
 					</div>
 				)}
 			</div>
