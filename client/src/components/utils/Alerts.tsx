@@ -24,7 +24,7 @@ class Alerts extends Component<Props, State> {
 
 	componentDidUpdate(prevProps: Props) {
 		// Remove alert everytime route changes
-		if (this.props.location !== prevProps.location) {
+		if (this.props.location.pathname !== prevProps.location.pathname) {
 			StatusAlertService.removeAlert(this.state.alertId);
 		}
 
