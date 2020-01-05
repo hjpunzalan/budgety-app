@@ -7,6 +7,7 @@ import { IUser } from "../actions";
 import catchAsync from "../utils/catchAsync";
 import { setAlert, AlertType } from "./alerts";
 import { IRegisterState } from "../components/auth/Register/Register";
+import { RouteComponentProps } from "react-router";
 
 export interface LoginAction {
 	type: ActionTypes.loginUser;
@@ -72,13 +73,18 @@ export const getLogout = () =>
 		dispatch<LogoutAction>({ type: ActionTypes.logoutUser });
 	});
 
-export const registerUser = (form: IRegisterState) =>
+export const registerUser = (
+	form: IRegisterState,
+	props: RouteComponentProps
+) =>
 	catchAsync(async dispatch => {
 		const res = await axios.post<IUser>("/api/users/register", form);
 		dispatch<RegUserAction>({
 			type: ActionTypes.registerUser,
 			payload: res.data
 		});
+
+		props.history.push("/user/budget/new");
 		dispatch(
 			setAlert(
 				`Welcome ${res.data.firstName}! You have been successfully registered!`,

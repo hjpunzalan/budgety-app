@@ -1,3 +1,4 @@
+import { AnyAction } from "redux";
 import {
 	BudgetStats,
 	BudgetCategoryData,
@@ -10,6 +11,8 @@ import { ActionTypes } from "./types";
 import catchAsync from "../utils/catchAsync";
 import { AddBudgetState } from "../components/pages/AddBudget/AddBudget";
 import { EditBudgetForm } from "../components/pages/EditBudget/EditBudget";
+import { ThunkDispatch } from "redux-thunk";
+import { StoreState } from "../reducers";
 
 export interface IBudget {
 	_id?: string;
@@ -73,15 +76,23 @@ export const addBudget = (form: AddBudgetState) =>
 		dispatch(setAlert(`${form.name} budget added to list!`, AlertType.success));
 	});
 
-export const getAllBudget = () =>
-	catchAsync(async dispatch => {
+// No alerts if failed to retrieve all budgets
+// Unnecessary to show alerts
+// So users who just signs up wont see the alerts
+export const getAllBudget = () => async (
+	dispatch: ThunkDispatch<StoreState, void, AnyAction>
+) => {
+	try {
 		const res = await axios.get<IBudget[]>("/api/budget/all");
 
 		dispatch<GetAllBudgetAction>({
 			type: ActionTypes.getAllBudget,
 			payload: res.data
 		});
-	});
+	} catch (error) {
+		console.error("User does not have any budgets");
+	}
+};
 
 export const editBudget = (budgetId: string, form: EditBudgetForm) =>
 	catchAsync(async dispatch => {
