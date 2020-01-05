@@ -20,8 +20,10 @@ const catchAsync = (
 				if (err.response.status === 401 || err.response.status === 403)
 					dispatch({ type: ActionTypes.logoutUser });
 
+				const errors = err.response.data;
+
 				// If server down
-				if (err.response.status === 500) {
+				if (err.response.status === 500 && !errors.message) {
 					return dispatch(
 						setAlert(
 							"Unfortunately there's a problem in our end...",
@@ -29,8 +31,6 @@ const catchAsync = (
 						)
 					);
 				}
-
-				const errors = err.response.data;
 				dispatch(setAlert(errors.message, AlertType.error));
 			}
 		});
