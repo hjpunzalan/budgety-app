@@ -12,6 +12,11 @@
     grid-column: 9/10;
     align-items: center;
     display: grid;
+    margin: 1rem;
+
+    @media only screen and (max-width: 700px) {
+        justify-content: end;
+    }
 
     button {
         @include publicPageNavBtn;
@@ -24,14 +29,27 @@
     grid-column: 2/10;
     grid-row: 2/3;
 
+    @media only screen and (max-width: 900px) {
+        font-size: 10rem;
+    }
+
+    @media only screen and (max-width: 600px) {
+        font-size: 7rem;
+    }
+
 }
 
 .desc {
     font-size: 3rem;
     justify-self: center;
+    text-align: center;
     grid-column: 2/10;
     grid-row: 3/4;
     margin-top: 2rem;
+
+    @media only screen and (max-width: 900px) {
+        font-size: 2rem;
+    }
 }
 
 .cta {
@@ -55,8 +73,14 @@
         animation-duration: 3s;
         animation-iteration-count: infinite;
         animation-timing-function: ease-in-out;
-        /* @keyframes duration | timing-function | delay | 
-iteration-count | direction | fill-mode | play-state | name */
+
+        @media only screen and (max-width: 900px) {
+            font-size: 3rem;
+        }
+
+        @media only screen and (max-width: 600px) {
+            font-size: 2.5rem;
+        }
     }
 }
 
