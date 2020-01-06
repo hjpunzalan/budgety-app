@@ -16,6 +16,7 @@
     grid-row: 1/2;
     align-self: center;
     z-index: 2;
+    margin: 1rem;
 
     button {
         @include publicPageNavBtn;
@@ -34,6 +35,8 @@
     // Set custom grid heights
     grid-template-rows: 10rem 7rem 7rem 1fr max-content 1fr;
 
+
+
     a {
         display: inline-block;
         height: min-content
@@ -48,12 +51,16 @@
         cursor: pointer;
         background: $color-primary;
         border: none;
+
+
     }
 
     .registerBtn {
         grid-column: 2/-1;
         grid-row: 4/5;
         align-self: center;
+
+
 
         button {
             @include clearBtn;
@@ -72,6 +79,7 @@
         padding-bottom: 1.2rem;
         letter-spacing: 0.15em;
         position: relative;
+        margin-top: 2rem;
 
 
         &:after {
