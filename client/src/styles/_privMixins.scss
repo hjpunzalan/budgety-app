@@ -76,6 +76,7 @@
         padding: 10px;
         cursor: pointer;
         outline: none;
+        height: 30px; // around same height as input
         width: calc(60% + 20px); // input padding adds width to its element
     }
 
