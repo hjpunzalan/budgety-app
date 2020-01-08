@@ -137,7 +137,4 @@ const mapStateToProps = (state: StoreState) => ({
 	auth: state.auth
 });
 
-export default connect(
-	mapStateToProps,
-	{ registerUser }
-)(Register);
+export default connect(mapStateToProps, { registerUser })(Register);

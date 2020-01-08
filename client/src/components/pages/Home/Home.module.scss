@@ -3,6 +3,7 @@
 
 .page {
     @include page;
+    grid-template-rows: repeat(auto-fit, minmax(10vh, max-content));
     row-gap: 5rem;
 }
 

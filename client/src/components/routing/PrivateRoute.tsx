@@ -56,7 +56,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 	sessionExpired: () => dispatch({ type: ActionTypes.logoutUser })
 });
 
-export default connect(
-	null,
-	mapDispatchToProps
-)(PrivateRoute);
+export default connect(null, mapDispatchToProps)(PrivateRoute);
