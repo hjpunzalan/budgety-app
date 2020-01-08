@@ -45,6 +45,10 @@
         min-height: 45rem;
     }
 
+    @media only screen and (max-height: 500px) {
+        min-height: 35rem;
+    }
+
     @media only screen and (max-width: 700px) {
         grid-column: 2/10;
     }
@@ -58,7 +62,7 @@
     padding: 5rem;
     display: grid;
     grid-template-columns: minmax(max-content, 1fr) minmax(max-content, 1fr);
-    grid-template-rows: repeat(auto-fit, minmax(5rem, 1fr));
+    grid-template-rows: repeat(auto-fit, 7rem);
     column-gap: 3rem;
     background: rgb(255, 255, 255);
     border: 1px solid $color-grey;
@@ -76,6 +80,7 @@
         grid-row: 1/2;
         justify-self: center;
         text-align: center;
+        margin-bottom: 5rem;
     }
 
     input {
@@ -156,6 +161,7 @@
     padding: 2rem;
     border: 1px solid;
     cursor: pointer;
+    width: 90px;
 
     @media only screen and (max-width: 400px) {
         padding: 1rem
