@@ -1,3 +1,5 @@
+@import './variables';
+
 *,
 *::before,
 *::after {
@@ -29,6 +31,10 @@ input[type=number]::-webkit-outer-spin-button {
 
 input[type='number'] {
     -moz-appearance: textfield;
+}
+
+input {
+    border: 1px solid $color-grey;
 }
 
 @keyframes movingBackground {
