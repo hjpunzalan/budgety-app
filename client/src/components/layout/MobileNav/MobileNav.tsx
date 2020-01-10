@@ -34,7 +34,6 @@ class MobileNav extends Component<Props, State> {
 				)}
 				<button
 					onClick={() =>
-						this.props.currentBudget._id &&
 						this.props.history.push(this.props.match.url + "/budget/new")
 					}
 					className={classes.addBudget}>
@@ -43,7 +42,6 @@ class MobileNav extends Component<Props, State> {
 				</button>
 				<button
 					onClick={() =>
-						this.props.currentBudget._id &&
 						this.props.history.push(this.props.match.url + "/update")
 					}>
 					<GoPerson />
@@ -51,7 +49,6 @@ class MobileNav extends Component<Props, State> {
 				</button>
 				<button
 					onClick={() =>
-						this.props.currentBudget._id &&
 						this.props.history.push(this.props.match.url + "/changepassword")
 					}>
 					<FaKey />

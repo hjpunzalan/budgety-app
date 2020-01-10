@@ -2,23 +2,32 @@
 
 .nav {
     grid-row: 1/2;
-    grid-column: 2/9;
+    grid-column: 2/10;
     margin-top: 1rem;
     display: flex;
     justify-content: center;
     align-items: center;
 
+    @media only screen and (min-width: 1000px) {
+        display: none;
+    }
+
+    @media only screen and (max-width: 500px) {
+        grid-column: 1/-1;
+        margin-top: 0;
+    }
+
 
     &>button {
         flex-grow: 1;
         height: 11rem;
+        width: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding: 1rem;
         border: .5px solid $color-grey;
-        background: white;
+        background: rgba(255, 255, 255, 0.7);
         cursor: pointer;
         outline: none;
 
@@ -26,15 +35,23 @@
             border-right: none;
         }
 
+
         svg {
             font-size: 10vw;
             color: $color-primary;
+
+            @media only screen and (min-width: 700px) {
+                font-size: 7vw;
+            }
         }
 
         img {
-            width: 11vw;
+            height: 10vw;
             max-width: 80px;
-            height: auto;
+
+            @media only screen and (min-width: 700px) {
+                height: 7vw;
+            }
         }
 
         span {
