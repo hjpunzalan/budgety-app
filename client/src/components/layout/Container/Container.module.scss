@@ -8,10 +8,80 @@
 
 .logout {
     @include logoutBtn;
+
+    @media only screen and (max-width: 1000px) {
+        display: none;
+    }
+}
+
+.mobileSelect {
+    width: 100%;
+    grid-row: 2/3;
+    grid-column: 2/10;
+    font-size: 2rem;
+    margin-top: 2rem;
+
+    @media only screen and (min-width: 1000px) {
+        display: none;
+    }
+
+    @media only screen and (max-width: 500px) {
+        grid-column: 1/-1;
+    }
+
+    &>label {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+
+        &>span {
+            margin-right: .5rem;
+        }
+
+        &>button {
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-right: .5rem;
+            padding: 1rem;
+            font-size: inherit;
+            background: white;
+            border: 1px solid $color-grey;
+            cursor: inherit;
+            transition: all .2s;
+            position: relative;
+
+            &>svg {
+                margin-right: 1rem;
+            }
+
+            &:hover,
+            &:active {
+                transform: scale(.95)
+            }
+
+            &:focus {
+                outline: none;
+            }
+
+        }
+
+        select {
+            cursor: pointer;
+            flex-grow: 1;
+            max-width: 40rem;
+            font-size: inherit;
+            height: 3rem;
+            border: 1px solid $color-grey;
+            background: white;
+            border-radius: 0px;
+        }
+    }
 }
 
 .container {
     @include container;
+    margin-top: 2rem;
 }
 
 .routes {
@@ -49,12 +119,20 @@
         text-align: center;
     }
 
+    @media only screen and (max-width: 1000px) {
+        display: none;
+    }
+
 }
 
 .budgets {
     grid-row: 2/3;
     grid-column: 1/2;
     @include actionNav;
+
+    @media only screen and (max-width: 1000px) {
+        display: none;
+    }
 
     a {
         text-decoration: none;
@@ -89,6 +167,10 @@
     grid-row: 3/4;
     grid-column: 1/2;
     @include actionNav;
+
+    @media only screen and (max-width: 1000px) {
+        display: none;
+    }
 
     &Table {
         height: auto;

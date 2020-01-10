@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { GoDiffAdded, GoPerson } from "react-icons/go";
-import { FaKey } from "react-icons/fa";
+import { FaKey, FaHome } from "react-icons/fa";
 import { FaRegEdit } from "react-icons/fa";
 import { Link, Route } from "react-router-dom";
 import { RouteComponentProps, Switch } from "react-router";
@@ -16,6 +16,7 @@ import UpdateMe from "../../pages/UpdateMe/UpdateMe";
 import ChangePassword from "../../auth/ChangePassword/ChangePassword";
 import Budget from "../Budget/Budget";
 import EditTransaction from "../../pages/EditTransaction/EditTransaction";
+import MobileNav from "../MobileNav/MobileNav";
 
 interface Props extends StoreState, RouteComponentProps {
 	getLogout: () => Promise<void>;
@@ -43,12 +44,50 @@ class Container extends Component<Props, State> {
 		this.setState({ selected: budgetIndex });
 	};
 
+	handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+		const budgetIndex = parseInt(e.target.value, 10);
+		this.selectBudget(budgetIndex);
+		const budgetId = this.props.budgets[budgetIndex]._id;
+		this.props.history.push(this.props.match.url + `/budget/${budgetId}`);
+	};
+
+	mobileSelectBudget = () => {
+		const budgetId = this.props.budgets[this.state.selected]._id;
+		this.props.history.push(this.props.match.url + `/budget/${budgetId}`);
+	};
+
 	render() {
 		return (
 			<div className={classes.page}>
+				<MobileNav
+					currentBudget={this.props.currentBudget}
+					budgets={this.props.budgets}
+					getLogout={this.props.getLogout}
+				/>
 				<button className={classes.logout} onClick={this.props.getLogout}>
 					Logout
 				</button>
+				{this.props.budgets.length > 0 && (
+					<div className={classes.mobileSelect}>
+						<label>
+							<button onClick={this.mobileSelectBudget}>
+								<FaHome />
+								Budget
+							</button>{" "}
+							<span>:</span>
+							<select onChange={this.handleSelect} value={this.state.selected}>
+								{!this.state.loading &&
+									this.props.budgets.map((b, i) => {
+										return (
+											<option key={b._id} value={i}>
+												{b.name}
+											</option>
+										);
+									})}
+							</select>
+						</label>
+					</div>
+				)}
 				<div className={classes.container}>
 					{/* Routes */}
 					<div className={classes.routes}>
@@ -204,7 +243,4 @@ const mapStateToProps = (state: StoreState) => ({
 	currentBudget: state.currentBudget
 });
 
-export default connect(
-	mapStateToProps,
-	{ getLogout }
-)(Container);
+export default connect(mapStateToProps, { getLogout })(Container);
