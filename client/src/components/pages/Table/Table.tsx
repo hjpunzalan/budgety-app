@@ -63,9 +63,9 @@ class Table extends Component<Props, State> {
 						<tr className={classes.heading}>
 							<th>Date</th>
 							<th>Description</th>
-							<th>Amount($AUD)</th>
-							<th>Category</th>
-							<th>Balance</th>
+							<th className={classes.mobileTableHeadAmount}>Amount($AUD)</th>
+							<th className={classes.mobileTableHead}>Category</th>
+							<th className={classes.mobileTableHead}>Balance</th>
 						</tr>
 					</thead>
 					<InfiniteScroll
@@ -97,7 +97,11 @@ class Table extends Component<Props, State> {
 														? classes.transactionSelected
 														: classes.transaction
 												}
-												onClick={() => this.setState({ selectedId: t._id })}
+												onClick={() =>
+													this.state.selectedId === t._id
+														? this.setState({ selectedId: "" })
+														: this.setState({ selectedId: t._id })
+												}
 												onDoubleClick={() =>
 													this.props.history.push(
 														`/user/transactions/${currentBudget._id}/edit/${t._id}`
@@ -109,10 +113,23 @@ class Table extends Component<Props, State> {
 														.format("DD MMM")
 														.toUpperCase()}
 												</td>
-												<td>{t.desc}</td>
-												<td>{checkAmount(t.amount)}</td>
-												<td>{currentBudget.categories[t.categoryIndex]}</td>
-												<td>{checkAmount(t.balance)}</td>
+												<td>
+													{t.desc}
+													{this.state.selectedId === t._id && (
+														<p className={classes.mobileTableCategory}>
+															{currentBudget.categories[t.categoryIndex]}
+														</p>
+													)}
+												</td>
+												<td className={classes.mobileTableAmount}>
+													{checkAmount(t.amount)}
+												</td>
+												<td className={classes.mobileTableData}>
+													{currentBudget.categories[t.categoryIndex]}
+												</td>
+												<td className={classes.mobileTableData}>
+													{checkAmount(t.balance)}
+												</td>
 											</tr>
 										);
 									})}

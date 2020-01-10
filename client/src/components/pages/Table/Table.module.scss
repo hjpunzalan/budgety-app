@@ -1,6 +1,35 @@
 @import "../../../styles/privMixins";
 @import "../../../styles/variables";
 
+.mobileTableCategory {
+    display: none;
+}
+
+@media only screen and (max-width: 600px) {
+    .mobileTableHead {
+        display: none;
+    }
+
+    .mobileTableData {
+        display: none;
+    }
+
+    .mobileTableHeadAmount {
+        border-right: 1px solid $color-grey;
+    }
+
+    .mobileTableAmount {
+        border-right: 1px solid $color-grey;
+    }
+
+    .mobileTableCategory {
+        display: block;
+        margin-top: .5rem;
+        font-style: italic;
+        font-size: 75%;
+    }
+}
+
 .tip {
     display: block;
     font-size: 1.2rem;
