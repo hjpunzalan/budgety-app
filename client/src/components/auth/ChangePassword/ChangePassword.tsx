@@ -52,7 +52,7 @@ class ChangePassword extends Component<Props, State> {
 	render() {
 		return (
 			<div className={classes.container}>
-				<h1 className={classes.title}>Change Your Password</h1>
+				<h1 className={classes.title}>Change Password</h1>
 				<form className={classes.form} onSubmit={this.handleSubmit}>
 					<label>
 						<span>Current Password</span>
@@ -104,7 +104,4 @@ const mapStateToProps = (state: StoreState) => ({
 	auth: state.auth
 });
 
-export default connect(
-	mapStateToProps,
-	{ changePassword }
-)(ChangePassword);
+export default connect(mapStateToProps, { changePassword })(ChangePassword);
