@@ -26,7 +26,7 @@
     }
 
     @media only screen and (max-width: 730px) {
-        padding: 0 2rem;
+        padding: 0;
     }
 
 }
@@ -45,11 +45,12 @@
     border-top: 2px solid $color-primary;
     padding: 5rem;
     min-height: 50rem;
-    max-width: 90%;
 
     @media only screen and (max-width: 730px) {
+        background: rgba(255, 255, 255, 0.8);
         padding: 2rem;
         min-height: auto;
+        border-bottom: none;
     }
 }
 
@@ -88,15 +89,15 @@
     }
 
     // All input types of the form
-    input {
-        width: 60%;
-        padding: 10px;
-        outline: none;
+    // input {
+    //     width: 60%;
+    //     padding: 10px;
+    //     outline: none;
 
-        @media only screen and (max-width: 730px) {
-            width: 75%;
-        }
-    }
+    //     @media only screen and (max-width: 730px) {
+    //         width: 75%;
+    //     }
+    // }
 
     select {
         padding: 10px;
@@ -117,22 +118,39 @@
             grid-row-end: $i+1;
             align-self: center;
             justify-self: center;
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            column-gap: 3rem;
+            display: flex;
+            align-items: center;
+            padding: 1rem;
             font-size: 2rem;
 
             @media only screen and (max-width: 730px) {
                 font-size: 1.5rem;
             }
 
+            @media only screen and (max-width: 400px) {
+                font-size: 1.2rem;
+            }
+
             span {
-                justify-self: flex-end;
-                align-self: center;
+                text-align: right;
+                word-wrap: break-word;
+                margin-right: 3rem;
+                width: 40%;
+
+                @media only screen and (max-width: 400px) {
+                    margin-right: 1rem;
+                    width: 25%;
+                }
+
+
             }
 
             input {
-                grid-column: 2/3;
+                height: 1.5rem !important;
+                width: 60%;
+                max-width: 30rem;
+                padding: 10px;
+                outline: none;
 
                 // Add margin to additional inputs such as more categories
                 &:not(:first-of-type) {
