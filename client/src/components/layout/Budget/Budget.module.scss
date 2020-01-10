@@ -35,6 +35,10 @@
 
 	&Name {
 		font-size: 3rem;
+
+		@media only screen and (max-width: 1000px) {
+			display: none;
+		}
 	}
 
 	&Balance {
@@ -45,10 +49,40 @@
 		h3 {
 			font-size: 3rem;
 			margin-bottom: 1rem;
+
+			@media only screen and (max-width: 700px) {
+				font-size: 2rem;
+			}
 		}
 
 		span {
 			font-size: 1.2rem;
+		}
+	}
+
+	.mobileEditBudget {
+		font-size: 2rem;
+		height: fit-content;
+		width: auto;
+		padding: 1rem;
+		background: $color-primary;
+		border: 1px solid $color-grey;
+		cursor: pointer;
+		transition: all 0.2s;
+		display: none;
+
+		@media only screen and (max-width: 1000px) {
+			display: inline-block;
+		}
+
+		@media only screen and (max-width: 700px) {
+			font-size: 1.5rem;
+			padding: 0.5rem;
+		}
+
+		&:hover,
+		&:active {
+			transform: scale(0.95);
 		}
 	}
 }

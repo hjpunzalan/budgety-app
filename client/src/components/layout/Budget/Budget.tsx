@@ -15,6 +15,7 @@ import { checkAmount } from "../../utils/CheckAmount";
 import { Link } from "react-router-dom";
 import Table from "../../pages/Table/Table";
 import Graphs from "../../pages/Graphs/Graphs";
+import { FaRegEdit } from "react-icons/fa";
 
 interface Params {
 	budgetId: string;
@@ -121,6 +122,11 @@ class Dashboard extends Component<Props, State> {
 						<h3>Balance: {checkAmount(budget.balance)}</h3>
 						<span>Starting Balance: {checkAmount(budget.startingBalance)}</span>
 					</div>
+					<button
+						className={classes.mobileEditBudget}
+						onClick={() => this.props.history.push("/user/budget/edit")}>
+						<FaRegEdit /> Edit Budget
+					</button>
 				</div>
 				{transactions.length > 0 ? (
 					<>
@@ -176,12 +182,9 @@ const mapStateToProps = (state: StoreState) => ({
 	charts: state.charts
 });
 
-export default connect(
-	mapStateToProps,
-	{
-		getTransactions,
-		setAlert,
-		getBudget,
-		getAllBudget
-	}
-)(Dashboard);
+export default connect(mapStateToProps, {
+	getTransactions,
+	setAlert,
+	getBudget,
+	getAllBudget
+})(Dashboard);
