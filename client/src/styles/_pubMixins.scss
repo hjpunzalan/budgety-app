@@ -37,7 +37,7 @@
 @mixin publicPageContainer {
     grid-column: 3/9;
     grid-row: 2/-1;
-    min-height: 60rem;
+    min-height: 40rem;
     padding: 5rem;
     background: rgb(255, 255, 255);
     border: 1px solid $color-grey;
@@ -46,7 +46,7 @@
     margin-bottom: 3rem;
 
     @media only screen and (max-height: 850px) {
-        min-height: 40rem;
+        min-height: 30rem;
     }
 
 
@@ -122,8 +122,8 @@
         label:nth-of-type(#{$i}) {
             grid-column: 1/-1;
             width: 100%;
-            grid-row-start: $i+1;
-            grid-row-end: $i+2;
+            grid-row-start: $i;
+            grid-row-end: $i+1;
             align-self: center;
             justify-self: center;
             display: grid;
