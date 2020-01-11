@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import * as d3 from "d3";
 import { select } from "d3";
-import d3Tip from 'd3-tip'
+import d3Tip from "d3-tip";
 import moment from "moment";
 import { BudgetStats } from "../../../reducers/charts";
 import classes from "./BarGraph.module.scss";
@@ -13,7 +13,7 @@ interface Props {
 }
 interface State {
 	loading: boolean;
-	year:number
+	year: number;
 }
 
 class BarGraph extends Component<Props, State> {
@@ -21,7 +21,7 @@ class BarGraph extends Component<Props, State> {
 	state = {
 		loading: true,
 		year: new Date().getFullYear()
-	}
+	};
 
 	componentDidMount() {
 		const data = this.props.barGraph;
@@ -30,34 +30,31 @@ class BarGraph extends Component<Props, State> {
 			top: 10,
 			right: 10,
 			bottom: 25,
-			left: 100
+			left: 100 // To fix y-axis
 		};
 
-		const width = this.canvas.current
-		? this.canvas.current.offsetWidth
-		: 800;
-		const height = this.canvas.current
-		? this.canvas.current.offsetHeight
-		: 500;
-		
-		const barSpacing = 10;
+		if (window.screen.width < 600) margin.left = 75;
+		if (window.screen.width < 450) margin.left = 50;
+
+		const width = this.canvas.current ? this.canvas.current.offsetWidth : 800;
+		const height = this.canvas.current ? this.canvas.current.offsetHeight : 500;
+
+		const barSpacing =
+			window.screen.width > 450 ? 10 : window.screen.width > 400 ? 5 : 3;
 		// Selectors
 		const svg = select(this.canvas.current)
 			.append("svg")
 			.attr("width", "100%")
 			.attr("height", "100%")
-			.attr(
-				"viewBox",
-				`0 0 ${width}  ${height}`
-			)
-					.attr("preserveAspectRatio", "xMinYMin meet");
-				
-		// Ensures responsiveness to the screen's width
-		
-		const canvasWidth = svg.node()?.getBoundingClientRect().width || 800;
-		const canvasHeight = svg.node()?.getBoundingClientRect().height || 500
+			.attr("viewBox", `0 0 ${width}  ${height}`)
+			.attr("preserveAspectRatio", "xMinYMin meet");
 
-				// give space to axis
+		// Ensures responsiveness to the screen's width
+
+		const canvasWidth = svg.node()?.getBoundingClientRect().width || 800;
+		const canvasHeight = svg.node()?.getBoundingClientRect().height || 500;
+
+		// give space to axis
 		const graphWidth = canvasWidth - margin.left - margin.right;
 		const graphHeight = canvasHeight - margin.top - margin.bottom;
 
@@ -76,11 +73,14 @@ class BarGraph extends Component<Props, State> {
 		// scales for data
 		const y = d3.scaleLinear().range([graphHeight, 0]);
 
-		const x = d3.scaleBand<number>().range([0, graphWidth]).paddingOuter(0.2);
+		const x = d3
+			.scaleBand<number>()
+			.range([0, graphWidth])
+			.paddingOuter(0.2);
 
 		// Set domains
 		const xMax = d3.max(data, d => d.balance);
-				y.domain([0, xMax as number]);
+		y.domain([0, xMax as number]);
 
 		x.domain([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
 
@@ -104,20 +104,22 @@ class BarGraph extends Component<Props, State> {
 			.ticks(3)
 			.tickValues(ticks)
 			.tickFormat(d => "$" + d);
-		
+
 		// Mousseover tooltip
 		const tip = (d3Tip as Function)()
-			.attr('class', classes.toolTip)
-			.offset([-10,0])
-		.html((d: BudgetStats) => {
-			return `<div><strong>Balance: </strong> <span>${checkAmount(d.balance)}</span></div>
+			.attr("class", classes.toolTip)
+			.offset(window.screen.width > 450 ? [-10, 0] : [-1, 0])
+			.html((d: BudgetStats) => {
+				return `<div><strong>Balance: </strong> <span>${checkAmount(
+					d.balance
+				)}</span></div>
 					<div><strong>Income: </strong> <span>${checkAmount(d.income)}</span></div>
 					<div><strong>Expense: </strong> <span>${checkAmount(d.expense)}</span></div>
 			
-			`
-		});
-	graph.call(tip); // apply tip to all graph group
-		
+			`;
+			});
+		graph.call(tip); // apply tip to all graph group
+
 		// Enter selection
 		graph
 			.selectAll("rect")
@@ -134,18 +136,19 @@ class BarGraph extends Component<Props, State> {
 			.attr("width", graphWidth / 12 - barSpacing)
 			.attr("y", d => y(d.balance))
 			.attr("height", d => graphHeight - y(d.balance))
-			.style('cursor', 'pointer')
-			.on('mouseover', function (d) { tip.show(d, this) })
-			.on('mouseout', function (d) { tip.hide(d, this) })
-			.on('click', d => this.props.changeMonth(d._id.month))
-		
+			.style("cursor", "pointer")
+			.on("mouseover", function(d) {
+				tip.show(d, this);
+			})
+			.on("mouseout", function(d) {
+				tip.hide(d, this);
+			})
+			.on("click", d => this.props.changeMonth(d._id.month));
 
 		// Call axis
 		xAxisGroup.call(xAxis);
 		yAxisGroup.call(yAxis);
 	}
-
-
 
 	render() {
 		return <div className={classes.canvas} ref={this.canvas}></div>;
