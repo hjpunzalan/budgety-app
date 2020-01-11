@@ -3,7 +3,6 @@ import { Switch } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
 import Home from "../pages/Home/Home";
 import Login from "../auth/Login/Login";
-// import Dashboard from "../pages/Dashboard/Dashboard";
 import Container from "../layout/Container/Container";
 import Register from "../auth/Register/Register";
 import PublicRoute from "./PublicRoute";
@@ -16,8 +15,6 @@ interface Props {
 }
 
 // Public routes
-// !!!!!!!!!!!!!!!!!!!!!!!!
-// Need to move dashboard back to privRoutes
 export const pubRoutesArr = [
 	{ name: "Home", path: "/", component: Home, exact: true }, // had to add nav:true for typescript to recognise nav property
 	{ name: "Login", path: "/login", component: Login },

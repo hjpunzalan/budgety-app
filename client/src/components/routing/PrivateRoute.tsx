@@ -52,7 +52,6 @@ class PrivateRoute extends Route<Props> {
 }
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-	// need to fix this
 	sessionExpired: () => dispatch({ type: ActionTypes.logoutUser })
 });
 
