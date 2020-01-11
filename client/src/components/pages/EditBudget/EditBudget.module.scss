@@ -32,19 +32,17 @@
 
     .btnCancel,
     input[type='submit'] {
-        margin-top: 7rem;
-        margin-bottom: 3rem;
+        margin-top: 5rem;
+        margin-bottom: 2rem;
     }
 
     .btnCancel {
         border-radius: 0;
         grid-column: 1/2;
-        margin-bottom: 3rem;
         justify-self: flex-end;
     }
 
     input[type='submit'] {
-        margin-bottom: 3rem;
         grid-column: 2/-1;
         justify-self: flex-start;
     }

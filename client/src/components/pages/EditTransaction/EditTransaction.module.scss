@@ -50,10 +50,6 @@
         justify-self: flex-start;
     }
 
-    &>button,
-    input[type="submit"] {
-        margin: 2rem 0;
-    }
 
     .date {
         div:first-child {
@@ -66,6 +62,7 @@
     }
 
     .deleteTransaction {
+        margin-top: 2rem;
         grid-column: 1/-1;
         justify-self: center;
         display: flex;

@@ -17,17 +17,20 @@
 .form {
     @include pageForm;
 
+    .btnCancel,
+    input[type='submit'] {
+        margin-top: 2rem;
+    }
+
 
     .btnCancel {
         justify-self: flex-end;
         grid-column: 1/2;
-        margin: 5rem 0;
     }
 
 
     input[type='submit'] {
         grid-column: 2/-1;
-        margin: 5rem 0;
         justify-self: flex-start;
     }
 }
