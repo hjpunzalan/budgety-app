@@ -52,10 +52,10 @@ class Login extends Component<Props, State> {
 					<button>{`<<`}</button>
 				</Link>
 				<div className={classes.container}>
+					<h1>Login</h1>
 					<form className={classes.form} onSubmit={this.handleSubmit}>
-						<h1>Login</h1>
 						<label>
-							<span>Email</span>
+							<span>Email:</span>
 							<input
 								type="email"
 								name="email"
@@ -66,7 +66,7 @@ class Login extends Component<Props, State> {
 						</label>
 
 						<label>
-							<span>Password</span>
+							<span>Password:</span>
 							<input
 								type="password"
 								name="password"
@@ -103,7 +103,4 @@ const mapStateToProps = (state: StoreState) => ({
 	auth: state.auth
 });
 
-export default connect(
-	mapStateToProps,
-	{ postLogin }
-)(Login);
+export default connect(mapStateToProps, { postLogin })(Login);

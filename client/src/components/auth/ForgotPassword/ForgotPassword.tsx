@@ -55,8 +55,8 @@ class ForgotPassword extends Component<Props, IForgotPassState> {
 				</div>
 
 				<div className={classes.container}>
+					<h1>Forgot password?</h1>
 					<form className={classes.form} onSubmit={this.handleSubmit}>
-						<h1>Forgot password?</h1>
 						<p className={classes.desc}>
 							Please enter the email address registered to your account and we
 							will send you the link to reset your password.
@@ -83,7 +83,4 @@ class ForgotPassword extends Component<Props, IForgotPassState> {
 	}
 }
 
-export default connect(
-	null,
-	{ postForgotPassword }
-)(ForgotPassword);
+export default connect(null, { postForgotPassword })(ForgotPassword);

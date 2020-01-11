@@ -76,11 +76,11 @@ class ResetPassword extends Component<Props, IResetPassState> {
 				</div>
 
 				<div className={classes.container}>
+					<h1>Reset password:</h1>
 					<form className={classes.form} onSubmit={this.handleSubmit}>
-						<h1>Reset password</h1>
 						<p className={classes.desc}>Please enter a new password below.</p>
 						<label>
-							<span>Password</span>
+							<span>Password:</span>
 							<input
 								type="password"
 								placeholder="Enter a new Password"
@@ -93,7 +93,7 @@ class ResetPassword extends Component<Props, IResetPassState> {
 							/>
 						</label>
 						<label>
-							<span>Confirm Password</span>
+							<span>Confirm Password:</span>
 							<input
 								type="password"
 								placeholder="Confirm password"
@@ -127,7 +127,4 @@ class ResetPassword extends Component<Props, IResetPassState> {
 	}
 }
 
-export default connect(
-	null,
-	{ patchResetPassword }
-)(ResetPassword);
+export default connect(null, { patchResetPassword })(ResetPassword);

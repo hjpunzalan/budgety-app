@@ -69,10 +69,10 @@ class Register extends Component<Props, IRegisterState> {
 					</Link>
 				</div>
 				<div className={classes.container}>
+					<h1>Sign Up</h1>
 					<form className={classes.form} onSubmit={this.handleSubmit}>
-						<h1>Sign Up</h1>
 						<label>
-							<span>First Name</span>
+							<span>First Name:</span>
 							<input
 								type="text"
 								placeholder="Enter first name"
@@ -83,7 +83,7 @@ class Register extends Component<Props, IRegisterState> {
 							/>
 						</label>
 						<label>
-							<span>Last Name</span>
+							<span>Last Name:</span>
 							<input
 								type="text"
 								placeholder="Enter last name"
@@ -94,7 +94,7 @@ class Register extends Component<Props, IRegisterState> {
 							/>
 						</label>
 						<label>
-							<span>Email</span>
+							<span>Email:</span>
 							<input
 								type="email"
 								placeholder="Enter Email"
@@ -105,7 +105,7 @@ class Register extends Component<Props, IRegisterState> {
 							/>
 						</label>
 						<label>
-							<span>Password</span>
+							<span>Password:</span>
 							<input
 								type="password"
 								placeholder="Enter Password"
