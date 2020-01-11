@@ -5,12 +5,12 @@
 	"main": "index.js",
 	"scripts": {
 		"start:build": "tsc -w",
-		"start:run": "nodemon server.ts",
+		"start:run": "node server.ts",
 		"start": "concurrently npm:start:*",
 		"dev": "concurrently \"npm run start\" \"npm run client\"",
 		"prod": "set NODE_ENV=production&& concurrently \"npm run start\" \"npm run client\"",
 		"client": "npm start --prefix ../client",
-		"heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
+		"heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix ../client && npm run build --prefix ../client"
 	},
 	"repository": {
 		"type": "git",
