@@ -1,19 +1,19 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { checkUser } from "./actions";
+// import { checkUser } from "./actions";
 import Routes from "./components/routing/Routes";
 import Alerts from "./components/utils/Alerts";
 import { StoreState } from "./reducers";
 
 interface Props extends StoreState {
-	checkUser: () => Promise<void>;
+	// checkUser: () => Promise<void>;
 }
 
 class App extends Component<Props> {
 	state = {};
-	componentDidMount() {
-		this.props.checkUser();
-	}
+	// componentDidMount() {
+	// 	this.props.checkUser();
+	// }
 
 	render() {
 		return (
@@ -34,6 +34,6 @@ const mapStateToProps = (state: StoreState) => ({
 });
 
 export default connect(
-	mapStateToProps,
-	{ checkUser }
+	mapStateToProps
+	// { checkUser }
 )(App);

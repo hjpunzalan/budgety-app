@@ -11,7 +11,7 @@ const initialState: AuthState = {
 
 export const authReducer = (state = initialState, action: AuthActions) => {
 	switch (action.type) {
-		case ActionTypes.checkUser:
+		// case ActionTypes.checkUser:
 		case ActionTypes.loginUser:
 		case ActionTypes.registerUser:
 		case ActionTypes.resetPassword:
