@@ -88,7 +88,7 @@ class UpdateMe extends Component<Props, State> {
 						</div>
 					) : (
 						<>
-							<button className={classes.btnGrey} onClick={this.handleCancel}>
+							<button className={classes.btnCancel} onClick={this.handleCancel}>
 								Clear
 							</button>
 							<input type="submit" className="btn btn__submit" value="Update" />
@@ -104,7 +104,4 @@ const mapStateToProps = (state: StoreState) => ({
 	auth: state.auth
 });
 
-export default connect(
-	mapStateToProps,
-	{ updateUser }
-)(UpdateMe);
+export default connect(mapStateToProps, { updateUser })(UpdateMe);

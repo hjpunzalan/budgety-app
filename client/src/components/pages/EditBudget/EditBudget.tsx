@@ -277,7 +277,6 @@ const mapStateToProps = (state: StoreState) => ({
 	charts: state.charts
 });
 
-export default connect(
-	mapStateToProps,
-	{ editBudget, setAlert, deleteBudget }
-)(EditBudget);
+export default connect(mapStateToProps, { editBudget, setAlert, deleteBudget })(
+	EditBudget
+);

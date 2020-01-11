@@ -30,16 +30,20 @@
         justify-self: flex-start;
     }
 
+    .btnCancel,
+    input[type='submit'] {
+        margin-top: 7rem;
+        margin-bottom: 3rem;
+    }
+
     .btnCancel {
         border-radius: 0;
         grid-column: 1/2;
-        margin-top: 7rem;
         margin-bottom: 3rem;
         justify-self: flex-end;
     }
 
     input[type='submit'] {
-        margin-top: 7rem;
         margin-bottom: 3rem;
         grid-column: 2/-1;
         justify-self: flex-start;
