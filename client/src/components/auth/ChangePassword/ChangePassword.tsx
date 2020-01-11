@@ -55,7 +55,7 @@ class ChangePassword extends Component<Props, State> {
 				<h1 className={classes.title}>Change Password</h1>
 				<form className={classes.form} onSubmit={this.handleSubmit}>
 					<label>
-						<span>Current Password</span>
+						<span>Current Password:</span>
 						<input
 							type="password"
 							name="currentPassword"
@@ -66,7 +66,7 @@ class ChangePassword extends Component<Props, State> {
 						/>
 					</label>
 					<label>
-						<span>New Password</span>
+						<span>New Password:</span>
 						<input
 							type="password"
 							name="newPassword"
@@ -77,7 +77,7 @@ class ChangePassword extends Component<Props, State> {
 						/>
 					</label>
 					<label>
-						<span>Confirm New Password</span>
+						<span>Confirm New Password:</span>
 						<input
 							type="password"
 							name="confirmPassword"

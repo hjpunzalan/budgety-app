@@ -50,7 +50,7 @@ class UpdateMe extends Component<Props, State> {
 				<h1 className={classes.title}>Update your details</h1>
 				<form className={classes.form} onSubmit={this.handleSubmit}>
 					<label>
-						<span>First Name</span>
+						<span>First Name:</span>
 						<input
 							type="text"
 							placeholder="Enter first name"
@@ -61,7 +61,7 @@ class UpdateMe extends Component<Props, State> {
 						/>
 					</label>
 					<label>
-						<span>Last Name</span>
+						<span>Last Name:</span>
 						<input
 							type="text"
 							placeholder="Enter last name"
@@ -72,7 +72,7 @@ class UpdateMe extends Component<Props, State> {
 						/>
 					</label>
 					<label>
-						<span>Email</span>
+						<span>Email:</span>
 						<input
 							type="email"
 							placeholder="Enter Email"
