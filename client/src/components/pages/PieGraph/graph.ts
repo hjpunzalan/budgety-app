@@ -50,7 +50,7 @@ export const graph = (component: PieGraph, size: number, extra: number) => {
 
 		// ordinal scale
 		const colour = d3.scaleOrdinal(
-			component.props.type === PieGraphType.income
+			component.props.type === PieGraphType.expense
 				? [
 						"#fbb4ae",
 						"#b3cde3",

@@ -21,7 +21,7 @@ interface State {
 }
 
 const size = 250;
-const extra = 50;
+const extra = 20;
 
 class PieGraph extends Component<Props, State> {
 	canvas = React.createRef<HTMLDivElement>();
