@@ -45,7 +45,7 @@
     border: 1px solid $color-grey;
     border-top: 2px solid $color-primary;
     padding: 5rem;
-    min-height: 50rem;
+    min-height: 40rem;
 
     @media only screen and (max-width: 730px) {
         background: rgba(255, 255, 255, 0.8);
@@ -83,7 +83,7 @@
     display: grid;
     height: 100%;
     grid-template-columns: minmax(max-content, 1fr) minmax(max-content, 1fr);
-    grid-template-rows: repeat(auto-fit, minmax(5rem, max-content));
+    grid-template-rows: repeat(auto-fit, minmax(3rem, max-content));
     gap: 3rem;
     justify-items: center;
 
@@ -117,15 +117,18 @@
 
     select {
         border: 1px solid $color-grey;
-        padding: 7px;
         cursor: pointer;
         outline: none;
-        height: 36px; // around same height as input
+        height: calc(1.5rem + 10px + 10px); // around same height as input
         min-width: calc(15rem + 22px);
         max-width: calc(60% + 22px); // input padding adds width to its element
 
         @media only screen and (max-width: 450px) {
             max-width: calc(40% + 22px);
+        }
+
+        @media only screen and (max-width: 500px) {
+            height: calc(1.2rem + 7px + 7px);
         }
     }
 
@@ -146,10 +149,9 @@
             justify-content: center;
             align-items: center;
             padding: 1rem;
-            font-size: 2rem;
+            font-size: 1.5rem;
 
             @media only screen and (max-width: 730px) {
-                font-size: 1.5rem;
                 padding: 0;
             }
 
@@ -184,11 +186,14 @@
             input[type='email'],
             input[type='password'] {
                 grid-column: 2/-1;
-                height: 1.5rem !important;
                 min-width: 15rem;
                 max-width: 60%;
-                padding: 1rem;
+                padding: 10px;
                 outline: none;
+
+                @media only screen and (max-width: 500px) {
+                    padding: 7px;
+                }
 
                 @media only screen and (max-width: 400px) {
                     max-width: 40%;
