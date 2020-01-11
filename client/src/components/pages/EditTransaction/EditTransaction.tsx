@@ -225,7 +225,7 @@ class EditTransaction extends Component<Props, State> {
 					) : (
 						<>
 							<button
-								className={classes.btnGrey}
+								className={classes.btnCancel}
 								onClick={e => {
 									e.preventDefault();
 									this.props.history.goBack();
@@ -250,7 +250,6 @@ const mapStateToProps = (state: StoreState) => ({
 	budgets: state.budgets
 });
 
-export default connect(
-	mapStateToProps,
-	{ setAlert }
-)(withRouter(EditTransaction));
+export default connect(mapStateToProps, { setAlert })(
+	withRouter(EditTransaction)
+);

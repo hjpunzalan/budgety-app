@@ -27,12 +27,12 @@
             margin-bottom: 1rem;
 
             span {
-                grid-column: 2/-1;
+                grid-column: 2/-1 !important;
                 justify-self: flex-start;
             }
 
             input {
-                grid-column: 1/2;
+                grid-column: 1/2 !important;
                 width: auto;
                 justify-self: flex-end;
             }
@@ -40,7 +40,7 @@
     }
 
     input[type="submit"] {
-        margin: 5rem 0;
+        margin: 2rem 0;
         grid-column: 1/-1;
     }
 
