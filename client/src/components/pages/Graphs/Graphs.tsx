@@ -107,7 +107,7 @@ class Graphs extends Component<Props, State> {
 							  this.state.year
 							: this.state.year}
 					</h3>
-					<span>Hover each slice for more details</span>
+					<span>Hover / tap each slice for more details</span>
 					<div className={classes.pieGraph}>
 						<PieGraph
 							type={PieGraphType.income}
@@ -141,7 +141,8 @@ const mapStateToProps = (state: StoreState) => ({
 	charts: state.charts
 });
 
-export default connect(
-	mapStateToProps,
-	{ getStats, getCategoryData, getDates }
-)(Graphs);
+export default connect(mapStateToProps, {
+	getStats,
+	getCategoryData,
+	getDates
+})(Graphs);
