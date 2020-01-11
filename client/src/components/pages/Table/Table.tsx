@@ -20,13 +20,15 @@ interface State {
 	pageNumber: number;
 	hasMore: boolean;
 	selectedId?: string;
+	latestClick: number;
 }
 
 class Table extends Component<Props, State> {
 	state = {
 		pageNumber: 1,
 		hasMore: true,
-		selectedId: ""
+		selectedId: "",
+		latestClick: new Date().getTime()
 	};
 	// A method to be push to the action creator
 	// This checks if there are results from server,
@@ -51,6 +53,26 @@ class Table extends Component<Props, State> {
 			// Set new page before request even finish
 			this.setState({ pageNumber: nextPage });
 		}
+	};
+
+	handleClick = (transactionId: string) => {
+		// Create double click/tap function
+		const now = new Date().getTime();
+		const timesince = now - this.state.latestClick;
+		if (timesince < 600 && timesince > 0) {
+			// double tap
+			this.props.history.push(
+				`/user/transactions/${this.props.currentBudget._id}/edit/${transactionId}`
+			);
+		} else {
+			// too much time to be a doubletap
+			this.state.selectedId === transactionId
+				? this.setState({ selectedId: "" })
+				: this.setState({ selectedId: transactionId });
+		}
+
+		// Set new latestClick
+		this.setState({ latestClick: new Date().getTime() });
 	};
 
 	render() {
@@ -97,16 +119,7 @@ class Table extends Component<Props, State> {
 														? classes.transactionSelected
 														: classes.transaction
 												}
-												onClick={() =>
-													this.state.selectedId === t._id
-														? this.setState({ selectedId: "" })
-														: this.setState({ selectedId: t._id })
-												}
-												onDoubleClick={() =>
-													this.props.history.push(
-														`/user/transactions/${currentBudget._id}/edit/${t._id}`
-													)
-												}>
+												onClick={() => t._id && this.handleClick(t._id)}>
 												<td>
 													{moment
 														.utc(t.date)
