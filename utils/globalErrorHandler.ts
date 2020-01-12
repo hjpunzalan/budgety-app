@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import { IAppError, AppError } from "./AppError";
+import { IAppError, AppError } from "./appError";
 import { Error as MongooseError, CastError } from "mongoose";
-import { MongoError } from "mongoDB";
+import { MongoError } from "mongodb";
 import { JsonWebTokenError } from "jsonwebtoken";
 
 // MonogoDB and mongoose use export Error types as Classes
