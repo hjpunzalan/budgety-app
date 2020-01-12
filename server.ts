@@ -1,8 +1,6 @@
 import dotenv from "dotenv";
 // Must be your own private process variables
-if (process.env.NODE_ENV === "production")
-	dotenv.config({ path: "./prod.env" });
-else dotenv.config({ path: "./config.env" });
+dotenv.config({ path: "./prod.env" });
 
 import { app } from "./app";
 import mongoose from "mongoose";

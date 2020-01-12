@@ -32,7 +32,7 @@ if (process.env.SESSION_SECRET)
 			resave: false, // prevents resave even if not modified
 			saveUninitialized: false,
 			cookie: {
-				maxAge: 10 * 1000 * 60, // remove if we want it as a session (10min)
+				// maxAge: 10 * 1000 * 60, // remove if we want it as a session
 				sameSite: true, // 'strict'
 				secure: process.env.NODE_ENV === "production" ? true : false
 			}
