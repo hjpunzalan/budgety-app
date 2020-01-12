@@ -1,7 +1,7 @@
 {
-	"name": "mern-typescript-boilerplate",
+	"name": "budgety-app",
 	"version": "1.0.0",
-	"description": "",
+	"description": "Budgety app for treasurers of toastmasters",
 	"main": "index.js",
 	"scripts": {
 		"start:build": "tsc -w",
