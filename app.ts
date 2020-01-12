@@ -2,7 +2,7 @@ import express from "express";
 import helmet from "helmet";
 import mongoSanitize from "express-mongo-sanitize";
 import hpp from "hpp";
-import morgan from "morgan";
+// import morgan from "morgan"; // for dev mode
 import session from "express-session";
 import path from "path";
 import { AppError } from "./utils/appError";
@@ -17,9 +17,9 @@ export const app = express();
 app.use(helmet());
 
 // Development logging
-if (process.env.NODE_ENV === "development") {
-	app.use(morgan("dev"));
-}
+// if (process.env.NODE_ENV === "development") {
+// 	app.use(morgan("dev"));
+// }
 
 // Converts incoming json data to js object ---- Body parser that reads data from body into req.body
 app.use(express.json({ limit: "10kb" })); // package will parse 10kb into meaningful data
