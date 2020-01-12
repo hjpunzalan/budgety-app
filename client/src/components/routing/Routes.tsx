@@ -17,17 +17,24 @@ interface Props {
 // Public routes
 export const pubRoutesArr = [
 	{ name: "Home", path: "/", component: Home, exact: true }, // had to add nav:true for typescript to recognise nav property
-	{ name: "Login", path: "/login", component: Login },
-	{ name: "Register", path: "/register", component: Register },
+	{ name: "Login", path: "/login", component: Login, exact: true },
+	{
+		name: "Register",
+		path: "/register",
+		component: Register,
+		exact: true
+	},
 	{
 		name: "Forgot Password",
 		path: "/forgotpassword",
-		component: ForgotPassword
+		component: ForgotPassword,
+		exact: true
 	},
 	{
 		name: "Reset Password",
 		path: "/forgotpassword/reset/:resetToken",
-		component: ResetPassword
+		component: ResetPassword,
+		exact: true
 	}
 ];
 
@@ -44,7 +51,7 @@ class Routes extends Component<Props> {
 					<PublicRoute
 						key={route.name}
 						isAuthenticated={this.props.auth.isAuthenticated}
-						exact={route.exact === undefined ? true : route.exact}
+						exact={route.exact ? route.exact : true}
 						path={route.path}
 						component={route.component}
 					/>
@@ -54,7 +61,7 @@ class Routes extends Component<Props> {
 					<PrivateRoute
 						key={route.name}
 						isAuthenticated={this.props.auth.isAuthenticated}
-						exact={route.exact === undefined ? true : route.exact}
+						exact={route.exact ? route.exact : true}
 						path={route.path}
 						component={route.component}
 					/>

@@ -34,7 +34,7 @@ if (process.env.SESSION_SECRET)
 			cookie: {
 				// maxAge: 10 * 1000 * 60, // remove if we want it as a session
 				sameSite: true, // 'strict'
-				secure: process.env.NODE_ENV === "production" ? true : false
+				secure: false
 			}
 		})
 	);
