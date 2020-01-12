@@ -1,8 +1,8 @@
 import express from "express";
 import helmet from "helmet";
-import morgan from "morgan";
 import mongoSanitize from "express-mongo-sanitize";
 import hpp from "hpp";
+import morgan from "morgan";
 import session from "express-session";
 import path from "path";
 import { AppError } from "./utils/appError";
