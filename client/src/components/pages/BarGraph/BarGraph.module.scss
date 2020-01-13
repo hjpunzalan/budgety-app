@@ -7,7 +7,7 @@
 
 	@media only screen and (max-width: 450px) {
 		width: 100vw;
-		margin: 0 -2rem; // remove padding from container
+		margin: 0 -$small-padding; // remove padding from container
 	}
 
 	g {

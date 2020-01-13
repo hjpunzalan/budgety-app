@@ -44,13 +44,13 @@
     background: white;
     border: 1px solid $color-grey;
     border-top: 2px solid $color-primary;
-    padding: 5rem;
+    padding: $large-padding;
     min-height: 40rem;
 
     @media only screen and (max-width: 730px) {
         background: rgba(255, 255, 255, 0.8);
         border: none;
-        padding: 2rem;
+        padding: $small-padding;
         padding-bottom: 7rem;
         min-height: auto;
         border-bottom: none;
@@ -135,7 +135,7 @@
             justify-self: center;
             display: grid;
             grid-template-columns: 1fr 2fr;
-            column-gap: 1rem;
+            column-gap: $col-gap;
             justify-content: center;
             align-items: center;
             padding: 1rem;
@@ -146,13 +146,12 @@
             }
 
             @media only screen and (max-width: 450px) {
-                grid-template-columns: .5fr 1fr; // input high fractional unit enough to center the row but low enough to break word
+                grid-template-columns: calc(45vw - #{$col-w}) calc(55vw - #{$col-w}); // input high fractional unit enough to center the row but low enough to break word
                 font-size: 1.2rem;
             }
 
             @media only screen and (max-width: 390px) {
-                grid-template-columns: .5fr .5fr;
-                font-size: 1.2rem;
+                grid-template-columns: calc(40vw - #{$col-w}) calc(60vw - #{$col-w});
             }
 
             &>span {

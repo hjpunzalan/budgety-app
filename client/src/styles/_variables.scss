@@ -9,3 +9,12 @@ $btnMaxWidth: 20rem;
 
 // Typography
 $btnFontSize: 2rem;
+
+// Responsive padding for pageContainer privMixin
+$large-padding: 5rem;
+$med-padding: 3rem;
+$small-padding: 2rem;
+
+// label mobile responsive column template
+$col-gap:1rem;
+$col-w: calc(#{$col-gap} + 2*#{$small-padding});
