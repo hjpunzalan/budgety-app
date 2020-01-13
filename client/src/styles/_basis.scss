@@ -46,3 +46,16 @@ input {
         background-position-x: 700px;
     }
 }
+
+// Removed default properties
+input[type='submit'] {
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+}
+
+select {
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+}
