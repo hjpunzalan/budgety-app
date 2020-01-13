@@ -61,9 +61,10 @@ class Table extends Component<Props, State> {
 		const timesince = now - this.state.latestClick;
 		if (timesince < 800 && timesince > 0) {
 			// double tap
-			this.props.history.push(
-				`/user/transactions/${this.props.currentBudget._id}/edit/${transactionId}`
-			);
+			if (this.state.selectedId === transactionId)
+				this.props.history.push(
+					`/user/transactions/${this.props.currentBudget._id}/edit/${transactionId}`
+				);
 		} else {
 			// too much time to be a doubletap
 			this.state.selectedId === transactionId
