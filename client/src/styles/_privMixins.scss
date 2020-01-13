@@ -49,6 +49,7 @@
 
     @media only screen and (max-width: 730px) {
         background: rgba(255, 255, 255, 0.8);
+        border: none;
         padding: 2rem;
         padding-bottom: 7rem;
         min-height: auto;
@@ -119,23 +120,6 @@
             font-size: 1.2rem;
         }
 
-    }
-
-    select {
-        border: 1px solid $color-grey;
-        cursor: pointer;
-        outline: none;
-        height: calc(1.5rem + 10px + 10px); // around same height as input
-        min-width: calc(15rem + 22px);
-        max-width: calc(60% + 22px); // input padding adds width to its element
-
-        @media only screen and (max-width: 450px) {
-            max-width: calc(40% + 22px);
-        }
-
-        @media only screen and (max-width: 500px) {
-            height: calc(1.2rem + 7px + 7px);
-        }
     }
 
 
@@ -209,6 +193,23 @@
                 }
             }
 
+            &>select {
+                border: 1px solid $color-grey;
+                cursor: pointer;
+                outline: none;
+                height: calc(1.5rem + 10px + 10px); // around same height as input
+                min-width: calc(15rem + 22px);
+                max-width: calc(60% + 22px); // input padding adds width to its element
+
+                @media only screen and (max-width: 450px) {
+                    max-width: calc(40% + 22px);
+                }
+
+                @media only screen and (max-width: 500px) {
+                    height: calc(1.2rem + 7px + 7px);
+                }
+            }
+
             // For radio input's span
             input+span {
                 width: auto;
@@ -219,6 +220,8 @@
             input[type="radio"] {
                 min-width: 0 !important;
             }
+
+
 
 
         }
