@@ -85,7 +85,7 @@ class Table extends Component<Props, State> {
 						<tr className={classes.heading}>
 							<th>Date</th>
 							<th>Description</th>
-							<th className={classes.mobileTableHeadAmount}>Amount($AUD)</th>
+							<th>Amount($AUD)</th>
 							<th className={classes.mobileTableHead}>Category</th>
 							<th className={classes.mobileTableHead}>Balance</th>
 						</tr>
@@ -134,9 +134,7 @@ class Table extends Component<Props, State> {
 														</p>
 													)}
 												</td>
-												<td className={classes.mobileTableAmount}>
-													{checkAmount(t.amount)}
-												</td>
+												<td>{checkAmount(t.amount)}</td>
 												<td className={classes.mobileTableData}>
 													{currentBudget.categories[t.categoryIndex]}
 												</td>

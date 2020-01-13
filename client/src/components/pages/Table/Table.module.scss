@@ -14,14 +14,6 @@
         display: none;
     }
 
-    .mobileTableHeadAmount {
-        border-right: 1px solid $color-grey;
-    }
-
-    .mobileTableAmount {
-        border-right: 1px solid $color-grey;
-    }
-
     .mobileTableCategory {
         display: block;
         margin-top: .5rem;
@@ -43,6 +35,13 @@
     font-size: 1.2rem;
     border-collapse: collapse;
 
+    @media only screen and (max-width: 600px) {
+        margin-left: -2rem;
+        margin-right: -2rem;
+        width: 100vw;
+    }
+
+
     .heading {
         background: $color-primary;
 
@@ -53,6 +52,11 @@
 
     tr {
         border: 1px solid $color-grey;
+
+        @media only screen and (max-width: 600px) {
+            border-right: none;
+            border-left: none;
+        }
     }
 
     .transaction,
@@ -61,6 +65,12 @@
 
         td {
             padding: 1rem 0.5rem;
+            max-width: 25vw;
+            word-break: break-word;
+
+            @media only screen and (max-width: 450px) {
+                padding: 2rem 1rem;
+            }
 
             &:not(:first-of-type) {
                 text-align: center;
