@@ -1,310 +1,286 @@
-@import './variables';
+@import "./variables";
 
 @mixin page {
-    display: grid;
-    grid-template-rows: max-content max-content 1fr;
-    grid-template-columns: minmax(6rem, 1fr) repeat(8, minmax(min-content, 15rem)) minmax(6rem, 1fr);
-
+	display: grid;
+	grid-template-rows: max-content max-content 1fr;
+	grid-template-columns: minmax(6rem, 1fr) repeat(8, minmax(min-content, 15rem)) minmax(
+			6rem,
+			1fr
+		);
 }
 
 @mixin container {
-    grid-row: 3/-1;
-    grid-column: 2/10;
-    display: grid;
-    grid-template-rows: $addTransactionHeight 30rem 20rem;
-    grid-template-columns: max-content minmax(max-content, 1fr);
-    padding: 5rem;
-    gap: 5rem;
+	grid-row: 3/-1;
+	grid-column: 2/10;
+	display: grid;
+	grid-template-rows: $addTransactionHeight 30rem 20rem;
+	grid-template-columns: max-content minmax(max-content, 1fr);
+	padding: 5rem;
+	gap: 5rem;
 
-    @media only screen and (max-width: 1100px) {
-        grid-column: 1/-1;
-    }
+	@media only screen and (max-width: 1100px) {
+		grid-column: 1/-1;
+	}
 
-    @media only screen and (max-width: 1000px) {
-        gap: 0;
-        padding: 0 5rem;
-        grid-template-rows: 1fr;
-    }
+	@media only screen and (max-width: 1000px) {
+		gap: 0;
+		padding: 0 5rem;
+		grid-template-rows: 1fr;
+	}
 
-    @media only screen and (max-width: 730px) {
-        padding: 0;
-    }
-
+	@media only screen and (max-width: 730px) {
+		padding: 0;
+	}
 }
 
 @mixin privPageSpinner {
-    grid-column: 1/-1;
-    align-self: center;
-    justify-content: center;
-
+	grid-column: 1/-1;
+	align-self: center;
+	justify-content: center;
 }
 
 /**********************   For each page component    **********************/
 @mixin pageContainer {
-    background: white;
-    border: 1px solid $color-grey;
-    border-top: 2px solid $color-primary;
-    padding: $large-padding;
-    min-height: 40rem;
+	background: white;
+	border: 1px solid $color-grey;
+	border-top: 2px solid $color-primary;
+	padding: $large-padding;
+	min-height: 40rem;
 
-    @media only screen and (max-width: 730px) {
-        background: rgba(255, 255, 255, 0.8);
-        border: none;
-        padding: $small-padding;
-        padding-bottom: 7rem;
-        min-height: auto;
-        border-bottom: none;
-    }
+	@media only screen and (max-width: 730px) {
+		background: rgba(255, 255, 255, 0.8);
+		border: none;
+		padding: $small-padding;
+		padding-bottom: 7rem;
+		min-height: auto;
+		border-bottom: none;
+	}
 }
 
 @mixin pageTitle {
-    font-size: 4rem;
-    margin-bottom: 5rem;
-    justify-self: center;
-    text-align: center;
+	font-size: 4rem;
+	margin-bottom: 5rem;
+	justify-self: center;
+	text-align: center;
 
-    @media only screen and (max-width: 730px) {
-        font-size: 3rem;
-        margin-bottom: 3rem;
-    }
+	@media only screen and (max-width: 730px) {
+		font-size: 3rem;
+		margin-bottom: 3rem;
+	}
 
-    @media only screen and (max-width: 500px) {
-        font-size: 2.5rem;
-        margin-bottom: 2rem;
-    }
+	@media only screen and (max-width: 500px) {
+		font-size: 2.5rem;
+		margin-bottom: 2rem;
+	}
 
-    @media only screen and (max-width: 450px) {
-        font-size: 2rem;
-        margin-bottom: 2rem;
-    }
+	@media only screen and (max-width: 450px) {
+		font-size: 2rem;
+		margin-bottom: 2rem;
+	}
 }
-
 
 @mixin pageForm {
-    display: grid;
-    height: 100%;
-    grid-template-columns: minmax(max-content, 1fr) minmax(max-content, 1fr);
-    grid-template-rows: repeat(auto-fit, minmax(3rem, max-content));
-    gap: 3rem;
-    justify-items: center;
+	display: grid;
+	height: 100%;
+	grid-template-columns: minmax(max-content, 1fr) minmax(max-content, 1fr);
+	grid-template-rows: repeat(auto-fit, minmax(3rem, max-content));
+	gap: 3rem;
+	justify-items: center;
 
-    @media only screen and (max-width: 730px) {
-        gap: 2rem;
-    }
+	@media only screen and (max-width: 730px) {
+		gap: 2rem;
+	}
 
-    //  All direct child buttons
-    input[type="submit"],
-    &>button {
-        cursor: pointer;
-        outline: none;
-        border: none;
-        font-size: 2rem;
-        height: $btnHeight;
-        width: 100%;
-        max-width: $btnMaxWidth;
-        max-width: $btnMaxWidth;
+	//  All direct child buttons
+	input[type="submit"],
+	& > button {
+		cursor: pointer;
+		outline: none;
+		border: none;
+		font-size: 2rem;
+		height: $btnHeight;
+		width: 100%;
+		max-width: $btnMaxWidth;
+		max-width: $btnMaxWidth;
 
-        @media only screen and (max-width: 730px) {
-            width: 75%;
-            font-size: 1.5rem;
-        }
+		@media only screen and (max-width: 730px) {
+			width: 75%;
+			font-size: 1.5rem;
+		}
 
-        @media only screen and (max-width: 450px) {
-            height: calc(#{$btnHeight}/1.2);
-            font-size: 1.2rem;
-        }
+		@media only screen and (max-width: 450px) {
+			height: calc(#{$btnHeight}/ 1.2);
+			font-size: 1.2rem;
+		}
 
-        @media only screen and (max-width: 400px) {
-            max-width: 40vw;
-            height: calc(#{$btnHeight}/1.2);
-            font-size: 1.2rem;
-        }
+		@media only screen and (max-width: 400px) {
+			max-width: 40vw;
+			height: calc(#{$btnHeight}/ 1.2);
+			font-size: 1.2rem;
+		}
+	}
 
-    }
+	// Assume maximum inputs is 10 // Start at 3rd row
+	// Only the form
+	@for $i from 1 through 10 {
+		label:nth-of-type(#{$i}) {
+			grid-column: 1/-1;
+			width: 100%;
+			grid-row-start: $i;
+			grid-row-end: $i + 1;
+			align-self: center;
+			justify-self: center;
+			display: grid;
+			grid-template-columns: 1fr 2fr;
+			column-gap: $col-gap;
+			justify-content: center;
+			align-items: center;
+			padding: 1rem;
+			font-size: 1.5rem;
 
+			@media only screen and (max-width: 730px) {
+				padding: 0;
+			}
 
-    // Assume maximum inputs is 10 // Start at 3rd row
-    // Only the form
-    @for $i from 1 through 10 {
-        label:nth-of-type(#{$i}) {
-            grid-column: 1/-1;
-            width: 100%;
-            grid-row-start: $i;
-            grid-row-end: $i+1;
-            align-self: center;
-            justify-self: center;
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            column-gap: $col-gap;
-            justify-content: center;
-            align-items: center;
-            padding: 1rem;
-            font-size: 1.5rem;
+			@media only screen and (max-width: 450px) {
+				grid-template-columns: calc(45vw - #{$col-w}) calc(55vw - #{$col-w}); // input high fractional unit enough to center the row but low enough to break word
+				font-size: 1.2rem;
+			}
 
-            @media only screen and (max-width: 730px) {
-                padding: 0;
-            }
+			@media only screen and (max-width: 390px) {
+				grid-template-columns: calc(40vw - #{$col-w}) calc(60vw - #{$col-w});
+			}
 
-            @media only screen and (max-width: 450px) {
-                grid-template-columns: calc(45vw - #{$col-w}) calc(55vw - #{$col-w}); // input high fractional unit enough to center the row but low enough to break word
-                font-size: 1.2rem;
-            }
+			& > span {
+				margin-left: auto;
+				grid-column: 1/2;
+				justify-self: flex-end;
+				text-align: right;
+				min-width: 6rem; // for the amount type
+			}
 
-            @media only screen and (max-width: 390px) {
-                grid-template-columns: calc(40vw - #{$col-w}) calc(60vw - #{$col-w});
-            }
+			input[type="text"],
+			input[type="number"],
+			input[type="email"],
+			input[type="password"] {
+				grid-column: 2/-1;
+				min-width: 15rem;
+				max-width: 60%;
+				padding: 10px;
+				outline: none;
 
-            &>span {
-                margin-left: auto;
-                grid-column: 1/2;
-                justify-self: flex-end;
-                text-align: right;
-                min-width: 6rem; // for the amount type
+				@media only screen and (max-width: 500px) {
+					padding: 7px;
+				}
 
-                @media only screen and (max-width: 430px) {
-                    text-align: center;
-                }
-            }
+				@media only screen and (max-width: 400px) {
+					max-width: 40%;
+				}
 
+				// Add margin to additional inputs such as more categories
+				&:not(:first-of-type) {
+					margin-top: 1rem;
+				}
+			}
 
+			& > select {
+				border: 1px solid $color-grey;
+				cursor: pointer;
+				outline: none;
+				height: calc(1.5rem + 10px + 10px); // around same height as input
+				min-width: calc(15rem + 22px);
+				max-width: calc(60% + 22px); // input padding adds width to its element
 
-            input[type='text'],
-            input[type='number'],
-            input[type='email'],
-            input[type='password'] {
-                grid-column: 2/-1;
-                min-width: 15rem;
-                max-width: 60%;
-                padding: 10px;
-                outline: none;
+				@media only screen and (max-width: 450px) {
+					max-width: calc(40% + 22px);
+				}
 
-                @media only screen and (max-width: 500px) {
-                    padding: 7px;
-                }
+				@media only screen and (max-width: 500px) {
+					height: calc(1.2rem + 7px + 7px);
+				}
+			}
 
-                @media only screen and (max-width: 400px) {
-                    max-width: 40%;
-                }
+			// For radio input's span
+			input + span {
+				width: auto;
+				text-align: center;
+				margin-left: 0;
+			}
 
-                // Add margin to additional inputs such as more categories
-                &:not(:first-of-type) {
-                    margin-top: 1rem;
-                }
-            }
+			input[type="radio"] {
+				min-width: 0 !important;
+			}
+		}
 
-            &>select {
-                border: 1px solid $color-grey;
-                cursor: pointer;
-                outline: none;
-                height: calc(1.5rem + 10px + 10px); // around same height as input
-                min-width: calc(15rem + 22px);
-                max-width: calc(60% + 22px); // input padding adds width to its element
+		// Form Buttons
+		.btnGrey,
+		.btnCancel {
+			background: $color-grey;
+		}
 
-                @media only screen and (max-width: 450px) {
-                    max-width: calc(40% + 22px);
-                }
+		.btnDel {
+			background: $color-delete;
+		}
 
-                @media only screen and (max-width: 500px) {
-                    height: calc(1.2rem + 7px + 7px);
-                }
-            }
+		.btnGrey,
+		.btnDel {
+			font-size: 1.2rem;
+			width: 30%;
+			padding: 0.5rem;
 
-            // For radio input's span
-            input+span {
-                width: auto;
-                text-align: center;
-                margin-left: 0;
-            }
+			@media only screen and (max-width: 730px) {
+				width: 50%;
+			}
 
-            input[type="radio"] {
-                min-width: 0 !important;
-            }
+			@media only screen and (max-width: 500px) {
+				font-size: 1rem;
+			}
+		}
 
-
-
-
-        }
-
-        // Form Buttons
-        .btnGrey,
-        .btnCancel {
-            background: $color-grey;
-        }
-
-        .btnDel {
-            background: $color-delete;
-        }
-
-        .btnGrey,
-        .btnDel {
-            font-size: 1.2rem;
-            width: 30%;
-            padding: .5rem;
-
-            @media only screen and (max-width: 730px) {
-                width: 50%;
-            }
-
-            @media only screen and (max-width: 500px) {
-                font-size: 1rem;
-            }
-
-
-        }
-
-        input[type="submit"] {
-            background: $color-primary;
-        }
-    }
+		input[type="submit"] {
+			background: $color-primary;
+		}
+	}
 }
-
-
-
-
-
-
 
 /*********************** For container component only ************************/
 @mixin logoutBtn {
-    grid-row: 1/2;
-    grid-column: 9/10;
-    align-self: center;
-    margin: 1rem 0;
-    font-size: $btnFontSize;
-    color: black;
-    background: white;
-    padding: 2rem;
-    border: 1px solid;
-    cursor: pointer;
+	grid-row: 1/2;
+	grid-column: 9/10;
+	align-self: center;
+	margin: 1rem 0;
+	font-size: $btnFontSize;
+	color: black;
+	background: white;
+	padding: 2rem;
+	border: 1px solid;
+	cursor: pointer;
 }
 
-
 @mixin actionNav {
-    background: white;
-    border: 0.5px solid $color-grey;
-    overflow-x: hidden;
-    display: flex;
-    flex-direction: column;
+	background: white;
+	border: 0.5px solid $color-grey;
+	overflow-x: hidden;
+	display: flex;
+	flex-direction: column;
 
-    h3 {
-        background: $color-primary;
-        font-size: 2rem;
-        display: inline-block;
-        padding: 1rem 2rem;
-        width: 100%;
-    }
+	h3 {
+		background: $color-primary;
+		font-size: 2rem;
+		display: inline-block;
+		padding: 1rem 2rem;
+		width: 100%;
+	}
 
-    ul {
-        list-style: none;
-        line-height: 2.5rem;
-        overflow-y: auto;
+	ul {
+		list-style: none;
+		line-height: 2.5rem;
+		overflow-y: auto;
 
-        li {
-            cursor: pointer;
-            font-size: 1.5rem;
-            padding: .5rem 2rem;
-
-        }
-    }
-
+		li {
+			cursor: pointer;
+			font-size: 1.5rem;
+			padding: 0.5rem 2rem;
+		}
+	}
 }
