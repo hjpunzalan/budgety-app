@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Switch } from "react-router-dom";
+import { Switch, Redirect, Route } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
 import Home from "../pages/Home/Home";
 import Login from "../auth/Login/Login";
@@ -16,25 +16,22 @@ interface Props {
 
 // Public routes
 export const pubRoutesArr = [
-	{ name: "Home", path: "/", component: Home, exact: true }, // had to add nav:true for typescript to recognise nav property
-	{ name: "Login", path: "/login", component: Login, exact: true },
+	{ name: "Home", path: "/", component: Home }, // had to add nav:true for typescript to recognise nav property
+	{ name: "Login", path: "/login", component: Login },
 	{
 		name: "Register",
 		path: "/register",
-		component: Register,
-		exact: true
+		component: Register
 	},
 	{
 		name: "Forgot Password",
 		path: "/forgotpassword",
-		component: ForgotPassword,
-		exact: true
+		component: ForgotPassword
 	},
 	{
 		name: "Reset Password",
 		path: "/forgotpassword/reset/:resetToken",
-		component: ResetPassword,
-		exact: true
+		component: ResetPassword
 	}
 ];
 
@@ -51,7 +48,7 @@ class Routes extends Component<Props> {
 					<PublicRoute
 						key={route.name}
 						isAuthenticated={this.props.auth.isAuthenticated}
-						exact={route.exact ? route.exact : true}
+						exact
 						path={route.path}
 						component={route.component}
 					/>
@@ -61,11 +58,16 @@ class Routes extends Component<Props> {
 					<PrivateRoute
 						key={route.name}
 						isAuthenticated={this.props.auth.isAuthenticated}
-						exact={route.exact ? route.exact : true}
+						exact={route.exact === undefined ? true : route.exact}
 						path={route.path}
 						component={route.component}
 					/>
 				))}
+
+				{/* Only for pubRoutes for now */}
+				{!this.props.auth.isAuthenticated && (
+					<Route render={() => <Redirect to="/" />} />
+				)}
 			</Switch>
 		);
 	}
