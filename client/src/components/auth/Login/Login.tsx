@@ -82,12 +82,15 @@ class Login extends Component<Props, State> {
 							</div>
 						) : (
 							<>
+								<button className={classes.loginBtn}>Login</button>
 								<button
 									className={classes.registerBtn}
-									onClick={() => this.props.history.push("/register")}>
+									onClick={e => {
+										e.preventDefault();
+										this.props.history.push("/register");
+									}}>
 									Sign Up{" "}
 								</button>
-								<button className={classes.loginBtn}>Login</button>
 
 								<Link className={classes.link} to="/forgotpassword">
 									Forgot your password?
