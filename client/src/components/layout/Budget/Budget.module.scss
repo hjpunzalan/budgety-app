@@ -13,14 +13,12 @@
 
 	span {
 		border-bottom: none;
-		color: black;
+		color: $color-primary;
 		transition: all 0.2s;
 		cursor: pointer;
 
 		&.navSelected {
-			color: $color-primary;
-			border-bottom: 2px solid $color-primary;
-			padding-bottom: 0.5rem;
+			color: black;
 		}
 	}
 }
