@@ -69,23 +69,21 @@ class Container extends Component<Props, State> {
 				</button>
 				{this.props.budgets.length > 0 && (
 					<div className={classes.mobileSelect}>
-						<label>
-							<button onClick={this.mobileSelectBudget}>
-								<FaHome />
-								Budget
-							</button>{" "}
-							<span>:</span>
-							<select onChange={this.handleSelect} value={this.state.selected}>
-								{!this.state.loading &&
-									this.props.budgets.map((b, i) => {
-										return (
-											<option key={b._id} value={i}>
-												{b.name}
-											</option>
-										);
-									})}
-							</select>
-						</label>
+						<button onClick={this.mobileSelectBudget}>
+							<FaHome />
+							Budget
+						</button>{" "}
+						<span>:</span>
+						<select onChange={this.handleSelect} value={this.state.selected}>
+							{!this.state.loading &&
+								this.props.budgets.map((b, i) => {
+									return (
+										<option key={b._id} value={i}>
+											{b.name}
+										</option>
+									);
+								})}
+						</select>
 					</div>
 				)}
 				<div className={classes.container}>
