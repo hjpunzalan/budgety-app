@@ -140,7 +140,6 @@ class AddTransaction extends Component<Props, State> {
 					<label>
 						<span>Select Budget: </span>
 						<select
-							autoFocus
 							name="Budgets"
 							value={this.state.budgetIndex}
 							onChange={this.handleBudgetChange}>
@@ -165,7 +164,6 @@ class AddTransaction extends Component<Props, State> {
 					<label className={classes.categoryIndex}>
 						<span>Category:</span>
 						<select
-							autoFocus
 							name="categoryIndex"
 							// Add value here later
 							onChange={e =>
@@ -261,7 +259,4 @@ const mapStateToProps = (state: StoreState) => ({
 	currentBudget: state.currentBudget
 });
 
-export default connect(
-	mapStateToProps,
-	{ addTransaction }
-)(AddTransaction);
+export default connect(mapStateToProps, { addTransaction })(AddTransaction);

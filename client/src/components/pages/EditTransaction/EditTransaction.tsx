@@ -141,7 +141,6 @@ class EditTransaction extends Component<Props, State> {
 					<label className={classes.categoryIndex}>
 						<span>Category:</span>
 						<select
-							autoFocus
 							name="categoryIndex"
 							// Add value here later
 							onChange={e =>
