@@ -203,6 +203,7 @@ class EditTransaction extends Component<Props, State> {
 									this.state.min >= 0 && this.state.amount > 0 ? true : false
 								}
 								onChange={e => this.handleChangeType(e)}
+								required
 							/>
 							<span>Income +</span>
 						</label>
@@ -251,6 +252,7 @@ const mapStateToProps = (state: StoreState) => ({
 	budgets: state.budgets
 });
 
-export default connect(mapStateToProps, { setAlert })(
-	withRouter(EditTransaction)
-);
+export default connect(
+	mapStateToProps,
+	{ setAlert }
+)(withRouter(EditTransaction));

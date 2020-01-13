@@ -240,6 +240,7 @@ class AddTransaction extends Component<Props, State> {
 								checked={
 									this.state.min < 0 && this.state.amount < 0 ? true : false
 								}
+								required
 							/>
 							<span>Expense - </span>
 						</label>
@@ -262,4 +263,7 @@ const mapStateToProps = (state: StoreState) => ({
 	currentBudget: state.currentBudget
 });
 
-export default connect(mapStateToProps, { addTransaction })(AddTransaction);
+export default connect(
+	mapStateToProps,
+	{ addTransaction }
+)(AddTransaction);
