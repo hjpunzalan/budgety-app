@@ -15,7 +15,7 @@ html {
 
 body {
 	background: url("../images/background-opacity.png") repeat center;
-	animation: movingBackground 50s linear infinite;
+	animation: movingBackground 5000s linear infinite;
 }
 
 // Remove arrows from number input
@@ -41,7 +41,7 @@ input {
 	}
 
 	to {
-		background-position-x: 700px;
+		background-position-x: 70000px;
 	}
 }
 
