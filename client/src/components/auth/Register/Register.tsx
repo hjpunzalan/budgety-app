@@ -122,8 +122,8 @@ class Register extends Component<Props, IRegisterState> {
 							</div>
 						) : (
 							<>
-								<button onClick={this.handleCancel}>Clear</button>
 								<input type="submit" value="Register" />
+								<button onClick={this.handleCancel}>Clear</button>
 							</>
 						)}
 					</form>

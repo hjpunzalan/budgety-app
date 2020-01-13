@@ -28,14 +28,15 @@
 
 
     input[type='submit'] {
-        grid-column: 1/2;
-        justify-self: flex-end;
+        grid-column: 2/-1;
+        justify-self: flex-start;
         align-self: center;
     }
 
     button {
-        grid-column: 2/3;
+        grid-column: 1/2;
         align-self: center;
+        justify-self: flex-end;
         @include clearBtn;
 
     }
