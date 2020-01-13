@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Switch, Redirect, Route } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
-import Home from "../pages/Home/Home";
 import Login from "../auth/Login/Login";
 import Container from "../layout/Container/Container";
 import Register from "../auth/Register/Register";
@@ -16,7 +15,6 @@ interface Props {
 
 // Public routes
 export const pubRoutesArr = [
-	{ name: "Home", path: "/", component: Home }, // had to add nav:true for typescript to recognise nav property
 	{ name: "Login", path: "/login", component: Login },
 	{
 		name: "Register",
