@@ -59,21 +59,27 @@ class Table extends Component<Props, State> {
 		// Create double click/tap function
 		const now = new Date().getTime();
 		const timesince = now - this.state.latestClick;
-		if (timesince < 800 && timesince > 0) {
-			// double tap
-			if (this.state.selectedId === transactionId)
+		if (this.state.selectedId === transactionId) {
+			if (timesince < 800 && timesince > 0) {
+				// double tap
 				this.props.history.push(
 					`/user/transactions/${this.props.currentBudget._id}/edit/${transactionId}`
 				);
-		} else {
-			// too much time to be a doubletap
-			this.state.selectedId === transactionId
-				? this.setState({ selectedId: "" })
-				: this.setState({ selectedId: transactionId });
-		}
+			} // one tap
+			else
+				this.setState({
+					selectedId: ""
+				});
+		} // different transaction
+		else
+			this.setState({
+				selectedId: transactionId
+			});
 
 		// Set new latestClick
-		this.setState({ latestClick: new Date().getTime() });
+		this.setState({
+			latestClick: new Date().getTime()
+		});
 	};
 
 	render() {

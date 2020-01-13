@@ -136,6 +136,7 @@ class EditTransaction extends Component<Props, State> {
 							maxLength={50}
 							onChange={e => this.setState({ desc: e.target.value })}
 							value={this.state.desc}
+							required
 						/>
 					</label>
 					<label className={classes.categoryIndex}>
@@ -187,6 +188,7 @@ class EditTransaction extends Component<Props, State> {
 							value={this.state.amount}
 							min={this.state.min}
 							max={this.state.max}
+							required
 							// pattern="^\d+(?:\.\d{1,2})?$"
 							// step=".01"
 						/>

@@ -159,6 +159,7 @@ class AddTransaction extends Component<Props, State> {
 							maxLength={50}
 							onChange={e => this.setState({ desc: e.target.value })}
 							value={this.state.desc}
+							required
 						/>
 					</label>
 					<label className={classes.categoryIndex}>
@@ -211,6 +212,7 @@ class AddTransaction extends Component<Props, State> {
 							value={this.state.init ? "" : this.state.amount}
 							min={this.state.min}
 							max={this.state.max}
+							required
 							// pattern="^\d+(?:\.\d{1,2})?$"
 							// step=".01"
 						/>
@@ -225,6 +227,7 @@ class AddTransaction extends Component<Props, State> {
 									this.state.min >= 0 && this.state.amount > 0 ? true : false
 								}
 								onChange={e => this.handleChangeType(e)}
+								required
 							/>
 							<span>Income +</span>
 						</label>
