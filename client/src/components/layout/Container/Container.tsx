@@ -3,7 +3,7 @@ import { GoDiffAdded, GoPerson } from "react-icons/go";
 import { FaKey, FaHome } from "react-icons/fa";
 import { FaRegEdit } from "react-icons/fa";
 import { Link, Route } from "react-router-dom";
-import { RouteComponentProps, Switch } from "react-router";
+import { RouteComponentProps, Switch, Redirect } from "react-router";
 import { connect } from "react-redux";
 import classes from "./Container.module.scss";
 import { getLogout } from "../../../actions";
@@ -48,12 +48,12 @@ class Container extends Component<Props, State> {
 		const budgetIndex = parseInt(e.target.value, 10);
 		this.selectBudget(budgetIndex);
 		const budgetId = this.props.budgets[budgetIndex]._id;
-		this.props.history.push(this.props.match.url + `/budget/${budgetId}`);
+		this.props.history.push(this.props.match.path + `/budget/${budgetId}`);
 	};
 
 	mobileSelectBudget = () => {
 		const budgetId = this.props.budgets[this.state.selected]._id;
-		this.props.history.push(this.props.match.url + `/budget/${budgetId}`);
+		this.props.history.push(this.props.match.path + `/budget/${budgetId}`);
 	};
 
 	render() {
@@ -94,60 +94,61 @@ class Container extends Component<Props, State> {
 						<Switch>
 							<Route
 								exact
-								path={this.props.match.url + "/update"}
+								path={this.props.match.path + "/update"}
 								component={UpdateMe}
 							/>
 							<Route
 								exact
-								path={this.props.match.url + "/changepassword"}
+								path={this.props.match.path + "/changepassword"}
 								component={ChangePassword}
 							/>
 							<Route
 								exact
-								path={this.props.match.url + "/budget/new"}
+								path={this.props.match.path + "/budget/new"}
 								render={props => (
 									<AddBudget selectBudget={this.selectBudget} {...props} />
 								)}
 							/>
 							<Route
 								exact
-								path={this.props.match.url + "/budget/edit"}
+								path={this.props.match.path + "/budget/edit"}
 								render={props => (
 									<EditBudget selectBudget={this.selectBudget} {...props} />
 								)}
 							/>
 							<Route
 								exact
-								path={this.props.match.url + "/transactions/new"}
+								path={this.props.match.path + "/transactions/new"}
 								component={AddTransaction}
 							/>
 							<Route
 								exact
-								path={this.props.match.url + "/transactions/new/:budgetId"}
+								path={this.props.match.path + "/transactions/new/:budgetId"}
 								component={AddTransaction}
 							/>
 							<Route
 								exact
 								path={
-									this.props.match.url +
+									this.props.match.path +
 									"/transactions/:budgetId/edit/:transactionId"
 								}
 								component={EditTransaction}
 							/>
 							<Route
 								exact
-								path={this.props.match.url + "/budget/:budgetId"}
+								path={this.props.match.path + "/budget/:budgetId"}
 								render={props => (
 									<Budget stopLoading={this.stopLoading} {...props} />
 								)}
 							/>
 							<Route
 								exact
-								path={this.props.match.url}
+								path={this.props.match.path}
 								render={props => (
 									<Budget stopLoading={this.stopLoading} {...props} />
 								)}
 							/>
+							<Redirect to="/user" />
 						</Switch>
 					</div>
 
@@ -157,7 +158,7 @@ class Container extends Component<Props, State> {
 						onClick={() =>
 							this.props.currentBudget._id &&
 							this.props.history.push(
-								this.props.match.url + "/transactions/new"
+								this.props.match.path + "/transactions/new"
 							)
 						}>
 						<img src={transactionIcon} alt="Transaction icon" />
@@ -172,7 +173,7 @@ class Container extends Component<Props, State> {
 										return (
 											<Link
 												key={b._id}
-												to={this.props.match.url + `/budget/${b._id}`}
+												to={this.props.match.path + `/budget/${b._id}`}
 												onClick={() => this.selectBudget(i)}>
 												<li
 													className={
@@ -189,7 +190,7 @@ class Container extends Component<Props, State> {
 								) : (
 									<Link
 										key={"nobudget"}
-										to={this.props.match.url + `/budget/new`}>
+										to={this.props.match.path + `/budget/new`}>
 										<li>
 											<i>No budgets listed....</i>
 										</li>
@@ -198,14 +199,14 @@ class Container extends Component<Props, State> {
 						</ul>
 						<div className={classes.budgetActions}>
 							<Link
-								to={this.props.match.url + "/budget/new"}
+								to={this.props.match.path + "/budget/new"}
 								className={classes.budgetActionAdd}>
 								<GoDiffAdded />
 								Add
 							</Link>
 							{this.props.budgets.length > 0 && (
 								<Link
-									to={this.props.match.url + "/budget/edit"}
+									to={this.props.match.path + "/budget/edit"}
 									className={classes.budgetActionEdit}>
 									<FaRegEdit />
 									Edit

@@ -90,7 +90,7 @@ class Dashboard extends Component<Props, State> {
 						});
 					});
 				} else if (this.props.budgets.length === 0 && !this.state.budgetId)
-					this.props.history.push(this.props.match.url + "/budget/new");
+					this.props.history.push(this.props.match.path + "/budget/new");
 			});
 		} else {
 			// ----------------------OTHERWISE LOAD USING PARAMS--------------------
