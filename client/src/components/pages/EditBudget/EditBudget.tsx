@@ -147,18 +147,22 @@ class EditBudget extends Component<Props, State> {
 
 			const budget = this.props.budgets[this.state.budgetIndex];
 			this.props.deleteBudget(budget).then(() => {
-				// Select new budget from Container component
-				const i = this.props.budgets.length - 1;
-				this.props.selectBudget(i);
-				//Reset form after deleting budget
-				this.setState({
-					budgetIndex: previousBudget,
-					name: this.props.budgets[previousBudget].name,
-					categories: [...this.props.budgets[previousBudget].categories],
-					nCategories: this.props.budgets[previousBudget].categories.length,
-					startingBalance: this.props.budgets[previousBudget].startingBalance,
-					loading: false
-				});
+				if (this.props.budgets.length > 1) {
+					// Select new budget from Container component
+					const i = this.props.budgets.length - 1;
+					this.props.selectBudget(i);
+					//Reset form after deleting budget
+					this.setState({
+						budgetIndex: previousBudget,
+						name: this.props.budgets[previousBudget].name,
+						categories: [...this.props.budgets[previousBudget].categories],
+						nCategories: this.props.budgets[previousBudget].categories.length,
+						startingBalance: this.props.budgets[previousBudget].startingBalance,
+						loading: false
+					});
+				} else {
+					this.props.history.push(this.props.match.path + "/budget/new");
+				}
 			});
 		}
 	};
@@ -277,6 +281,7 @@ const mapStateToProps = (state: StoreState) => ({
 	charts: state.charts
 });
 
-export default connect(mapStateToProps, { editBudget, setAlert, deleteBudget })(
-	EditBudget
-);
+export default connect(
+	mapStateToProps,
+	{ editBudget, setAlert, deleteBudget }
+)(EditBudget);
