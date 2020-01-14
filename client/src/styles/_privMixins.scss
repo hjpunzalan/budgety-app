@@ -3,10 +3,8 @@
 @mixin page {
 	display: grid;
 	grid-template-rows: max-content max-content 1fr;
-	grid-template-columns: minmax(6rem, 1fr) repeat(8, minmax(min-content, 15rem)) minmax(
-			6rem,
-			1fr
-		);
+	grid-template-columns: minmax(6rem, 1fr) repeat(8, minmax(min-content, 15rem)) minmax(6rem,
+			1fr);
 }
 
 @mixin container {
@@ -18,11 +16,11 @@
 	padding: 5rem;
 	gap: 5rem;
 
-	@media only screen and (max-width: 1100px) {
+	@media only screen and (max-width: 1200px) {
 		grid-column: 1/-1;
 	}
 
-	@media only screen and (max-width: 1000px) {
+	@media only screen and (max-width: 1100px) {
 		gap: 0;
 		padding: 0 5rem;
 		grid-template-rows: 1fr;
@@ -72,11 +70,6 @@
 		font-size: 2.5rem;
 		margin-bottom: 2rem;
 	}
-
-	@media only screen and (max-width: 450px) {
-		font-size: 2rem;
-		margin-bottom: 2rem;
-	}
 }
 
 @mixin pageForm {
@@ -93,7 +86,7 @@
 
 	//  All direct child buttons
 	input[type="submit"],
-	& > button {
+	&>button {
 		cursor: pointer;
 		outline: none;
 		border: none;
@@ -105,18 +98,15 @@
 
 		@media only screen and (max-width: 730px) {
 			width: 75%;
-			font-size: 1.5rem;
+			font-size: 1.6rem;
 		}
 
 		@media only screen and (max-width: 450px) {
 			height: calc(#{$btnHeight}/ 1.2);
-			font-size: 1.2rem;
 		}
 
 		@media only screen and (max-width: 400px) {
-			max-width: 40vw;
-			height: calc(#{$btnHeight}/ 1.2);
-			font-size: 1.2rem;
+			max-width: 50vw;
 		}
 	}
 
@@ -136,7 +126,7 @@
 			justify-content: center;
 			align-items: center;
 			padding: 1rem;
-			font-size: 1.5rem;
+			font-size: 1.6rem !important; // must be at least 16px for iphone users
 
 			@media only screen and (max-width: 730px) {
 				padding: 0;
@@ -144,14 +134,13 @@
 
 			@media only screen and (max-width: 450px) {
 				grid-template-columns: calc(45vw - #{$col-w}) calc(55vw - #{$col-w}); // input high fractional unit enough to center the row but low enough to break word
-				font-size: 1.2rem;
 			}
 
 			@media only screen and (max-width: 390px) {
 				grid-template-columns: calc(40vw - #{$col-w}) calc(60vw - #{$col-w});
 			}
 
-			& > span {
+			&>span {
 				margin-left: auto;
 				grid-column: 1/2;
 				justify-self: flex-end;
@@ -168,6 +157,7 @@
 				max-width: 60%;
 				padding: 10px;
 				outline: none;
+				font-size: 1.6rem !important; // must be at least 16px for iphone users
 
 				@media only screen and (max-width: 500px) {
 					padding: 7px;
@@ -183,25 +173,22 @@
 				}
 			}
 
-			& > select {
+			&>select {
 				border: 1px solid $color-grey;
 				cursor: pointer;
 				outline: none;
-				height: calc(1.5rem + 10px + 10px); // around same height as input
+				height: calc(1.6rem + 10px + 10px); // around same height as input
 				min-width: calc(15rem + 22px);
 				max-width: calc(60% + 22px); // input padding adds width to its element
+				font-size: 1.6rem !important; // must be at least 16px for iphone users
 
 				@media only screen and (max-width: 450px) {
 					max-width: calc(40% + 22px);
 				}
-
-				@media only screen and (max-width: 500px) {
-					height: calc(1.2rem + 7px + 7px);
-				}
 			}
 
 			// For radio input's span
-			input + span {
+			input+span {
 				width: auto;
 				text-align: center;
 				margin-left: 0;
@@ -231,10 +218,6 @@
 			@media only screen and (max-width: 730px) {
 				width: 50%;
 			}
-
-			@media only screen and (max-width: 500px) {
-				font-size: 1rem;
-			}
 		}
 
 		input[type="submit"] {
@@ -245,7 +228,7 @@
 
 /*********************** For container component only ************************/
 @mixin logoutBtn {
-	grid-row: 1/2;
+	grid-row: 2/3;
 	grid-column: 9/10;
 	align-self: center;
 	margin: 1rem 0;

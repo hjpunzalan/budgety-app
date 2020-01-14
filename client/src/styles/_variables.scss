@@ -17,4 +17,4 @@ $small-padding: 2rem;
 
 // label mobile responsive column template
 $col-gap:1rem;
-$col-w: calc(#{$col-gap} + 2*#{$small-padding});
+$col-w: calc(2*#{$col-gap});
