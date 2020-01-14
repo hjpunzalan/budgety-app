@@ -9,23 +9,23 @@
 .logout {
     @include logoutBtn;
 
-    @media only screen and (max-width: 1000px) {
+    @media only screen and (max-width: 1100px) {
         display: none;
     }
 }
 
 .mobileSelect {
     width: 100%;
-    grid-row: 2/3;
+    grid-row: 1/2;
     grid-column: 2/10;
     font-size: 2rem;
-    margin-top: 2rem;
+    margin: 2rem 0;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
 
-    @media only screen and (min-width: 1000px) {
+    @media only screen and (min-width: 1100px) {
         display: none;
     }
 
@@ -126,7 +126,7 @@
         text-align: center;
     }
 
-    @media only screen and (max-width: 1000px) {
+    @media only screen and (max-width: 1100px) {
         display: none;
     }
 
@@ -137,7 +137,7 @@
     grid-column: 1/2;
     @include actionNav;
 
-    @media only screen and (max-width: 1000px) {
+    @media only screen and (max-width: 1100px) {
         display: none;
     }
 
@@ -175,7 +175,7 @@
     grid-column: 1/2;
     @include actionNav;
 
-    @media only screen and (max-width: 1000px) {
+    @media only screen and (max-width: 1100px) {
         display: none;
     }
 

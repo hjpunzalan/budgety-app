@@ -59,14 +59,6 @@ class Container extends Component<Props, State> {
 	render() {
 		return (
 			<div className={classes.page}>
-				<MobileNav
-					currentBudget={this.props.currentBudget}
-					budgets={this.props.budgets}
-					getLogout={this.props.getLogout}
-				/>
-				<button className={classes.logout} onClick={this.props.getLogout}>
-					Logout
-				</button>
 				{this.props.budgets.length > 0 && (
 					<div className={classes.mobileSelect}>
 						<button onClick={this.mobileSelectBudget}>
@@ -86,6 +78,14 @@ class Container extends Component<Props, State> {
 						</select>
 					</div>
 				)}
+				<MobileNav
+					currentBudget={this.props.currentBudget}
+					budgets={this.props.budgets}
+					getLogout={this.props.getLogout}
+				/>
+				<button className={classes.logout} onClick={this.props.getLogout}>
+					Logout
+				</button>
 				<div className={classes.container}>
 					{/* Routes */}
 					<div className={classes.routes}>
