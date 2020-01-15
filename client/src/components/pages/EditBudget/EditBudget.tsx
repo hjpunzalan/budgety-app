@@ -169,13 +169,7 @@ class EditBudget extends Component<Props, State> {
 
 	handleCancel = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		e.preventDefault();
-		const i = this.state.budgetIndex;
-		this.setState({
-			name: this.props.budgets[i].name,
-			categories: [...this.props.budgets[i].categories],
-			nCategories: this.props.budgets[i].categories.length,
-			startingBalance: this.props.budgets[i].startingBalance
-		});
+		this.props.history.goBack();
 	};
 
 	render() {
