@@ -18,18 +18,51 @@
 .form {
     @include pageForm;
 
+    .btnCategories {
+        grid-column: 1/2;
+        grid-row: 1/2;
+        justify-self: flex-end;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        margin-top: 1rem;
+        flex-wrap: wrap;
+        height: calc(1.6rem + 10px + 10px + 1px + 1px); // around same height as input
+
+        &> :not(:first-child) {
+            margin-left: .5rem;
+        }
+
+    }
+
     button {
         border-radius: 2rem;
     }
 
-    .btnGrey {
-        justify-self: flex-end;
-
-    }
-
+    .btnGreen,
     .btnDel {
-        justify-self: flex-start;
+        justify-self: flex-end;
+        border: none;
+        width: auto;
+        background: transparent;
+        font-size: 2rem;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+
+        &:focus {
+            outline: none;
+        }
     }
+
+    .btnGreen>svg {
+        color: $color-green
+    }
+
+    .btnDel>svg {
+        color: $color-delete
+    }
+
 
     input[type='submit'] {
         margin-top: 5rem;

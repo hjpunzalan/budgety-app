@@ -5,6 +5,7 @@ import { addBudget, setAlert, AlertType } from "../../../actions";
 import { StoreState } from "../../../reducers";
 import { RouteComponentProps } from "react-router";
 import Spinner from "../../utils/Spinner/Spinner";
+import { FaMinusSquare, FaPlusSquare } from "react-icons/fa";
 
 interface Props extends StoreState, RouteComponentProps {
 	addBudget: (form: AddBudgetForm) => Promise<void>;
@@ -146,15 +147,18 @@ class AddBudget extends Component<Props, State> {
 						/>
 					</label>
 					<label className={classes.categories}>
-						<span>Categories:</span>
 						{categoriesArray}
+						<div className={classes.btnCategories}>
+							<span>Categories:</span>
+
+							<button className={classes.btnGreen} onClick={this.addCategories}>
+								<FaPlusSquare />
+							</button>
+							<button className={classes.btnDel} onClick={this.delCategories}>
+								<FaMinusSquare />
+							</button>
+						</div>
 					</label>
-					<button className={classes.btnGrey} onClick={this.addCategories}>
-						Add more
-					</button>
-					<button className={classes.btnDel} onClick={this.delCategories}>
-						Delete category
-					</button>
 					{this.state.loading ? (
 						<div className={classes.spinner}>
 							<Spinner />
@@ -177,4 +181,7 @@ const mapStateToProps = (state: StoreState) => ({
 	charts: state.charts
 });
 
-export default connect(mapStateToProps, { addBudget, setAlert })(AddBudget);
+export default connect(
+	mapStateToProps,
+	{ addBudget, setAlert }
+)(AddBudget);

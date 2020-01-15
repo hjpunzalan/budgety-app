@@ -200,24 +200,21 @@
 		}
 
 		// Form Buttons
-		.btnGrey,
+
+		& button {
+			cursor: pointer;
+		}
+
+		.btnGreen {
+			background: $color-green;
+		}
+
 		.btnCancel {
 			background: $color-grey;
 		}
 
 		.btnDel {
 			background: $color-delete;
-		}
-
-		.btnGrey,
-		.btnDel {
-			font-size: 1.2rem;
-			width: 30%;
-			padding: 0.5rem;
-
-			@media only screen and (max-width: 730px) {
-				width: 50%;
-			}
 		}
 
 		input[type="submit"] {

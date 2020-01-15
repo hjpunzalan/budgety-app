@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { RouteComponentProps } from "react-router";
-import { FaTrashAlt } from "react-icons/fa";
+import { FaTrashAlt, FaPlusSquare, FaMinusSquare } from "react-icons/fa";
 import { connect } from "react-redux";
 import classes from "./EditBudget.module.scss";
 import { StoreState } from "../../../reducers";
@@ -221,7 +221,6 @@ class EditBudget extends Component<Props, State> {
 						/>
 					</label>
 					<label className={classes.categories}>
-						<span>Categories:</span>
 						{this.state.categories.map((c, i) => {
 							return (
 								<input
@@ -234,13 +233,17 @@ class EditBudget extends Component<Props, State> {
 								/>
 							);
 						})}
+						<div className={classes.btnCategories}>
+							<span>Categories:</span>
+
+							<button className={classes.btnGreen} onClick={this.addCategories}>
+								<FaPlusSquare />
+							</button>
+							<button className={classes.btnDel} onClick={this.delCategories}>
+								<FaMinusSquare />
+							</button>
+						</div>
 					</label>
-					<button className={classes.btnGrey} onClick={this.addCategories}>
-						Add more
-					</button>
-					<button className={classes.btnDel} onClick={this.delCategories}>
-						Delete category
-					</button>
 
 					{/** Bottom buttons */}
 					{this.state.loading ? (
