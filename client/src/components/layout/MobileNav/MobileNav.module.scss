@@ -12,7 +12,7 @@
         display: none;
     }
 
-    @media only screen and (max-width: 500px) {
+    @media only screen and (max-width: $container-stretch) {
         grid-column: 1/-1;
         margin-top: 0;
     }
@@ -47,18 +47,22 @@
         }
 
         img {
-            height: 10vw;
+            height: 12vw;
             max-width: 80px;
 
             @media only screen and (min-width: 700px) {
-                height: 7vw;
+                height: 8vw;
             }
         }
 
         span {
             margin: 1rem;
-            font-size: 1rem;
+            font-size: 1.6rem;
             text-align: center;
+
+            @media only screen and (max-width: $container-stretch) {
+                font-size: 1.2rem;
+            }
         }
 
     }

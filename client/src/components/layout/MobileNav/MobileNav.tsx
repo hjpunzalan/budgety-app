@@ -20,6 +20,14 @@ class MobileNav extends Component<Props, State> {
 	render() {
 		return (
 			<div className={classes.nav}>
+				<button
+					onClick={() =>
+						this.props.history.push(this.props.match.url + "/budget/new")
+					}
+					className={classes.addBudget}>
+					<GoDiffAdded />
+					<span>Create Budget</span>
+				</button>
 				{this.props.budgets.length > 0 && (
 					<button
 						onClick={() =>
@@ -32,14 +40,6 @@ class MobileNav extends Component<Props, State> {
 						<span>Add Transaction</span>
 					</button>
 				)}
-				<button
-					onClick={() =>
-						this.props.history.push(this.props.match.url + "/budget/new")
-					}
-					className={classes.addBudget}>
-					<GoDiffAdded />
-					<span>Create Budget</span>
-				</button>
 				<button
 					onClick={() =>
 						this.props.history.push(this.props.match.url + "/update")
