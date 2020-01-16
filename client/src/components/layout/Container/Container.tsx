@@ -63,7 +63,7 @@ class Container extends Component<Props, State> {
 					<div className={classes.mobileSelect}>
 						<button onClick={this.mobileSelectBudget}>
 							<FaHome />
-							Budget
+							<span>Budget</span>
 						</button>{" "}
 						<span>:</span>
 						<select onChange={this.handleSelect} value={this.state.selected}>
@@ -242,4 +242,7 @@ const mapStateToProps = (state: StoreState) => ({
 	currentBudget: state.currentBudget
 });
 
-export default connect(mapStateToProps, { getLogout })(Container);
+export default connect(
+	mapStateToProps,
+	{ getLogout }
+)(Container);
