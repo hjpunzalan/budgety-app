@@ -32,20 +32,22 @@ export interface ResetPassAction {
 	payload: IUser;
 }
 
-// export interface CheckUserAction {
-// 	type: ActionTypes.checkUser;
-// 	payload: IUser;
-// }
+export interface CheckUserAction {
+	type: ActionTypes.checkUser;
+	payload: IUser;
+}
 
-// export const checkUser = () =>
-// 	catchAsync(async dispatch => {
-// 		const res = await axios.get<IUser>("/api/auth/checkuser");
+export const checkUser = () =>
+	catchAsync(async dispatch => {
+		const res = await axios.get<IUser>("/api/auth/checkuser");
 
-// 		dispatch({
-// 			type: ActionTypes.checkUser,
-// 			payload: res.data
-// 		});
-// 	});
+		if (res.data)
+			// authenticate user if there is data
+			dispatch({
+				type: ActionTypes.checkUser,
+				payload: res.data
+			});
+	});
 
 export const postLogin = (email: string, password: string) =>
 	catchAsync(async dispatch => {

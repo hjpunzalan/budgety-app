@@ -1,29 +1,38 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Route } from "react-router-dom";
-// import { checkUser } from "./actions";
+import { Route, withRouter, RouteComponentProps } from "react-router-dom";
+import { checkUser } from "./actions";
 import Routes from "./components/routing/Routes";
 import Alerts from "./components/utils/Alerts";
 import { StoreState } from "./reducers";
 import Home from "./components/pages/Home/Home";
 
-interface Props extends StoreState {
-	// checkUser: () => Promise<void>;
+interface Props extends StoreState, RouteComponentProps {
+	checkUser: () => Promise<void>;
 }
 
-class App extends Component<Props> {
-	state = {};
-	// componentDidMount() {
-	// 	this.props.checkUser();
-	// }
+interface State {
+	checked: boolean;
+}
+
+class App extends Component<Props, State> {
+	state = { checked: false };
+	componentDidMount() {
+		this.props.checkUser().then(() => {
+			this.props.history.push("/user"); // push straight to user to get current budget etc.
+			this.setState({ checked: true });
+		});
+	}
 
 	render() {
 		return (
-			<div>
-				<Alerts alerts={this.props.alerts} />
-				<Route exact path="/" component={Home} />
-				<Routes auth={this.props.auth} />
-			</div>
+			this.state.checked && (
+				<div>
+					<Alerts alerts={this.props.alerts} />
+					<Route exact path="/" component={Home} />
+					<Routes auth={this.props.auth} />
+				</div>
+			)
 		);
 	}
 }
@@ -37,6 +46,6 @@ const mapStateToProps = (state: StoreState) => ({
 });
 
 export default connect(
-	mapStateToProps
-	// { checkUser }
-)(App);
+	mapStateToProps,
+	{ checkUser }
+)(withRouter(App));

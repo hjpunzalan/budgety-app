@@ -12,15 +12,15 @@ export const authRoute = Router();
 // commented out password in user model
 @controller("/auth", authRoute)
 class UserController {
-	// @get("/checkuser")
-	// @catchAsync
-	// async checkUser(req: Request, res: Response, next: NextFunction) {
-	// 	if (req.session) {
-	// 		const user = await Users.findById(req.session.userId);
-	// 		res.status(200).json(user);
-	// 	}
-	// 	next();
-	// }
+	@get("/checkuser")
+	@catchAsync
+	async checkUser(req: Request, res: Response, next: NextFunction) {
+		if (req.session) {
+			const user = await Users.findById(req.session.userId);
+			res.status(200).json(user);
+		}
+		next();
+	}
 
 	@get("/isloggedin")
 	isLoggedIn(req: Request, res: Response) {
