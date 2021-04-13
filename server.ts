@@ -10,6 +10,11 @@ if (process.env.NODE_ENV === 'production') {
 import { app } from "./app";
 import mongoose from "mongoose";
 
+// ping site
+setInterval(function () {
+	app.get("http://srtoastmasters.herokuapp.com");
+}, 300000); // every 5 minutes (300000)
+
 // SYNC Unhandled rejections
 // listening to event uncaughtException
 process.on("uncaughtException", (err: Error) => {
