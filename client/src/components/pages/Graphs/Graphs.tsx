@@ -38,9 +38,10 @@ class Graphs extends Component<Props, State> {
 	};
 
 	async getData(budgetId: string, year: number) {
+		// For bar graph data (income, expenses, balance by month and year)
 		await this.props.getStats(budgetId, year);
+		// For pie graph data (income, expenses, categoryIndex by year or with month)
 		await this.props.getCategoryData(budgetId, year);
-		await this.props.getDates(budgetId);
 	}
 
 	componentDidMount() {
@@ -50,18 +51,24 @@ class Graphs extends Component<Props, State> {
 		this.getData(budgetId, year).then(() => {
 			this.setState({ loading: false });
 		});
+		// For drop down list of years
+		this.props.getDates(budgetId);
 	}
 
 	handleYearChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+		// Change year on drop down list
 		const { budgetId } = this.props;
 		const year = parseInt(e.target.value, 10);
+		// Set year on state and show loading spinner
 		this.setState({ year, loading: true });
+		// Update bar graph, pie graph
 		this.getData(budgetId, year).then(() => {
 			this.setState({ loading: false });
 		});
 	};
 
 	changeMonth = (month: number) => {
+		// Change month on by clicking on bar graph
 		const { budgetId } = this.props;
 		const { year } = this.state;
 		this.props.getCategoryData(budgetId, year, month).then(() => {
@@ -103,21 +110,21 @@ class Graphs extends Component<Props, State> {
 						Amount by category for&nbsp;
 						{this.state.month > 0
 							? moment(this.state.month, "MM").format("MMMM") +
-							  " " +
-							  this.state.year
+							" " +
+							this.state.year
 							: this.state.year}
 					</h3>
 					<span>Hover / tap each slice for more details</span>
 					<div className={classes.pieGraph}>
 						<PieGraph
 							type={PieGraphType.income}
-							budgets={this.props.budgets}
+							currentBudget={this.props.currentBudget}
 							pieGraph={this.props.charts.pieGraph}
 							budgetId={this.props.budgetId}
 						/>
 						<PieGraph
 							type={PieGraphType.expense}
-							budgets={this.props.budgets}
+							currentBudget={this.props.currentBudget}
 							pieGraph={this.props.charts.pieGraph}
 							budgetId={this.props.budgetId}
 						/>

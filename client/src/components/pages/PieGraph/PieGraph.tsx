@@ -13,7 +13,7 @@ export enum PieGraphType {
 interface Props {
 	type: PieGraphType;
 	pieGraph: BudgetCategoryData[];
-	budgets: IBudget[];
+	currentBudget: IBudget;
 	budgetId: string;
 }
 interface State {

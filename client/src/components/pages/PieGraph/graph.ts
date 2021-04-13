@@ -17,10 +17,8 @@ interface PathElement extends SVGPathElement {
 export const graph = (component: PieGraph, size: number, extra: number) => {
 	const dims = { height: size, width: size, radius: size / 2 }; // dimension of the pie chart
 
-	// Locate budget to retrieve its categories
-	const budget = component.props.budgets.filter(
-		b => b._id === component.props.budgetId
-	)[0];
+	// Locate budget by budget ID to retrieve its categories
+	const budget = component.props.currentBudget;
 	let data = component.props.pieGraph;
 	const type = component.props.type;
 
@@ -52,32 +50,32 @@ export const graph = (component: PieGraph, size: number, extra: number) => {
 		const colour = d3.scaleOrdinal(
 			component.props.type === PieGraphType.expense
 				? [
-						"#fbb4ae",
-						"#b3cde3",
-						"#ccebc5",
-						"#decbe4",
-						"#fed9a6",
-						"#ffffcc",
-						"#e5d8bd",
-						"#fddaec"
-				  ]
+					"#fbb4ae",
+					"#b3cde3",
+					"#ccebc5",
+					"#decbe4",
+					"#fed9a6",
+					"#ffffcc",
+					"#e5d8bd",
+					"#fddaec"
+				]
 				: [
-						"#b3e2cd",
-						"#fdcdac",
-						"#cbd5e8",
-						"#f4cae4",
-						"#e6f5c9",
-						"#fff2ae",
-						"#f1e2cc",
-						"#cccccc"
-				  ]
+					"#b3e2cd",
+					"#fdcdac",
+					"#cbd5e8",
+					"#f4cae4",
+					"#e6f5c9",
+					"#fff2ae",
+					"#f1e2cc",
+					"#cccccc"
+				]
 		);
 
 		//////////////////////////////////////// TWEENS //////////////////////////////////////////
 		const arcTweenEnter = (d: PieArcDatum<BudgetCategoryData>) => {
 			let i = d3.interpolate(d.endAngle, d.startAngle);
 
-			return function(t: number) {
+			return function (t: number) {
 				d.startAngle = i(t);
 				return String(arcPath(d));
 			};
@@ -86,7 +84,7 @@ export const graph = (component: PieGraph, size: number, extra: number) => {
 		const arcTweenExit = (d: PieArcDatum<BudgetCategoryData>) => {
 			let i = d3.interpolate(d.startAngle, d.endAngle);
 
-			return function(t: number) {
+			return function (t: number) {
 				d.startAngle = i(t);
 				return String(arcPath(d));
 			};
@@ -106,7 +104,7 @@ export const graph = (component: PieGraph, size: number, extra: number) => {
 			// Update will compare new data from current one
 			this._current = i(1); // or d
 
-			return function(t: number) {
+			return function (t: number) {
 				return String(arcPath(i(t)));
 			};
 		}
@@ -116,6 +114,14 @@ export const graph = (component: PieGraph, size: number, extra: number) => {
 			.select(component.canvas.current)
 			.select("svg")
 			.select("g");
+
+		// const legendGraph = graph.selectAll(".legend") // note appending it to mySvg and not svg to make positioning easier
+		// 	.data(pie(data))
+		// 	.enter().append("g")
+		// 	.attr("transform", function (d, i) {
+		// 		return "translate(" + (width - 110) + "," + (i * 15 + 20) + ")"; // place each legend on the right and bump each one down 15 pixels
+		// 	})
+
 		// Update data
 		const slice = graph.selectAll("g.slice").data(pie(data));
 
@@ -140,6 +146,7 @@ export const graph = (component: PieGraph, size: number, extra: number) => {
 			.attrTween("d", arcTweenUpdate);
 
 		// Update tooltip data and position
+		// Handles real-time event movement
 		slice.on("mousemove", d => {
 			d3.select(component.tooltip.current)
 				.style("left", d3.event.pageX + 15 + "px")
@@ -154,7 +161,7 @@ export const graph = (component: PieGraph, size: number, extra: number) => {
 		});
 
 		/////////////////////////// Handle exit selection/////////////////////////
-
+		// Remove each slice
 		slice
 			.exit<PieArcDatum<BudgetCategoryData>>()
 			.select("path")
@@ -162,7 +169,7 @@ export const graph = (component: PieGraph, size: number, extra: number) => {
 			.duration(750) // 750ms
 			.attrTween("d", arcTweenExit)
 			.remove();
-
+		// Remove text label on graph
 		slice
 			.exit()
 			.select("text")
@@ -185,14 +192,16 @@ export const graph = (component: PieGraph, size: number, extra: number) => {
 			.attr("stroke-width", 3)
 			.attr("fill", d => colour(budget.categories[d.data._id.category]))
 			.style("cursor", "pointer")
-			.each(function(d) {
+			.each(function (d) {
 				this._current = d;
 			})
 			.transition()
 			.duration(750) // 750ms
 			.attrTween("d", arcTweenEnter);
 
-		// Add mouse events
+		// Add mouse events for tooltip on balance and %
+		// Tool tip connected to component PieGraph
+		// Tool tip positioning depents on mouse position
 		newSlice
 			.on("mouseover", () => {
 				d3.select(component.tooltip.current)
