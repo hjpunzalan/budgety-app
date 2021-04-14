@@ -14,8 +14,9 @@ interface PathElement extends SVGPathElement {
 	_current: PieArcDatum<BudgetCategoryData>;
 }
 
-export const graph = (component: PieGraph, size: number, extra: number) => {
+export const graph = (component: PieGraph, size: number, extraSpace: number, legendHeight: number) => {
 	const dims = { height: size, width: size, radius: size / 2 }; // dimension of the pie chart
+	const legendBoxSize = 10;
 
 	// Locate budget by budget ID to retrieve its categories
 	const budget = component.props.currentBudget;
@@ -115,26 +116,24 @@ export const graph = (component: PieGraph, size: number, extra: number) => {
 			.select("svg")
 			.select("g");
 
-		// const legendGraph = graph.selectAll(".legend") // note appending it to mySvg and not svg to make positioning easier
-		// 	.data(pie(data))
-		// 	.enter().append("g")
-		// 	.attr("transform", function (d, i) {
-		// 		return "translate(" + (width - 110) + "," + (i * 15 + 20) + ")"; // place each legend on the right and bump each one down 15 pixels
-		// 	})
-
 		// Update data
 		const slice = graph.selectAll("g.slice").data(pie(data));
 
 		////////////////////////// Handle current selection//////////////////////////////
-		// Updates labels
+		// Updates labels/ legend
 		slice
 			.select("text")
-			.transition()
-			.duration(750)
-			.attr("text-anchor", "middle")
-			.attr("transform", d => `translate(${arcPath.centroid(d)})`)
+			.attr("transform", (d, i) => `translate(${-size / 3 + extraSpace},${i * 20 - size / 2 - legendHeight + extraSpace / 2})`)
 			.text(d => budget.categories[d.data._id.category])
 			.attr("class", classes.labels);
+
+
+		slice
+			.select("rect") // make a matching color rect
+			.attr("width", legendBoxSize)
+			.attr("height", legendBoxSize)
+			.attr("fill", (d, i) => colour(budget.categories[d.data._id.category]))
+			.attr("transform", (d, i) => `translate(${-size / 3 + extraSpace - legendBoxSize},${i * 20 - size / 2 - legendHeight + extraSpace / 2 - legendBoxSize})`)
 
 		// Update path and fill colour with animation
 		slice
@@ -174,10 +173,10 @@ export const graph = (component: PieGraph, size: number, extra: number) => {
 			.exit()
 			.select("text")
 			.remove();
+
 		slice
 			.exit()
-			.transition()
-			.duration(750)
+			.select("rect")
 			.remove();
 		/////////////////////////// Handle enter selection///////////////////////
 		const newSlice = slice
@@ -226,13 +225,21 @@ export const graph = (component: PieGraph, size: number, extra: number) => {
 
 		newSlice
 			.append("text")
-			.transition()
-			.duration(750)
-			.attr("text-anchor", "middle")
-			.attr("transform", d => `translate(${arcPath.centroid(d)})`)
+			.attr("transform", (d, i) => `translate(${-size / 3 + extraSpace},${i * 20 - size / 2 - legendHeight + extraSpace / 2})`)
 			.text(d => budget.categories[d.data._id.category])
 			.attr("class", classes.labels);
+
+
+		newSlice
+			.append("rect") // make a matching color rect
+			.attr("width", legendBoxSize)
+			.attr("height", legendBoxSize)
+			.attr("fill", (d, i) => colour(budget.categories[d.data._id.category]))
+			.attr("transform", (d, i) => `translate(${-size / 3 + extraSpace - 1.5 * legendBoxSize},${i * 20 - size / 2 - legendHeight + extraSpace / 2 - legendBoxSize})`)
+
 	};
+
+
 
 	// Remove graph if there's no amount depending on type
 	if (data.length === 0) {
@@ -242,8 +249,8 @@ export const graph = (component: PieGraph, size: number, extra: number) => {
 	} else if (data.length > 0 && component.state.removeGraph) {
 		// Add graph if there is amount and was removed before
 		const centre = {
-			x: (dims.width + extra) / 2,
-			y: (dims.width + extra) / 2
+			x: (dims.width + extraSpace) / 2,
+			y: (dims.width + extraSpace) / 2
 		};
 
 		component.setState(
@@ -254,8 +261,8 @@ export const graph = (component: PieGraph, size: number, extra: number) => {
 				// Initialise canvas
 				d3.select(component.canvas.current)
 					.append("svg")
-					.attr("width", dims.width + extra)
-					.attr("height", dims.height + extra)
+					.attr("width", dims.width + extraSpace)
+					.attr("height", dims.height + extraSpace)
 					.append("g")
 					.attr("transform", `translate(${centre.x}, ${centre.y})`);
 

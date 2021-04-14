@@ -21,7 +21,7 @@ interface State {
 }
 
 const size = 250;
-const extra = 20;
+const extraSpace = 20;
 
 class PieGraph extends Component<Props, State> {
 	canvas = React.createRef<HTMLDivElement>();
@@ -29,33 +29,36 @@ class PieGraph extends Component<Props, State> {
 	state = {
 		removeGraph: false
 	};
+	nCategoriesByType = this.props.pieGraph.filter(p => p[this.props.type] !== 0).length;
+	legendHeight = (this.nCategoriesByType * 20);
 
 	componentDidUpdate(prevProps: Props) {
 		if (prevProps.pieGraph !== this.props.pieGraph) {
 			// Update graph
-			graph(this, size, extra);
+			graph(this, size, extraSpace, this.legendHeight);
 		}
 	}
 
 	componentDidMount() {
-		const dims = { height: size, width: size, radius: size / 2 }; // dimension of the pie chart
+		// dimension of the pie chart
+		const dims = { height: size + this.legendHeight, width: size, radius: size / 2 };
 		const centre = {
-			x: (dims.width + extra) / 2,
-			y: (dims.width + extra) / 2
+			x: (dims.width + extraSpace) / 2,
+			y: (dims.height - this.legendHeight + extraSpace) / 2
 		};
 
 		// Initialise canvas
 		const svg = d3
 			.select(this.canvas.current)
 			.append("svg")
-			.attr("width", dims.width + extra)
-			.attr("height", dims.height + extra);
+			.attr("width", dims.width + extraSpace)
+			.attr("height", dims.height + extraSpace);
 
 		// Append group and centres pieGraph svg path
-		svg.append("g").attr("transform", `translate(${centre.x}, ${centre.y})`);
+		svg.append("g").attr("transform", `translate(${centre.x}, ${centre.y + this.legendHeight})`);
 
 		// Render graph
-		graph(this, size, extra);
+		graph(this, size, extraSpace, this.legendHeight);
 	}
 
 	render() {
