@@ -29,7 +29,7 @@ class PieGraph extends Component<Props, State> {
 	state = {
 		removeGraph: false
 	};
-	nCategoriesByType = this.props.pieGraph.filter(p => p[this.props.type] !== 0).length;
+	nCategoriesByType = window.screen.width < 700 ? this.props.pieGraph.filter(p => p[this.props.type] !== 0).length : this.props.pieGraph.length;
 	legendHeight = (this.nCategoriesByType * 20);
 
 	componentDidUpdate(prevProps: Props) {
@@ -40,6 +40,7 @@ class PieGraph extends Component<Props, State> {
 	}
 
 	componentDidMount() {
+		console.log(window.screen.width)
 		// dimension of the pie chart
 		const dims = { height: size + this.legendHeight, width: size, radius: size / 2 };
 		const centre = {
