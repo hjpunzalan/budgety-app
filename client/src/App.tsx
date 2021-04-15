@@ -19,7 +19,8 @@ class App extends Component<Props, State> {
 	state = { checked: false };
 	componentDidMount() {
 		this.props.checkUser().then(() => {
-			this.props.history.push("/user"); // push straight to user to get current budget etc.
+			if (this.props.auth.isAuthenticated)
+				this.props.history.push("/user"); // push straight to user to get current budget etc.
 			this.setState({ checked: true });
 		});
 	}

@@ -176,7 +176,7 @@ class Container extends Component<Props, State> {
 												<li
 													className={
 														this.state.selected === i &&
-														this.props.budgets.length > 1
+															this.props.budgets.length > 1
 															? classes.selected
 															: ""
 													}>
