@@ -124,7 +124,7 @@ export const graph = (component: PieGraph, size: number, extraSpace: number, leg
 		slice
 			.select("text")
 			.attr("transform", (d, i) => `translate(${-size / 3 + extraSpace},${i * 20 - size / 2 - legendHeight + extraSpace / 2})`)
-			.text(d => budget.categories[d.data._id.category])
+			.text(d => budget.categories[d.data._id.category] + ` (${((100 * d.data[type]) / totalAmount).toFixed(0)}%)`)
 			.attr("class", classes.labels);
 
 
@@ -231,7 +231,7 @@ export const graph = (component: PieGraph, size: number, extraSpace: number, leg
 		newSlice
 			.append("text")
 			.attr("transform", (d, i) => `translate(${-size / 3 + extraSpace},${i * 20 - size / 2 - legendHeight + extraSpace / 2})`)
-			.text(d => budget.categories[d.data._id.category])
+			.text(d => budget.categories[d.data._id.category] + ` (${((100 * d.data[type]) / totalAmount).toFixed(0)}%)`)
 			.attr("class", classes.labels);
 
 
