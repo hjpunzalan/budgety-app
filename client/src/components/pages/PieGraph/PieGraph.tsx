@@ -22,6 +22,8 @@ interface State {
 
 const size = 250;
 const extraSpace = 20;
+let svg: d3.Selection<SVGSVGElement, unknown, null, undefined>;
+
 
 class PieGraph extends Component<Props, State> {
 	canvas = React.createRef<HTMLDivElement>();
@@ -31,33 +33,45 @@ class PieGraph extends Component<Props, State> {
 	};
 	nCategoriesByType = window.screen.width < 700 ? this.props.pieGraph.filter(p => p[this.props.type] !== 0).length : this.props.pieGraph.length;
 	legendHeight = (this.nCategoriesByType * 20);
+	// dimension of the pie chart
+	dims = { height: size, width: size, radius: size / 2 };
+	centre = {
+		x: (this.dims.width + extraSpace) / 2,
+		y: (this.dims.height + extraSpace) / 2
+	};
 
 	componentDidUpdate(prevProps: Props) {
+		const nCategoriesByType = window.screen.width < 700 ? this.props.pieGraph.filter(p => p[this.props.type] !== 0).length : this.props.pieGraph.length;
+		const legendHeight = (nCategoriesByType * 20);
+		const dims = { height: size, width: size, radius: size / 2 };
+		const centre = {
+			x: (dims.width + extraSpace) / 2,
+			y: (dims.height + extraSpace) / 2
+		};
+
+		d3.select(this.canvas.current)
+			.select("svg")
+			.attr("width", dims.width + extraSpace)
+			.attr("height", dims.height + legendHeight + extraSpace)
+			.select("g")
+			.attr("transform", `translate(${centre.x}, ${centre.y + legendHeight})`)
+
 		if (prevProps.pieGraph !== this.props.pieGraph) {
 			// Update graph
-			graph(this, size, extraSpace, this.legendHeight);
+			// Append group and centres pieGraph svg path
+			graph(this, size, extraSpace, legendHeight);
 		}
 	}
 
 	componentDidMount() {
-		console.log(window.screen.width)
-		// dimension of the pie chart
-		const dims = { height: size + this.legendHeight, width: size, radius: size / 2 };
-		const centre = {
-			x: (dims.width + extraSpace) / 2,
-			y: (dims.height - this.legendHeight + extraSpace) / 2
-		};
-
 		// Initialise canvas
-		const svg = d3
+		svg = d3
 			.select(this.canvas.current)
 			.append("svg")
-			.attr("width", dims.width + extraSpace)
-			.attr("height", dims.height + extraSpace);
+			.attr("width", this.dims.width + extraSpace)
+			.attr("height", this.dims.height + this.legendHeight + extraSpace);
 
-		// Append group and centres pieGraph svg path
-		svg.append("g").attr("transform", `translate(${centre.x}, ${centre.y + this.legendHeight})`);
-
+		svg.append("g").attr("transform", `translate(${this.centre.x}, ${this.centre.y + this.legendHeight})`);
 		// Render graph
 		graph(this, size, extraSpace, this.legendHeight);
 	}

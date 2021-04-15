@@ -133,7 +133,7 @@ export const graph = (component: PieGraph, size: number, extraSpace: number, leg
 			.attr("width", legendBoxSize)
 			.attr("height", legendBoxSize)
 			.attr("fill", (d, i) => colour(budget.categories[d.data._id.category]))
-			.attr("transform", (d, i) => `translate(${-size / 3 + extraSpace - legendBoxSize},${i * 20 - size / 2 - legendHeight + extraSpace / 2 - legendBoxSize})`)
+			.attr("transform", (d, i) => `translate(${-size / 3 + extraSpace - 1.5 * legendBoxSize},${i * 20 - size / 2 - legendHeight + extraSpace / 2 - legendBoxSize})`)
 
 		// Update path and fill colour with animation
 		slice
@@ -167,17 +167,22 @@ export const graph = (component: PieGraph, size: number, extraSpace: number, leg
 			.transition()
 			.duration(750) // 750ms
 			.attrTween("d", arcTweenExit)
-			.remove();
+			.remove()
+
 		// Remove text label on graph
 		slice
 			.exit()
 			.select("text")
-			.remove();
+			.remove()
+
 
 		slice
 			.exit()
 			.select("rect")
-			.remove();
+			.remove()
+
+		slice.exit().remove()
+
 		/////////////////////////// Handle enter selection///////////////////////
 		const newSlice = slice
 			.enter()
@@ -248,9 +253,10 @@ export const graph = (component: PieGraph, size: number, extraSpace: number, leg
 		});
 	} else if (data.length > 0 && component.state.removeGraph) {
 		// Add graph if there is amount and was removed before
+		// dims === size
 		const centre = {
 			x: (dims.width + extraSpace) / 2,
-			y: (dims.width + extraSpace) / 2
+			y: (dims.height + extraSpace) / 2
 		};
 
 		component.setState(
@@ -262,9 +268,9 @@ export const graph = (component: PieGraph, size: number, extraSpace: number, leg
 				d3.select(component.canvas.current)
 					.append("svg")
 					.attr("width", dims.width + extraSpace)
-					.attr("height", dims.height + extraSpace)
+					.attr("height", dims.height + legendHeight + extraSpace)
 					.append("g")
-					.attr("transform", `translate(${centre.x}, ${centre.y})`);
+					.attr("transform", `translate(${centre.x}, ${centre.y + legendHeight})`)
 
 				renderPieGraph();
 			}
