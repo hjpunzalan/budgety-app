@@ -3,8 +3,8 @@ import { withRouter, RouteComponentProps } from "react-router-dom";
 import { GoDiffAdded, GoPerson } from "react-icons/go";
 import { FaKey } from "react-icons/fa";
 import { IoIosLogOut } from "react-icons/io";
+import { RiMoneyDollarBoxLine } from "react-icons/ri"
 import classes from "./MobileNav.module.scss";
-import transactionIcon from "../../../images/transaction.png";
 import { IBudget } from "../../../actions";
 
 interface Props extends RouteComponentProps {
@@ -12,7 +12,7 @@ interface Props extends RouteComponentProps {
 	budgets: IBudget[];
 	getLogout: () => void;
 }
-interface State {}
+interface State { }
 
 class MobileNav extends Component<Props, State> {
 	state = {};
@@ -36,7 +36,7 @@ class MobileNav extends Component<Props, State> {
 								this.props.match.url + "/transactions/new"
 							)
 						}>
-						<img src={transactionIcon} alt="Transaction icon" />
+						<RiMoneyDollarBoxLine />
 						<span>Add Transaction</span>
 					</button>
 				)}

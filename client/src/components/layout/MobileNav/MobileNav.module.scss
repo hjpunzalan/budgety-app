@@ -28,6 +28,7 @@
         justify-content: center;
         border: .5px solid $color-grey;
         background: rgba(255, 255, 255, 0.7);
+        padding: .5rem;
         cursor: pointer;
         outline: none;
 
@@ -42,16 +43,7 @@
             color: $color-primary;
 
             @media only screen and (min-width: 700px) {
-                font-size: 7vw;
-            }
-        }
-
-        img {
-            height: 12vw;
-            max-width: 80px;
-
-            @media only screen and (min-width: 700px) {
-                height: 8vw;
+                font-size: 8vw;
             }
         }
 

@@ -252,6 +252,7 @@ export const graph = (component: PieGraph, size: number, extraSpace: number, leg
 			removeGraph: true
 		});
 	} else if (data.length > 0 && component.state.removeGraph) {
+		// IF removeGraph was previously true
 		// Add graph if there is amount and was removed before
 		// dims === size
 		const centre = {

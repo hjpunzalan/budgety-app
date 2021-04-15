@@ -43,22 +43,16 @@
         text-transform: uppercase;
         margin-right: .5rem;
         padding: 1rem;
-        font-size: inherit;
+        font-size: 3rem;
         background: white;
+        color: $color-primary;
         border: none;
         cursor: inherit;
         transition: all .2s;
         display: flex;
         align-items: center;
 
-        &>span {
-            @media only screen and (max-width: 500px) {
-                font-size: 1.5rem;
-            }
-        }
-
         &>svg {
-            font-size: 3rem;
             margin-right: 1rem;
         }
 
