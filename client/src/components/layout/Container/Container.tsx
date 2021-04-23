@@ -1,16 +1,13 @@
 import React, { Component } from "react";
-import { GoDiffAdded, GoPerson } from "react-icons/go";
-import { FaKey, FaHome } from "react-icons/fa";
-import { FaRegEdit } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { FaHome } from "react-icons/fa";
 import { RouteComponentProps } from "react-router";
 import { connect } from "react-redux";
 import classes from "./Container.module.scss";
 import { getLogout } from "../../../actions";
-import transactionIcon from "../../../images/transaction.png";
 import { StoreState } from "../../../reducers";
 import MobileNav from "../MobileNav/MobileNav";
 import ContainerRoutes from "../../routing/ContainerRoutes";
+import SideNav from "../SideNav/SideNav";
 
 interface Props extends StoreState, RouteComponentProps {
 	getLogout: () => Promise<void>;
@@ -82,90 +79,20 @@ class Container extends Component<Props, State> {
 				</button>
 				<div className={classes.container}>
 					{/* Routes */}
-					<div className={classes.routes}>
-						<ContainerRoutes selectBudget={this.selectBudget} stopLoading={this.stopLoading} match={this.props.match} />
-					</div>
-
+					<ContainerRoutes
+						selectBudget={this.selectBudget}
+						stopLoading={this.stopLoading}
+						match={this.props.match}
+					/>
 					{/* NAVIGATION - cant be placed as of yet to its own component because of the styling */}
-					<button
-						className={classes.add}
-						onClick={() =>
-							this.props.currentBudget._id &&
-							this.props.history.push(
-								this.props.match.path + "/transactions/new"
-							)
-						}>
-						<img src={transactionIcon} alt="Transaction icon" />
-						<span>Add Transaction</span>
-					</button>
-					<div className={classes.budgets}>
-						<h3>Budgets</h3>
-						<ul>
-							{!this.state.loading &&
-								(this.props.budgets.length > 0 ? (
-									this.props.budgets.map((b, i) => {
-										return (
-											<Link
-												key={b._id}
-												to={this.props.match.path + `/budget/${b._id}`}
-												onClick={() => this.selectBudget(i)}>
-												<li
-													className={
-														this.state.selected === i &&
-															this.props.budgets.length > 1
-															? classes.selected
-															: ""
-													}>
-													{b.name}
-												</li>
-											</Link>
-										);
-									})
-								) : (
-									<Link
-										key={"nobudget"}
-										to={this.props.match.path + `/budget/new`}>
-										<li>
-											<i>No budgets listed....</i>
-										</li>
-									</Link>
-								))}
-						</ul>
-						<div className={classes.budgetActions}>
-							<Link
-								to={this.props.match.path + "/budget/new"}
-								className={classes.budgetActionAdd}>
-								<GoDiffAdded />
-								Add
-							</Link>
-							{this.props.budgets.length > 0 && (
-								<Link
-									to={this.props.match.path + "/budget/edit"}
-									className={classes.budgetActionEdit}>
-									<FaRegEdit />
-									Edit
-								</Link>
-							)}
-						</div>
-					</div>
-
-					<div className={classes.userActions}>
-						<h3>User Actions</h3>
-						<ul>
-							<Link to="/user/update">
-								<li>
-									<GoPerson />
-									Update user details
-								</li>
-							</Link>
-							<Link to="/user/changepassword">
-								<li>
-									<FaKey />
-									Change password
-								</li>
-							</Link>
-						</ul>
-					</div>
+					<SideNav
+						currentBudgetId={this.props.currentBudget._id}
+						loading={this.state.loading}
+						selected={this.state.selected}
+						budgets={this.props.budgets}
+						selectBudget={this.selectBudget}
+						history={this.props.history}
+						match={this.props.match} />
 				</div>
 			</div>
 		);
