@@ -2,21 +2,15 @@ import React, { Component } from "react";
 import { GoDiffAdded, GoPerson } from "react-icons/go";
 import { FaKey, FaHome } from "react-icons/fa";
 import { FaRegEdit } from "react-icons/fa";
-import { Link, Route } from "react-router-dom";
-import { RouteComponentProps, Switch, Redirect } from "react-router";
+import { Link } from "react-router-dom";
+import { RouteComponentProps } from "react-router";
 import { connect } from "react-redux";
 import classes from "./Container.module.scss";
 import { getLogout } from "../../../actions";
 import transactionIcon from "../../../images/transaction.png";
 import { StoreState } from "../../../reducers";
-import AddBudget from "../../pages/AddBudget/AddBudget";
-import EditBudget from "../../pages/EditBudget/EditBudget";
-import AddTransaction from "../../pages/AddTransaction/AddTransaction";
-import UpdateMe from "../../pages/UpdateMe/UpdateMe";
-import ChangePassword from "../../auth/ChangePassword/ChangePassword";
-import Budget from "../Budget/Budget";
-import EditTransaction from "../../pages/EditTransaction/EditTransaction";
 import MobileNav from "../MobileNav/MobileNav";
+import ContainerRoutes from "../../routing/ContainerRoutes";
 
 interface Props extends StoreState, RouteComponentProps {
 	getLogout: () => Promise<void>;
@@ -89,65 +83,7 @@ class Container extends Component<Props, State> {
 				<div className={classes.container}>
 					{/* Routes */}
 					<div className={classes.routes}>
-						<Switch>
-							<Route
-								exact
-								path={this.props.match.path + "/update"}
-								component={UpdateMe}
-							/>
-							<Route
-								exact
-								path={this.props.match.path + "/changepassword"}
-								component={ChangePassword}
-							/>
-							<Route
-								exact
-								path={this.props.match.path + "/budget/new"}
-								render={props => (
-									<AddBudget selectBudget={this.selectBudget} {...props} />
-								)}
-							/>
-							<Route
-								exact
-								path={this.props.match.path + "/budget/edit"}
-								render={props => (
-									<EditBudget selectBudget={this.selectBudget} {...props} />
-								)}
-							/>
-							<Route
-								exact
-								path={this.props.match.path + "/transactions/new"}
-								component={AddTransaction}
-							/>
-							<Route
-								exact
-								path={this.props.match.path + "/transactions/new/:budgetId"}
-								component={AddTransaction}
-							/>
-							<Route
-								exact
-								path={
-									this.props.match.path +
-									"/transactions/:budgetId/edit/:transactionId"
-								}
-								component={EditTransaction}
-							/>
-							<Route
-								exact
-								path={this.props.match.path + "/budget/:budgetId"}
-								render={props => (
-									<Budget stopLoading={this.stopLoading} {...props} />
-								)}
-							/>
-							<Route
-								exact
-								path={this.props.match.path}
-								render={props => (
-									<Budget stopLoading={this.stopLoading} {...props} />
-								)}
-							/>
-							<Redirect to="/user" />
-						</Switch>
+						<ContainerRoutes selectBudget={this.selectBudget} stopLoading={this.stopLoading} match={this.props.match} />
 					</div>
 
 					{/* NAVIGATION - cant be placed as of yet to its own component because of the styling */}
