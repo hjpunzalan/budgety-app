@@ -148,8 +148,8 @@ export const graph = (component: PieGraph, size: number, extraSpace: number, leg
 		// Handles real-time event movement
 		slice.on("mousemove", d => {
 			d3.select(component.tooltip.current)
-				.style("left", d3.event.pageX + 15 + "px")
-				.style("top", d3.event.pageY + "px")
+				.style("left", d.event.pageX + 15 + "px")
+				.style("top", d.event.pageY + "px")
 				.select("#pieGraphTip")
 				.text(
 					`${budget.categories[d.data._id.category]}: ${checkAmount(
@@ -214,8 +214,8 @@ export const graph = (component: PieGraph, size: number, extraSpace: number, leg
 			})
 			.on("mousemove", d => {
 				d3.select(component.tooltip.current)
-					.style("left", d3.event.pageX + 15 + "px")
-					.style("top", d3.event.pageY + "px")
+					.style("left", d.event.pageX + 15 + "px")
+					.style("top", d.event.pageY + "px")
 					.select("#pieGraphTip")
 					.text(
 						`${budget.categories[d.data._id.category]}: ${checkAmount(

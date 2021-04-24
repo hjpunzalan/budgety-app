@@ -51,11 +51,11 @@ class PieGraph extends Component<Props, State> {
 
 		if (!this.state.removeGraph) {
 			d3.select(this.canvas.current)
-			.select("svg")
-			.attr("width", dims.width + extraSpace)
-			.attr("height", dims.height + legendHeight + extraSpace)
-			.select("g")
-			.attr("transform", `translate(${centre.x}, ${centre.y + legendHeight})`)
+				.select("svg")
+				.attr("width", dims.width + extraSpace)
+				.attr("height", dims.height + legendHeight + extraSpace)
+				.select("g")
+				.attr("transform", `translate(${centre.x}, ${centre.y + legendHeight})`)
 		}
 
 		if (prevProps.pieGraph !== this.props.pieGraph) {
