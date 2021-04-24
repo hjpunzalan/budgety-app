@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Link, match } from 'react-router-dom';
 import { History } from 'history'
 import { IBudget } from '../../../actions'
-import classes from "../Container/Container.module.scss"
+import classes from "./SideNav.module.scss"
 import transactionIcon from "../../../images/transaction.png";
 
 import { GoDiffAdded, GoPerson } from "react-icons/go";

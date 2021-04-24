@@ -39,8 +39,15 @@
 
         svg {
             margin-top: 1rem;
-            font-size: 10vw;
+            display: inline-block;
+            height: 5vw;
+            width: 5vw;
             color: $color-primary;
+
+            @media only screen and (max-width: 37.5em) {
+                height: 10vw;
+                width: 10vw;
+            }
 
             @media only screen and (min-width: 700px) {
                 font-size: 8vw;

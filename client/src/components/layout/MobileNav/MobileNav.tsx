@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { GoDiffAdded, GoPerson } from "react-icons/go";
-import { FaKey } from "react-icons/fa";
+import { BsTable } from "react-icons/bs";
 import { IoIosLogOut } from "react-icons/io";
 import { RiMoneyDollarBoxLine } from "react-icons/ri"
 import classes from "./MobileNav.module.scss";
@@ -20,6 +20,18 @@ class MobileNav extends Component<Props, State> {
 	render() {
 		return (
 			<div className={classes.nav}>
+				{this.props.budgets.length > 0 && (
+					<button
+						onClick={() =>
+							this.props.currentBudget._id &&
+							this.props.history.push(
+								this.props.match.url + "/budget/" + this.props.currentBudget._id
+							)
+						}>
+						<BsTable />
+						<span>My Budget</span>
+					</button>
+				)}
 				<button
 					onClick={() =>
 						this.props.history.push(this.props.match.url + "/budget/new")
@@ -46,13 +58,6 @@ class MobileNav extends Component<Props, State> {
 					}>
 					<GoPerson />
 					<span>Update Account</span>
-				</button>
-				<button
-					onClick={() =>
-						this.props.history.push(this.props.match.url + "/changepassword")
-					}>
-					<FaKey />
-					<span>Change Password</span>
 				</button>
 				<button onClick={this.props.getLogout}>
 					<IoIosLogOut />
