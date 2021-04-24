@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom"
 import { StoreState } from "../../../reducers";
 import { updateUser } from "../../../actions";
 import classes from "./UpdateMe.module.scss";
@@ -82,6 +83,9 @@ class UpdateMe extends Component<Props, State> {
 							required
 						/>
 					</label>
+					<Link className={classes.changePassword} to="/user/changepassword">
+						Change Password
+					</Link>
 					{this.state.loading ? (
 						<div className={classes.spinner}>
 							<Spinner />

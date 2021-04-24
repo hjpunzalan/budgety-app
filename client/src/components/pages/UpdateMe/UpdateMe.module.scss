@@ -33,4 +33,20 @@
         grid-column: 2/-1;
         justify-self: flex-start;
     }
+
+    .changePassword {
+        display: none;
+        grid-column: 1/-1;
+        color: black;
+        font-size: 1rem;
+        text-decoration: none;
+        text-transform: uppercase;
+        border: 1px solid $color-grey;
+        padding: 1rem;
+
+        @media only screen and (max-width: 1100px) {
+            display: inline-block;
+        }
+
+    }
 }
