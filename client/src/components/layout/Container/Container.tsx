@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { FaHome } from "react-icons/fa";
 import { RouteComponentProps } from "react-router";
 import { connect } from "react-redux";
 import classes from "./Container.module.scss";
@@ -8,6 +7,7 @@ import { StoreState } from "../../../reducers";
 import MobileNav from "../MobileNav/MobileNav";
 import ContainerRoutes from "../../routing/ContainerRoutes";
 import SideNav from "../SideNav/SideNav";
+import BudgetSelector from "../BudgetSelector/BudgetSelector";
 
 interface Props extends StoreState, RouteComponentProps {
 	getLogout: () => Promise<void>;
@@ -51,23 +51,12 @@ class Container extends Component<Props, State> {
 		return (
 			<div className={classes.page}>
 				{this.props.budgets.length > 0 && (
-					<div className={classes.mobileSelect}>
-						<button onClick={this.mobileSelectBudget}>
-							<FaHome />
-							<span>Budget</span>
-						</button>{" "}
-						<span>:</span>
-						<select onChange={this.handleSelect} value={this.state.selected}>
-							{!this.state.loading &&
-								this.props.budgets.map((b, i) => {
-									return (
-										<option key={b._id} value={i}>
-											{b.name}
-										</option>
-									);
-								})}
-						</select>
-					</div>
+					<BudgetSelector
+						loading={this.state.loading}
+						selected={this.state.selected}
+						budgets={this.props.budgets}
+						handleSelect={this.handleSelect}
+						mobileSelectBudget={this.mobileSelectBudget} />
 				)}
 				<MobileNav
 					currentBudget={this.props.currentBudget}
