@@ -137,13 +137,13 @@ class BarGraph extends Component<Props, State> {
 			.attr("y", d => y(d.balance))
 			.attr("height", d => graphHeight - y(d.balance))
 			.style("cursor", "pointer")
-			.on("mouseover", function(d) {
-				tip.show(d, this);
+			.on("mouseover", (event, d) => {
+				tip.show(d, event.currentTarget);
 			})
-			.on("mouseout", function(d) {
-				tip.hide(d, this);
+			.on("mouseout", (event, d) => {
+				tip.hide(d, event.currentTarget);
 			})
-			.on("click", d => this.props.changeMonth(d._id.month));
+			.on("click", (event, d) => this.props.changeMonth(d._id.month));
 
 		// Call axis
 		xAxisGroup.call(xAxis);
