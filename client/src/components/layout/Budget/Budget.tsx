@@ -15,7 +15,8 @@ import { checkAmount } from "../../utils/CheckAmount";
 import { Link } from "react-router-dom";
 import Table from "../../pages/Table/Table";
 import Graphs from "../../pages/Graphs/Graphs";
-import { FaRegEdit } from "react-icons/fa";
+import { FaRegEdit, FaTable } from "react-icons/fa";
+import { GoGraph } from "react-icons/go";
 
 interface Params {
 	budgetId: string;
@@ -136,15 +137,15 @@ class Dashboard extends Component<Props, State> {
 									this.state.nav === Nav.transactions ? classes.navSelected : ""
 								}
 								onClick={() => this.setState({ nav: Nav.transactions })}>
-								Transactions
+								<FaTable /> Transactions
 							</span>
-							<span> | </span>
+							&nbsp; | &nbsp;
 							<span
 								className={
 									this.state.nav === Nav.graph ? classes.navSelected : ""
 								}
 								onClick={() => this.setState({ nav: Nav.graph })}>
-								Graph
+								<GoGraph /> Graph
 							</span>
 						</div>
 						{/**Only show transactions here */}
