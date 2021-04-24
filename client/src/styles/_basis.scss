@@ -20,9 +20,13 @@ body {
 
 // Remove arrows from number input
 input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
+input[type="number"]::-webkit-outer-spin-button,
+input[type="text"],
+button,
+input[type="submit"],
+input[type="email"] {
 	-webkit-appearance: none;
-	// -moz-appearance: none;
+	-moz-appearance: none;
 	appearance: none;
 	margin: 0;
 }
