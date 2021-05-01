@@ -1,4 +1,4 @@
-import { getTransactions } from "./../utils/getTransactions";
+import { Types } from "mongoose";
 import { Request, Response, NextFunction, Router } from "express";
 
 import { ITransaction } from "./../interfaces/Transaction";
@@ -8,7 +8,7 @@ import { Budget } from "./../models/Budget";
 import { controller, get, patch, use, catchAsync } from "../decorators";
 import { requireAuth } from "../middlewares/requireAuth";
 import { bodyValidator } from "../middlewares/bodyValidator";
-import { Types } from "mongoose";
+import { getTransactions } from "./../utils/getTransactions";
 
 export const transactionRoute = Router();
 

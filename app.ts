@@ -13,7 +13,7 @@ import { transactionRoute } from "./controllers/transactionController";
 export const app = express();
 
 //////////////////////// Global Middlewares//////////////////////////
-// Add htp headers that secure the server
+// Add http headers that secure the server
 app.use(helmet());
 
 // Development logging
