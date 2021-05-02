@@ -15,7 +15,7 @@ password: test123
 * [Challenges](#challenges)
 
 ## General info
-In a club cash can flow through many mediums such as online banking and cash payments. Most clubs use excel spreadsheets to manage their budget and present to meetings. They sought to display the cash flows noted by its source in a readibly and analyitic manner. Committee members also require readible access to these spreadsheets which together with updating and uploading the file for each transaction, the whole process becomes inconvenient and bothersome.\
+In a club cash can flow through many mediums such as online banking and cash payments. Most clubs use excel spreadsheets to manage their budget and present to meetings. They sought to display the cash flows noted by its source in a readable and analyitic manner. Committee members also require readable access to these spreadsheets which together with updating and uploading the file for each transaction, the whole process becomes inconvenient and bothersome.\
 \
 I saw this as an opportunity to upgrade the old tech into a web application accessible to everyone. \
 Budgety-app can be used by anyone, for clubs, household or work related.
