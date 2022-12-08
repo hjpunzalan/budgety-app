@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Route, withRouter, RouteComponentProps } from "react-router-dom";
+import { Route, RouteComponentProps, withRouter } from "react-router-dom";
 import { checkUser } from "./actions";
+import Home from "./components/pages/Home/Home";
 import Routes from "./components/routing/Routes";
 import Alerts from "./components/utils/Alerts";
 import { StoreState } from "./reducers";
-import Home from "./components/pages/Home/Home";
 
 interface Props extends StoreState, RouteComponentProps {
 	checkUser: () => Promise<void>;
@@ -19,8 +19,7 @@ class App extends Component<Props, State> {
 	state = { checked: false };
 	componentDidMount() {
 		this.props.checkUser().then(() => {
-			if (this.props.auth.isAuthenticated)
-				this.props.history.push("/user"); // push straight to user to get current budget etc.
+			if (this.props.auth.isAuthenticated) this.props.history.push("/user"); // push straight to user to get current budget etc.
 			this.setState({ checked: true });
 		});
 	}
@@ -43,10 +42,7 @@ const mapStateToProps = (state: StoreState) => ({
 	budgets: state.budgets,
 	currentBudget: state.currentBudget,
 	transactions: state.transactions,
-	charts: state.charts
+	charts: state.charts,
 });
 
-export default connect(
-	mapStateToProps,
-	{ checkUser }
-)(withRouter(App));
+export default connect(mapStateToProps, { checkUser })(withRouter(App));

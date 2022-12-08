@@ -1,101 +1,99 @@
-@import '../../../styles/pubMixins';
-@import '../../../styles/variables';
+@import "../../../styles/pubMixins";
+@import "../../../styles/variables";
 
 .page {
-    @include page;
-    grid-template-rows: repeat(auto-fit, minmax(10vh, max-content));
-    row-gap: 5rem;
+	@include page;
+	grid-template-rows: repeat(auto-fit, minmax(10vh, max-content));
+	row-gap: 5rem;
 }
 
 .nav {
-    list-style: none;
-    grid-row: 1/2;
-    grid-column: 9/10;
-    align-items: center;
-    display: grid;
-    margin: 1rem;
+	list-style: none;
+	grid-row: 1/2;
+	grid-column: 9/10;
+	align-items: center;
+	display: grid;
+	margin: 1rem;
 
-    @media only screen and (max-width: 700px) {
-        justify-content: end;
-    }
+	@media only screen and (max-width: 700px) {
+		justify-content: end;
+	}
 
-    button {
-        @include publicPageNavBtn;
-    }
+	button {
+		@include publicPageNavBtn;
+	}
 }
 
 .title {
-    font-size: 14rem;
-    justify-self: center;
-    grid-column: 2/10;
-    grid-row: 2/3;
+	font-size: 14rem;
+	justify-self: center;
+	grid-column: 2/10;
+	grid-row: 2/3;
 
-    @media only screen and (max-width: 900px) {
-        font-size: 10rem;
-    }
+	@media only screen and (max-width: 900px) {
+		font-size: 10rem;
+	}
 
-    @media only screen and (max-width: 600px) {
-        font-size: 7rem;
-    }
-
+	@media only screen and (max-width: 600px) {
+		font-size: 7rem;
+	}
 }
 
 .desc {
-    font-size: 3rem;
-    justify-self: center;
-    text-align: center;
-    grid-column: 2/10;
-    grid-row: 3/4;
-    margin-top: 2rem;
+	font-size: 3rem;
+	justify-self: center;
+	text-align: center;
+	grid-column: 2/10;
+	grid-row: 3/4;
+	margin-top: 2rem;
 
-    @media only screen and (max-width: 900px) {
-        font-size: 2rem;
-    }
+	@media only screen and (max-width: 900px) {
+		font-size: 2rem;
+	}
 }
 
 .cta {
-    justify-self: center;
-    grid-column: 2/10;
-    grid-row: 4/5;
-    align-self: center;
-    min-width: 250px;
-    height: 100%;
+	justify-self: center;
+	grid-column: 2/10;
+	grid-row: 4/5;
+	align-self: center;
+	min-width: 250px;
+	height: 100%;
+	width: 100%;
+	max-width: 600px;
+	text-transform: uppercase;
+	font-weight: bolder;
+	font-size: 5rem;
+	background: rgb(169, 223, 241);
+	padding: 3rem 9rem;
+	height: 100%;
+	border: none;
+	border-radius: 2rem;
+	outline: none;
+	cursor: pointer;
+	animation-name: btnShaddow;
+	animation-duration: 3s;
+	animation-iteration-count: infinite;
+	animation-timing-function: ease-in-out;
 
-    button {
-        font-size: 4rem;
-        background: rgb(169, 223, 241);
-        padding: 3rem 9rem;
-        height: 100%;
-        border: none;
-        border-radius: 2rem;
-        outline: none;
-        cursor: pointer;
-        animation-name: btnShaddow;
-        animation-duration: 3s;
-        animation-iteration-count: infinite;
-        animation-timing-function: ease-in-out;
+	@media only screen and (max-width: 900px) {
+		font-size: 3rem;
+	}
 
-        @media only screen and (max-width: 900px) {
-            font-size: 3rem;
-        }
-
-        @media only screen and (max-width: 600px) {
-            font-size: 2.5rem;
-        }
-    }
+	@media only screen and (max-width: 600px) {
+		font-size: 2.5rem;
+	}
 }
 
 @keyframes btnShaddow {
+	25%,
+	75% {
+		box-shadow: none;
+	}
 
-    25%,
-    75% {
-        box-shadow: none;
-    }
-
-    0%,
-    50%,
-    100% {
-        box-shadow: 0px 0px 50px 0px rgba(0, 0, 0, 0.3);
-    }
-
+	0%,
+	50%,
+	100% {
+		box-shadow: 0px 0px 50px 0px rgba(0, 0, 0, 0.3);
+	}
 }

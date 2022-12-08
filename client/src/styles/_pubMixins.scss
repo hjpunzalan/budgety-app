@@ -3,8 +3,8 @@
 @mixin page {
     display: grid;
     height: 100%;
-    grid-template-rows: max-content 1fr; // This template makes it easier to be responsive
     grid-template-columns: minmax(6rem, 1fr) repeat(8, minmax(min-content, 15rem)) minmax(6rem, 1fr);
+    grid-template-rows: max-content 1fr; // This template makes it easier to be responsive
     row-gap: 1rem;
 
 

@@ -1,13 +1,13 @@
 import React, { Component } from "react";
-import { RouteComponentProps } from "react-router";
 import { connect } from "react-redux";
-import classes from "./Container.module.scss";
+import { RouteComponentProps } from "react-router";
 import { getLogout } from "../../../actions";
 import { StoreState } from "../../../reducers";
-import MobileNav from "../MobileNav/MobileNav";
 import ContainerRoutes from "../../routing/ContainerRoutes";
-import SideNav from "../SideNav/SideNav";
 import BudgetSelector from "../BudgetSelector/BudgetSelector";
+import MobileNav from "../MobileNav/MobileNav";
+import SideNav from "../SideNav/SideNav";
+import classes from "./Container.module.scss";
 
 interface Props extends StoreState, RouteComponentProps {
 	getLogout: () => Promise<void>;
@@ -24,7 +24,7 @@ class Container extends Component<Props, State> {
 
 	state = {
 		loading: true,
-		selected: 0
+		selected: 0,
 	};
 
 	stopLoading = () => {
@@ -56,7 +56,8 @@ class Container extends Component<Props, State> {
 						selected={this.state.selected}
 						budgets={this.props.budgets}
 						handleSelect={this.handleSelect}
-						mobileSelectBudget={this.mobileSelectBudget} />
+						mobileSelectBudget={this.mobileSelectBudget}
+					/>
 				)}
 				<MobileNav
 					currentBudget={this.props.currentBudget}
@@ -81,7 +82,8 @@ class Container extends Component<Props, State> {
 						budgets={this.props.budgets}
 						selectBudget={this.selectBudget}
 						history={this.props.history}
-						match={this.props.match} />
+						match={this.props.match}
+					/>
 				</div>
 			</div>
 		);
@@ -91,10 +93,7 @@ class Container extends Component<Props, State> {
 const mapStateToProps = (state: StoreState) => ({
 	auth: state.auth,
 	budgets: state.budgets,
-	currentBudget: state.currentBudget
+	currentBudget: state.currentBudget,
 });
 
-export default connect(
-	mapStateToProps,
-	{ getLogout }
-)(Container);
+export default connect(mapStateToProps, { getLogout })(Container);
