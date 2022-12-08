@@ -3,18 +3,25 @@
 @mixin page {
 	display: grid;
 	grid-template-rows: max-content max-content 1fr;
-	grid-template-columns: minmax(6rem, 1fr) repeat(8, minmax(min-content, 15rem)) minmax(6rem,
-			1fr);
+	grid-template-columns: minmax(6rem, 1fr) repeat(8, minmax(min-content, 15rem)) minmax(
+			6rem,
+			1fr
+		);
+}
+
+@mixin sideBarLayout {
+	display: grid;
+	grid-template-rows: $addTransactionHeight 30rem 20rem 1fr;
+	gap: 5rem;
 }
 
 @mixin container {
 	grid-row: 3/-1;
 	grid-column: 2/10;
 	display: grid;
-	grid-template-rows: $addTransactionHeight 30rem 20rem;
 	grid-template-columns: max-content minmax(max-content, 1fr);
 	padding: 5rem;
-	gap: 5rem;
+	@include sideBarLayout();
 
 	@media only screen and (max-width: 1200px) {
 		grid-column: 1/-1;
@@ -86,7 +93,7 @@
 
 	//  All direct child buttons
 	input[type="submit"],
-	&>button {
+	& > button {
 		cursor: pointer;
 		outline: none;
 		border: none;
@@ -140,7 +147,7 @@
 				grid-template-columns: calc(40vw - #{$col-w}) calc(60vw - #{$col-w});
 			}
 
-			&>span {
+			& > span {
 				margin-left: auto;
 				grid-column: 1/2;
 				justify-self: flex-end;
@@ -173,7 +180,7 @@
 				}
 			}
 
-			&>select {
+			& > select {
 				border: 1px solid $color-grey;
 				cursor: pointer;
 				outline: none;
@@ -188,7 +195,7 @@
 			}
 
 			// For radio input's span
-			input+span {
+			input + span {
 				width: auto;
 				text-align: center;
 				margin-left: 0;

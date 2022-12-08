@@ -49,7 +49,7 @@ export const transactionReducer = (
 					}
 				});
 
-				/// If newGroup doesnt exist in all of the groups, add the new group to the transaction
+				/// If newGroup doesnt exist in all of the current groups, add the new group to the transaction
 				return state;
 			}
 		case ActionTypes.addTransaction:
