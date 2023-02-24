@@ -13,6 +13,7 @@ import mongoose from "mongoose";
 // SYNC Unhandled rejections
 // listening to event uncaughtException
 process.on("uncaughtException", (err: Error) => {
+	console.log(process.env.NODE_ENV)
 	console.log("UNCAUGHT Exception! Shutting down...");
 	console.log(err.name, err.message);
 	process.exit(1); // 0 success , 1 for unhandled rejection
