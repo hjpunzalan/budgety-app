@@ -3,7 +3,7 @@
 > A budgeting app inspired being a treasurer for a public speaking club.
 
 ### Demo
-Try it out https://budgety-app-jp.herokuapp.com/ <br>
+Try it out https://budgety.jonathanpunzalan.com/ <br>
 email: test@<span>example.com</span>\
 password: test123
 
