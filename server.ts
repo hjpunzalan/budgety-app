@@ -31,6 +31,8 @@ mongoose
 
 // Development / Production mode
 console.log(`Server running on: ${process.env.NODE_ENV} mode`);
+console.log("new version")
+
 
 const port = process.env.PORT || 8000;
 const server = app.listen(port, () => {

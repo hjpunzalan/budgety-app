@@ -33,6 +33,7 @@ mongoose_1.default
     .then(function () { return console.log("DB connection is successful!"); });
 // Development / Production mode
 console.log("Server running on: " + process.env.NODE_ENV + " mode");
+console.log("new version");
 var port = process.env.PORT || 8000;
 var server = app_1.app.listen(port, function () {
     console.log("App running on port " + port);
