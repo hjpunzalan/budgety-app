@@ -21,7 +21,7 @@ process.on("uncaughtException", (err: Error) => {
 
 // Connecting to mongoDB using mongoose
 mongoose
-	.connect(process.env.DATABASE as string  + "?directConnection=true", {
+	.connect(process.env.DATABASE as string, {
 		useNewUrlParser: true,
 		useCreateIndex: true,
 		useFindAndModify: false,

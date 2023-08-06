@@ -24,7 +24,7 @@ process.on("uncaughtException", function (err) {
 });
 // Connecting to mongoDB using mongoose
 mongoose_1.default
-    .connect(process.env.DATABASE + "?directConnection=true", {
+    .connect(process.env.DATABASE, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false,
