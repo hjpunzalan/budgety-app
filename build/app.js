@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
 var express_mongo_sanitize_1 = __importDefault(require("express-mongo-sanitize"));
+var helmet_1 = __importDefault(require("helmet"));
 var hpp_1 = __importDefault(require("hpp"));
 // import morgan from "morgan"; // for dev mode
 var express_session_1 = __importDefault(require("express-session"));
@@ -16,7 +17,7 @@ var globalErrorHandler_1 = require("./utils/globalErrorHandler");
 exports.app = express_1.default();
 //////////////////////// Global Middlewares//////////////////////////
 // Add http headers that secure the server
-// app.use(helmet());
+exports.app.use(helmet_1.default());
 // Development logging
 // if (process.env.NODE_ENV === "development") {
 // 	app.use(morgan("dev"));

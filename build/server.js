@@ -12,8 +12,8 @@ if (process.env.NODE_ENV === 'production') {
 else {
     dotenv_1.default.config({ path: './config.env' });
 }
-var app_1 = require("./app");
 var mongoose_1 = __importDefault(require("mongoose"));
+var app_1 = require("./app");
 // SYNC Unhandled rejections
 // listening to event uncaughtException
 process.on("uncaughtException", function (err) {
@@ -24,7 +24,7 @@ process.on("uncaughtException", function (err) {
 });
 // Connecting to mongoDB using mongoose
 mongoose_1.default
-    .connect(process.env.DATABASE, {
+    .connect(process.env.DATABASE + "?directConnection=true", {
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false,

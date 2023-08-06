@@ -7,8 +7,8 @@ if (process.env.NODE_ENV === 'production') {
 	dotenv.config({ path: './config.env' });
 }
 
-import { app } from "./app";
 import mongoose from "mongoose";
+import { app } from "./app";
 
 // SYNC Unhandled rejections
 // listening to event uncaughtException
@@ -21,7 +21,7 @@ process.on("uncaughtException", (err: Error) => {
 
 // Connecting to mongoDB using mongoose
 mongoose
-	.connect(process.env.DATABASE as string, {
+	.connect(process.env.DATABASE as string  + "?directConnection=true", {
 		useNewUrlParser: true,
 		useCreateIndex: true,
 		useFindAndModify: false,
