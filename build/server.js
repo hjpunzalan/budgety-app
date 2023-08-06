@@ -14,13 +14,10 @@ else {
 }
 var app_1 = require("./app");
 var mongoose_1 = __importDefault(require("mongoose"));
-// ping site
-setInterval(function () {
-    app_1.app.get("http://budgety-app-jp.herokuapp.com");
-}, 300000); // every 5 minutes (300000)
 // SYNC Unhandled rejections
 // listening to event uncaughtException
 process.on("uncaughtException", function (err) {
+    console.log(process.env.NODE_ENV);
     console.log("UNCAUGHT Exception! Shutting down...");
     console.log(err.name, err.message);
     process.exit(1); // 0 success , 1 for unhandled rejection

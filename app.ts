@@ -1,20 +1,19 @@
 import express from "express";
-import helmet from "helmet";
 import mongoSanitize from "express-mongo-sanitize";
 import hpp from "hpp";
 // import morgan from "morgan"; // for dev mode
 import session from "express-session";
 import path from "path";
+import { authRoute, budgetRoute, userRoute } from "./controllers";
+import { transactionRoute } from "./controllers/transactionController";
 import { AppError } from "./utils/appError";
 import { globalErrorHandler } from "./utils/globalErrorHandler";
-import { userRoute, authRoute, budgetRoute } from "./controllers";
-import { transactionRoute } from "./controllers/transactionController";
 
 export const app = express();
 
 //////////////////////// Global Middlewares//////////////////////////
 // Add http headers that secure the server
-app.use(helmet());
+// app.use(helmet());
 
 // Development logging
 // if (process.env.NODE_ENV === "development") {

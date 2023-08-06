@@ -4,20 +4,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
-var helmet_1 = __importDefault(require("helmet"));
 var express_mongo_sanitize_1 = __importDefault(require("express-mongo-sanitize"));
 var hpp_1 = __importDefault(require("hpp"));
 // import morgan from "morgan"; // for dev mode
 var express_session_1 = __importDefault(require("express-session"));
 var path_1 = __importDefault(require("path"));
-var appError_1 = require("./utils/appError");
-var globalErrorHandler_1 = require("./utils/globalErrorHandler");
 var controllers_1 = require("./controllers");
 var transactionController_1 = require("./controllers/transactionController");
+var appError_1 = require("./utils/appError");
+var globalErrorHandler_1 = require("./utils/globalErrorHandler");
 exports.app = express_1.default();
 //////////////////////// Global Middlewares//////////////////////////
 // Add http headers that secure the server
-exports.app.use(helmet_1.default());
+// app.use(helmet());
 // Development logging
 // if (process.env.NODE_ENV === "development") {
 // 	app.use(morgan("dev"));
