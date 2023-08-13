@@ -26,17 +26,15 @@ process.on("uncaughtException", function (err) {
 mongoose_1.default
     .connect(process.env.DATABASE, {
     useNewUrlParser: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
     useUnifiedTopology: true
 })
     .then(function () { return console.log("DB connection is successful!"); });
 // Development / Production mode
-console.log("Server running on: " + process.env.NODE_ENV + " mode");
+console.log("Server running on: ".concat(process.env.NODE_ENV, " mode"));
 console.log("new version");
 var port = process.env.PORT || 8000;
 var server = app_1.app.listen(port, function () {
-    console.log("App running on port " + port);
+    console.log("App running on port ".concat(port));
 });
 // ASYNC Promises
 // process object will emmit unhandled rejection
@@ -44,7 +42,7 @@ var server = app_1.app.listen(port, function () {
 process.on("unhandledRejection", function (reason, promise) {
     console.log("UNHANDLED REJECTION! Shutting down...");
     if (reason instanceof Error)
-        console.log("AT " + promise, reason.name, reason.message);
+        console.log("AT ".concat(promise), reason.name, reason.message);
     server.close(function () {
         //  BY having server.close finishes all request that is being handled then closes the app
         process.exit(1); // 0 success , 1 for unhandled rejection

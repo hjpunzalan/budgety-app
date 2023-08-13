@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.use = void 0;
 require("reflect-metadata");
 var enums_1 = require("./enums");
 // middlewares are requesthandlers

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.patch = exports.del = exports.put = exports.post = exports.get = void 0;
 var enums_1 = require("./enums");
 require("reflect-metadata");
 // Avoid duplication by using a factory function

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.catchAsync = void 0;
 require("reflect-metadata");
 function catchAsync(target, key, desc) {
     var method = target[key];

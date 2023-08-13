@@ -23,7 +23,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
@@ -48,6 +48,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.authRoute = void 0;
 var express_1 = require("express");
 var crypto_1 = __importDefault(require("crypto"));
 var decorators_1 = require("../decorators");
@@ -56,7 +57,7 @@ var appError_1 = require("./../utils/appError");
 var bodyValidator_1 = require("../middlewares/bodyValidator");
 var requireAuth_1 = require("../middlewares/requireAuth");
 var Email_1 = require("../utils/Email");
-exports.authRoute = express_1.Router();
+exports.authRoute = (0, express_1.Router)();
 // commented out password in user model
 var UserController = /** @class */ (function () {
     function UserController() {
@@ -305,57 +306,57 @@ var UserController = /** @class */ (function () {
         });
     };
     __decorate([
-        decorators_1.get("/checkuser"),
+        (0, decorators_1.get)("/checkuser"),
         decorators_1.catchAsync,
         __metadata("design:type", Function),
         __metadata("design:paramtypes", [Object, Object, Function]),
         __metadata("design:returntype", Promise)
     ], UserController.prototype, "checkUser", null);
     __decorate([
-        decorators_1.get("/isloggedin"),
+        (0, decorators_1.get)("/isloggedin"),
         __metadata("design:type", Function),
         __metadata("design:paramtypes", [Object, Object]),
         __metadata("design:returntype", void 0)
     ], UserController.prototype, "isLoggedIn", null);
     __decorate([
-        decorators_1.post("/login"),
-        decorators_1.use(bodyValidator_1.bodyValidator("email", "password")),
+        (0, decorators_1.post)("/login"),
+        (0, decorators_1.use)((0, bodyValidator_1.bodyValidator)("email", "password")),
         decorators_1.catchAsync,
         __metadata("design:type", Function),
         __metadata("design:paramtypes", [Object, Object, Function]),
         __metadata("design:returntype", Promise)
     ], UserController.prototype, "login", null);
     __decorate([
-        decorators_1.get("/logout"),
+        (0, decorators_1.get)("/logout"),
         __metadata("design:type", Function),
         __metadata("design:paramtypes", [Object, Object, Function]),
         __metadata("design:returntype", Promise)
     ], UserController.prototype, "logout", null);
     __decorate([
-        decorators_1.post("/forgotpassword"),
-        decorators_1.use(bodyValidator_1.bodyValidator("email", "url")),
+        (0, decorators_1.post)("/forgotpassword"),
+        (0, decorators_1.use)((0, bodyValidator_1.bodyValidator)("email", "url")),
         decorators_1.catchAsync,
         __metadata("design:type", Function),
         __metadata("design:paramtypes", [Object, Object, Function]),
         __metadata("design:returntype", Promise)
     ], UserController.prototype, "forgotPassword", null);
     __decorate([
-        decorators_1.patch("/resetpassword/:token"),
-        decorators_1.use(bodyValidator_1.bodyValidator("newPassword", "confirmPassword")),
+        (0, decorators_1.patch)("/resetpassword/:token"),
+        (0, decorators_1.use)((0, bodyValidator_1.bodyValidator)("newPassword", "confirmPassword")),
         decorators_1.catchAsync,
         __metadata("design:type", Function),
         __metadata("design:paramtypes", [Object, Object, Function]),
         __metadata("design:returntype", Promise)
     ], UserController.prototype, "resetPassword", null);
     __decorate([
-        decorators_1.post("/changepassword"),
-        decorators_1.use(requireAuth_1.requireAuth, bodyValidator_1.bodyValidator("currentPassword", "newPassword", "confirmPassword")),
+        (0, decorators_1.post)("/changepassword"),
+        (0, decorators_1.use)(requireAuth_1.requireAuth, (0, bodyValidator_1.bodyValidator)("currentPassword", "newPassword", "confirmPassword")),
         __metadata("design:type", Function),
         __metadata("design:paramtypes", [Object, Object, Function]),
         __metadata("design:returntype", Promise)
     ], UserController.prototype, "changePassword", null);
     UserController = __decorate([
-        decorators_1.controller("/auth", exports.authRoute)
+        (0, decorators_1.controller)("/auth", exports.authRoute)
     ], UserController);
     return UserController;
 }());

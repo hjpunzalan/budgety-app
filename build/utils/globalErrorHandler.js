@@ -11,20 +11,21 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.globalErrorHandler = void 0;
 var appError_1 = require("./appError");
 // MonogoDB and mongoose use export Error types as Classes
 // Invalid ids
 var handleCastErrorDB = function (err) {
-    var message = "Invalid " + err.path + ": " + err.value + "."; //Invalid _id : wwwwwwww
+    var message = "Invalid ".concat(err.path, ": ").concat(err.value, "."); //Invalid _id : wwwwwwww
     return new appError_1.AppError(message, 400);
 };
 // Duplicate fields
 var handleDuplicateFieldsDB = function (err) {
     // regular expressions is always between two slashes '/'
     var value = err.errmsg.match(/(["'])(\\?.)*?\1/); //reg expression between quotation marks
-    var message = "Duplicate field value: " + 
+    var message = "Duplicate field value: ".concat(
     //value returns an array
-    value[0] + ". Please use another value!";
+    value[0], ". Please use another value!");
     return new appError_1.AppError(message, 400);
 };
 // Validation DB errors
@@ -36,7 +37,7 @@ var handleValidationErrorDB = function (err) {
         .join(". ");
     console.log(errors);
     // Join array into a single string
-    var message = "Invalid input data. " + errors;
+    var message = "Invalid input data. ".concat(errors);
     return new appError_1.AppError(message, 400);
 };
 // JWT errors
@@ -88,7 +89,7 @@ var sendErrorDev = function (err, res) {
     });
 };
 // Error handler passed from controllers
-exports.globalErrorHandler = function (err, req, res, next) {
+var globalErrorHandler = function (err, req, res, next) {
     // Define additional error properties
     // Union types doesn't let redefining of parameters (err)
     var newError = __assign({}, err);
@@ -126,3 +127,4 @@ exports.globalErrorHandler = function (err, req, res, next) {
         sendErrorProd(newError, res);
     }
 };
+exports.globalErrorHandler = globalErrorHandler;

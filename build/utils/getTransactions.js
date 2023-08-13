@@ -1,8 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getTransactions = void 0;
 var Budget_1 = require("./../models/Budget");
 var mongoose_1 = require("mongoose");
-exports.getTransactions = function (req) {
+var getTransactions = function (req) {
     var _a = req.query, page = _a.page, limit = _a.limit;
     // Define pagination
     var limitPerPage = parseInt(limit, 10);
@@ -55,3 +56,4 @@ exports.getTransactions = function (req) {
         }
     ]);
 };
+exports.getTransactions = getTransactions;

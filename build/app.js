@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.app = void 0;
 var express_1 = __importDefault(require("express"));
 var express_mongo_sanitize_1 = __importDefault(require("express-mongo-sanitize"));
 var helmet_1 = __importDefault(require("helmet"));
@@ -14,10 +15,10 @@ var controllers_1 = require("./controllers");
 var transactionController_1 = require("./controllers/transactionController");
 var appError_1 = require("./utils/appError");
 var globalErrorHandler_1 = require("./utils/globalErrorHandler");
-exports.app = express_1.default();
+exports.app = (0, express_1.default)();
 //////////////////////// Global Middlewares//////////////////////////
 // Add http headers that secure the server
-exports.app.use(helmet_1.default());
+exports.app.use((0, helmet_1.default)());
 // Development logging
 // if (process.env.NODE_ENV === "development") {
 // 	app.use(morgan("dev"));
@@ -25,7 +26,7 @@ exports.app.use(helmet_1.default());
 // Converts incoming json data to js object ---- Body parser that reads data from body into req.body
 exports.app.use(express_1.default.json({ limit: "10kb" })); // package will parse 10kb into meaningful data
 if (process.env.SESSION_SECRET)
-    exports.app.use(express_session_1.default({
+    exports.app.use((0, express_session_1.default)({
         secret: process.env.SESSION_SECRET,
         name: "sid",
         resave: false,
@@ -42,11 +43,11 @@ else
     });
 // Data sanitization against NoSQL query injection
 //Look at the req and filter out all '$' and '.' that sends queries to db illegaly
-exports.app.use(express_mongo_sanitize_1.default());
+exports.app.use((0, express_mongo_sanitize_1.default)());
 // Prevent parameter pollution
 // prevents adding duplicated parameters in query
 // The whitelist works for both req.query and req.body.
-exports.app.use(hpp_1.default({
+exports.app.use((0, hpp_1.default)({
     whitelist: [] // add http parameters used
 }));
 // Route Handlers

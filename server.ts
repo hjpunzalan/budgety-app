@@ -23,8 +23,6 @@ process.on("uncaughtException", (err: Error) => {
 mongoose
 	.connect(process.env.DATABASE as string, {
 		useNewUrlParser: true,
-		useCreateIndex: true,
-		useFindAndModify: false,
 		useUnifiedTopology: true
 	})
 	.then(() => console.log("DB connection is successful!"));

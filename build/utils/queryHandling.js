@@ -11,6 +11,7 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.QueryHandling = void 0;
 var QueryHandling = /** @class */ (function () {
     // query for mongoose and queryString for express
     function QueryHandling(query, queryString) {
@@ -28,7 +29,7 @@ var QueryHandling = /** @class */ (function () {
         // 1B) Advanced Filtering
         // Converting queries to a suitable filter
         var queryStr = JSON.stringify(queryObj); // convert object to a string
-        queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, function (match) { return "$" + match; });
+        queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, function (match) { return "$".concat(match); });
         // This replaces the formating in the queryString to include $
         //ex. {{URL}}/api/v1/tours?duration[gte]=10
         // { difficulty: 'easy', duration: { gte: '5' } }

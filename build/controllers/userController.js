@@ -23,7 +23,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
@@ -45,6 +45,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.userRoute = void 0;
 var appError_1 = require("./../utils/appError");
 var express_1 = require("express");
 var decorators_1 = require("../decorators");
@@ -53,7 +54,7 @@ var bodyValidator_1 = require("../middlewares/bodyValidator");
 var queryHandling_1 = require("./../utils/queryHandling");
 var requireAuth_1 = require("../middlewares/requireAuth");
 var checkBody_1 = require("../utils/checkBody");
-exports.userRoute = express_1.Router();
+exports.userRoute = (0, express_1.Router)();
 // commented out password in user model
 var UserController = /** @class */ (function () {
     function UserController() {
@@ -112,7 +113,7 @@ var UserController = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        filterBody = checkBody_1.checkBody(req.body, ["firstName", "lastName", "email", "photo"], next);
+                        filterBody = (0, checkBody_1.checkBody)(req.body, ["firstName", "lastName", "email", "photo"], next);
                         if (!req.session) return [3 /*break*/, 2];
                         return [4 /*yield*/, Users_1.Users.findByIdAndUpdate(req.session.userId, filterBody, {
                                 new: true,
@@ -149,39 +150,39 @@ var UserController = /** @class */ (function () {
         });
     };
     __decorate([
-        decorators_1.post("/register"),
-        decorators_1.use(bodyValidator_1.bodyValidator("firstName", "lastName", "email", "password")),
+        (0, decorators_1.post)("/register"),
+        (0, decorators_1.use)((0, bodyValidator_1.bodyValidator)("firstName", "lastName", "email", "password")),
         decorators_1.catchAsync,
         __metadata("design:type", Function),
         __metadata("design:paramtypes", [Object, Object, Function]),
         __metadata("design:returntype", Promise)
     ], UserController.prototype, "registerUser", null);
     __decorate([
-        decorators_1.get("/"),
-        decorators_1.use(requireAuth_1.requireAuth),
+        (0, decorators_1.get)("/"),
+        (0, decorators_1.use)(requireAuth_1.requireAuth),
         decorators_1.catchAsync,
         __metadata("design:type", Function),
         __metadata("design:paramtypes", [Object, Object, Function]),
         __metadata("design:returntype", Promise)
     ], UserController.prototype, "getAllUsers", null);
     __decorate([
-        decorators_1.patch("/updateme"),
-        decorators_1.use(requireAuth_1.requireAuth),
+        (0, decorators_1.patch)("/updateme"),
+        (0, decorators_1.use)(requireAuth_1.requireAuth),
         decorators_1.catchAsync,
         __metadata("design:type", Function),
         __metadata("design:paramtypes", [Object, Object, Function]),
         __metadata("design:returntype", Promise)
     ], UserController.prototype, "updateMe", null);
     __decorate([
-        decorators_1.del("/deleteme"),
-        decorators_1.use(requireAuth_1.requireAuth),
+        (0, decorators_1.del)("/deleteme"),
+        (0, decorators_1.use)(requireAuth_1.requireAuth),
         decorators_1.catchAsync,
         __metadata("design:type", Function),
         __metadata("design:paramtypes", [Object, Object, Function]),
         __metadata("design:returntype", Promise)
     ], UserController.prototype, "deleteMe", null);
     UserController = __decorate([
-        decorators_1.controller("/users", exports.userRoute)
+        (0, decorators_1.controller)("/users", exports.userRoute)
     ], UserController);
     return UserController;
 }());

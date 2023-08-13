@@ -23,7 +23,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
@@ -45,6 +45,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.budgetRoute = void 0;
 var mongoose_1 = require("mongoose");
 var express_1 = require("express");
 var Budget_1 = require("./../models/Budget");
@@ -53,7 +54,7 @@ var appError_1 = require("./../utils/appError");
 var decorators_1 = require("../decorators");
 var requireAuth_1 = require("../middlewares/requireAuth");
 var bodyValidator_1 = require("../middlewares/bodyValidator");
-exports.budgetRoute = express_1.Router();
+exports.budgetRoute = (0, express_1.Router)();
 var budgetController = /** @class */ (function () {
     function budgetController() {
     }
@@ -92,7 +93,7 @@ var budgetController = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         if (!req.session) return [3 /*break*/, 5];
-                        filterBody = checkBody_1.checkBody(req.body, ["name", "categories", "startingBalance"], next);
+                        filterBody = (0, checkBody_1.checkBody)(req.body, ["name", "categories", "startingBalance"], next);
                         return [4 /*yield*/, Budget_1.Budget.findOneAndUpdate({
                                 _id: req.params.id,
                                 user: req.session.userId
@@ -525,79 +526,79 @@ var budgetController = /** @class */ (function () {
         });
     };
     __decorate([
-        decorators_1.post("/new"),
-        decorators_1.use(requireAuth_1.requireAuth, bodyValidator_1.bodyValidator("name", "categories", "startingBalance")),
+        (0, decorators_1.post)("/new"),
+        (0, decorators_1.use)(requireAuth_1.requireAuth, (0, bodyValidator_1.bodyValidator)("name", "categories", "startingBalance")),
         decorators_1.catchAsync,
         __metadata("design:type", Function),
         __metadata("design:paramtypes", [Object, Object, Function]),
         __metadata("design:returntype", Promise)
     ], budgetController.prototype, "newBudget", null);
     __decorate([
-        decorators_1.patch("/update/:id"),
-        decorators_1.use(requireAuth_1.requireAuth),
+        (0, decorators_1.patch)("/update/:id"),
+        (0, decorators_1.use)(requireAuth_1.requireAuth),
         decorators_1.catchAsync,
         __metadata("design:type", Function),
         __metadata("design:paramtypes", [Object, Object, Function]),
         __metadata("design:returntype", Promise)
     ], budgetController.prototype, "updateBudget", null);
     __decorate([
-        decorators_1.get("/all"),
-        decorators_1.use(requireAuth_1.requireAuth),
+        (0, decorators_1.get)("/all"),
+        (0, decorators_1.use)(requireAuth_1.requireAuth),
         decorators_1.catchAsync,
         __metadata("design:type", Function),
         __metadata("design:paramtypes", [Object, Object, Function]),
         __metadata("design:returntype", Promise)
     ], budgetController.prototype, "getAllBudget", null);
     __decorate([
-        decorators_1.get("/:id"),
-        decorators_1.use(requireAuth_1.requireAuth),
+        (0, decorators_1.get)("/:id"),
+        (0, decorators_1.use)(requireAuth_1.requireAuth),
         decorators_1.catchAsync,
         __metadata("design:type", Function),
         __metadata("design:paramtypes", [Object, Object, Function]),
         __metadata("design:returntype", Promise)
     ], budgetController.prototype, "getBudget", null);
     __decorate([
-        decorators_1.del("/del/:id"),
-        decorators_1.use(requireAuth_1.requireAuth),
+        (0, decorators_1.del)("/del/:id"),
+        (0, decorators_1.use)(requireAuth_1.requireAuth),
         decorators_1.catchAsync,
         __metadata("design:type", Function),
         __metadata("design:paramtypes", [Object, Object, Function]),
         __metadata("design:returntype", Promise)
     ], budgetController.prototype, "deleteBudget", null);
     __decorate([
-        decorators_1.get("/categories/:budgetId/year/:year"),
-        decorators_1.use(requireAuth_1.requireAuth),
+        (0, decorators_1.get)("/categories/:budgetId/year/:year"),
+        (0, decorators_1.use)(requireAuth_1.requireAuth),
         decorators_1.catchAsync,
         __metadata("design:type", Function),
         __metadata("design:paramtypes", [Object, Object, Function]),
         __metadata("design:returntype", Promise)
     ], budgetController.prototype, "getAnnualCategoryData", null);
     __decorate([
-        decorators_1.get("/categories/:budgetId/month/:month/year/:year"),
-        decorators_1.use(requireAuth_1.requireAuth),
+        (0, decorators_1.get)("/categories/:budgetId/month/:month/year/:year"),
+        (0, decorators_1.use)(requireAuth_1.requireAuth),
         decorators_1.catchAsync,
         __metadata("design:type", Function),
         __metadata("design:paramtypes", [Object, Object, Function]),
         __metadata("design:returntype", Promise)
     ], budgetController.prototype, "getCategories", null);
     __decorate([
-        decorators_1.get("/stats/:budgetId/year/:year"),
-        decorators_1.use(requireAuth_1.requireAuth),
+        (0, decorators_1.get)("/stats/:budgetId/year/:year"),
+        (0, decorators_1.use)(requireAuth_1.requireAuth),
         decorators_1.catchAsync,
         __metadata("design:type", Function),
         __metadata("design:paramtypes", [Object, Object, Function]),
         __metadata("design:returntype", Promise)
     ], budgetController.prototype, "getStats", null);
     __decorate([
-        decorators_1.get("/dates/:budgetId"),
-        decorators_1.use(requireAuth_1.requireAuth),
+        (0, decorators_1.get)("/dates/:budgetId"),
+        (0, decorators_1.use)(requireAuth_1.requireAuth),
         decorators_1.catchAsync,
         __metadata("design:type", Function),
         __metadata("design:paramtypes", [Object, Object, Function]),
         __metadata("design:returntype", Promise)
     ], budgetController.prototype, "getDates", null);
     budgetController = __decorate([
-        decorators_1.controller("/budget", exports.budgetRoute)
+        (0, decorators_1.controller)("/budget", exports.budgetRoute)
     ], budgetController);
     return budgetController;
 }());

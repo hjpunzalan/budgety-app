@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Budget = void 0;
 var mongoose_1 = __importDefault(require("mongoose"));
 var appError_1 = require("./../utils/appError");
 var budgetSchema = new mongoose_1.default.Schema({

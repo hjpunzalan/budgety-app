@@ -34,7 +34,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
@@ -56,6 +56,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.transactionRoute = void 0;
 var mongoose_1 = require("mongoose");
 var express_1 = require("express");
 var checkBody_1 = require("./../utils/checkBody");
@@ -65,7 +66,7 @@ var decorators_1 = require("../decorators");
 var requireAuth_1 = require("../middlewares/requireAuth");
 var bodyValidator_1 = require("../middlewares/bodyValidator");
 var getTransactions_1 = require("./../utils/getTransactions");
-exports.transactionRoute = express_1.Router();
+exports.transactionRoute = (0, express_1.Router)();
 var TransactionController = /** @class */ (function () {
     function TransactionController() {
     }
@@ -75,7 +76,7 @@ var TransactionController = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        filterBody = checkBody_1.checkBody(req.body, ["desc", "amount", "categoryIndex", "date"], next);
+                        filterBody = (0, checkBody_1.checkBody)(req.body, ["desc", "amount", "categoryIndex", "date"], next);
                         if (!req.session) return [3 /*break*/, 6];
                         return [4 /*yield*/, Budget_1.Budget.findOne({
                                 _id: req.params.budgetId,
@@ -113,7 +114,7 @@ var TransactionController = /** @class */ (function () {
                     case 2:
                         // save updated budget
                         _a.sent();
-                        return [4 /*yield*/, getTransactions_1.getTransactions(req)];
+                        return [4 /*yield*/, (0, getTransactions_1.getTransactions)(req)];
                     case 3:
                         transactions = _a.sent();
                         res.status(201).json(transactions);
@@ -208,7 +209,7 @@ var TransactionController = /** @class */ (function () {
                         return [4 /*yield*/, budget_2.save()];
                     case 3:
                         _a.sent();
-                        return [4 /*yield*/, getTransactions_1.getTransactions(req)];
+                        return [4 /*yield*/, (0, getTransactions_1.getTransactions)(req)];
                     case 4:
                         transactions = _a.sent();
                         res.status(200).json(transactions);
@@ -226,7 +227,7 @@ var TransactionController = /** @class */ (function () {
             var transactions;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, getTransactions_1.getTransactions(req)];
+                    case 0: return [4 /*yield*/, (0, getTransactions_1.getTransactions)(req)];
                     case 1:
                         transactions = _a.sent();
                         res.status(200).json(transactions);
@@ -276,7 +277,7 @@ var TransactionController = /** @class */ (function () {
                     case 2:
                         // save updated budget
                         _a.sent();
-                        return [4 /*yield*/, getTransactions_1.getTransactions(req)];
+                        return [4 /*yield*/, (0, getTransactions_1.getTransactions)(req)];
                     case 3:
                         transactions = _a.sent();
                         res.status(200).json(transactions);
@@ -321,49 +322,49 @@ var TransactionController = /** @class */ (function () {
         });
     };
     __decorate([
-        decorators_1.patch("/new/:budgetId")
+        (0, decorators_1.patch)("/new/:budgetId")
         // removed categoryIndex because value of 0 is invalid which is also an index defaults to 0 when not provided
         ,
-        decorators_1.use(requireAuth_1.requireAuth, bodyValidator_1.bodyValidator("desc", "amount")),
+        (0, decorators_1.use)(requireAuth_1.requireAuth, (0, bodyValidator_1.bodyValidator)("desc", "amount")),
         decorators_1.catchAsync,
         __metadata("design:type", Function),
         __metadata("design:paramtypes", [Object, Object, Function]),
         __metadata("design:returntype", Promise)
     ], TransactionController.prototype, "newTransaction", null);
     __decorate([
-        decorators_1.patch("/update/:budgetId/:transactionId"),
-        decorators_1.use(requireAuth_1.requireAuth),
+        (0, decorators_1.patch)("/update/:budgetId/:transactionId"),
+        (0, decorators_1.use)(requireAuth_1.requireAuth),
         decorators_1.catchAsync,
         __metadata("design:type", Function),
         __metadata("design:paramtypes", [Object, Object, Function]),
         __metadata("design:returntype", Promise)
     ], TransactionController.prototype, "updateTransaction", null);
     __decorate([
-        decorators_1.get("/:budgetId"),
-        decorators_1.use(requireAuth_1.requireAuth),
+        (0, decorators_1.get)("/:budgetId"),
+        (0, decorators_1.use)(requireAuth_1.requireAuth),
         decorators_1.catchAsync,
         __metadata("design:type", Function),
         __metadata("design:paramtypes", [Object, Object, Function]),
         __metadata("design:returntype", Promise)
     ], TransactionController.prototype, "getAllTransactions", null);
     __decorate([
-        decorators_1.patch("/delete/:budgetId/:transactionId"),
-        decorators_1.use(requireAuth_1.requireAuth),
+        (0, decorators_1.patch)("/delete/:budgetId/:transactionId"),
+        (0, decorators_1.use)(requireAuth_1.requireAuth),
         decorators_1.catchAsync,
         __metadata("design:type", Function),
         __metadata("design:paramtypes", [Object, Object, Function]),
         __metadata("design:returntype", Promise)
     ], TransactionController.prototype, "deleteTransaction", null);
     __decorate([
-        decorators_1.get("/:budgetId/:transactionId"),
-        decorators_1.use(requireAuth_1.requireAuth),
+        (0, decorators_1.get)("/:budgetId/:transactionId"),
+        (0, decorators_1.use)(requireAuth_1.requireAuth),
         decorators_1.catchAsync,
         __metadata("design:type", Function),
         __metadata("design:paramtypes", [Object, Object, Function]),
         __metadata("design:returntype", Promise)
     ], TransactionController.prototype, "getTransaction", null);
     TransactionController = __decorate([
-        decorators_1.controller("/transactions", exports.transactionRoute)
+        (0, decorators_1.controller)("/transactions", exports.transactionRoute)
     ], TransactionController);
     return TransactionController;
 }());
